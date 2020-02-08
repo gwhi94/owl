@@ -8,7 +8,7 @@
     </mat-card-title-group>
   </mat-card> -->
 
-  <mat-card *ngFor= "let plan of plans" (click)="focusPlan(plan.id)" class="plan-card">
+  <mat-card *ngFor= "let plan of plans" (click)="this.getPlan(plan)" class="plan-card">
     <div class="container">
       <div class="row plan-card-row h-100">
         <div class="col-sm">
@@ -24,26 +24,16 @@
     </div>
   </mat-card>
 
+  <!-- <h1>{{this.plan.doc.data().name}}</h1> -->
+
 
 
 
 
   <mat-card class="payload-card-new" (click)="openConfirmDialog()">
-    <i class="material-icons">
-      add_circle
-      </i>
+    <i class="material-icons">add_circle</i>     
   </mat-card>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
 
-  <button>Set New Monthly Values</button>
-<button (click)="test()">TEST</button>
-<!--Need a confirm on this-->
 
 
 

@@ -18,6 +18,7 @@ import { Plan } from '../models/plan';
 export class ControlPanelComponent implements OnInit {
 
   plans: Array<any>;
+  plan: {};
 
   constructor(public dialog: MatDialog, private planService:PlanService) { }
 
@@ -28,20 +29,22 @@ export class ControlPanelComponent implements OnInit {
 
   getPlans(){
     this.planService.getPlans()
-      .subscribe(res =>(this.plans = res))
-
+      .subscribe(res =>(this.plans = res));
   }
 
+  getPlan(plan){
+    this.planService.getPlan(plan)
+      .subscribe(res => (this.openFocusPlanDialog(res)));
+  }
+
+  deletePlan(){
     
+  }
 
 
-  
-
-
-
-
-
+    
   private openFocusPlanDialog(inFocusPlan): void {
+    //Dies here as this modal needs styling
     let dialogRef = this.dialog.open(FocusPlanModalComponent,{
       data:{inFocusPlan}
 
@@ -83,21 +86,7 @@ export class ControlPanelComponent implements OnInit {
       })
     }
 
-    test(){
-      console.log(this.plans);
-
-    }
-
-
-
-
-
-
-
-    public newPlan(){
-      console.log("new plan");
-
-    }
+ 
 
 }
 

@@ -26,23 +26,13 @@ export class PlanService {
         })
     };
 
-    getPlans(){
-
-        /* this.plansCall = this.db.collection('plans');
-        this.plans = this.plansCall.valueChanges();
-        
-       this.plans.snapshotChanges()
-            .map(actions => {
-                return actions.map(a => {
-                    const data = a.payload.doc.data() as Plan;
-                    const id = a.payload.doc.id;
-                    return {id, data}
-                })
-            }) */
-            
-            return this.db.collection('plans').snapshotChanges();
-            
+    getPlans(){           
+        return this.db.collection('plans').snapshotChanges();            
     };
+
+    getPlan(plan){
+        return this.db.collection('plans').doc(plan.payload.doc.id).valueChanges();
+    }
 
 
 }

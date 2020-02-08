@@ -2,8 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-//import { AngularFireModule } from 'angularfire2';
-//import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -98,8 +98,8 @@ export const DateFormats = {
     MatCheckboxModule,
     MatSidenavModule,
     MatListModule,
-    //AngularFireModule.initializeApp(environment.firebaseConfig),
-    //AngularFirestoreModule, 
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFirestoreModule, 
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false }
     )

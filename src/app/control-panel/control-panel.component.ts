@@ -17,44 +17,28 @@ import { Plan } from '../models/plan';
 
 export class ControlPanelComponent implements OnInit {
 
-  plans = [];
+  plans: Array<any>;
 
   constructor(public dialog: MatDialog, private planService:PlanService) { }
 
   ngOnInit() {
-    this.getPlans();
-     
+   this.getPlans();
+      
   }
 
-  getPlans(): void {
-    //this would need limiting for performance
+  getPlans(){
     this.planService.getPlans()
-      .subscribe(plans => this.plans = plans);
-            
-  }
-
-  getPlan(id) :void {
-    this.planService.getPlan(id)
-      .subscribe(plan => this.openFocusPlanDialog(plan))
-      //need to figure out how to do more than one thing here. 
-        
+      .subscribe(res =>(this.plans = res))
 
   }
 
-  public focusPlan(id){
-    //at this point do a getById req based on the ID and then pass that data into opening the modal. 
-    console.log("opening plan", id);
-    this.getPlan(id);
     
-  }
 
-  public deletePlan(plan: Plan){
-    console.log("deleting plan");
 
-    this.plans = this.plans.filter(p => p !== plan);
-    this.planService.deletePlan(plan)
-      .subscribe
-  }
+  
+
+
+
 
 
   private openFocusPlanDialog(inFocusPlan): void {

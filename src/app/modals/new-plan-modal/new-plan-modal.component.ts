@@ -87,30 +87,8 @@ export class NewPlanModalComponent implements OnInit {
       )
  
 
-
-
-
-
-
-
     this.submitted = true;
-    console.log(this.plan, this.data);
-
-    this.name = plan.name;
-    this.moneyIn = plan.moneyIn;
-    this.expenses = plan.expenses;
-    this.saving = plan.saving;
-    this.dateRange = plan.dateRange; 
-
-    //make firebase service call here
-
-    let newPlan = this.data;
-
-    this.planService.addPlan(newPlan as Plan)
-      .subscribe(plan => {
-        this.closeDialog(plan);
-      });
-
+    
      
   }
 

@@ -39,7 +39,6 @@ export class NewPlanModalComponent implements OnInit {
     totalLeft:0,
     weeklyLeft:0, 
     dailyLeft:0,
-    dateRange:{},
     days:0,
     weekendCount:0
   }
@@ -61,6 +60,39 @@ export class NewPlanModalComponent implements OnInit {
   }
 
   onSubmit(plan) { 
+
+    var formData = this.data;
+    var formValue = this.rForm.value;
+
+    //this.getRange(this.rForm.get('dateRange').value);
+
+    //TODO these data values will change so updates need to happen
+
+
+    
+    formValue.dateRange = {
+      begin:moment(formValue.dateRange.begin).format('DD/MM/YYYY'),
+      end:moment(formValue.dateRange.end).format('DD/MM/YYYY')
+    }
+
+
+
+
+
+     this.planService.newPlan(formData,formValue)
+      .then(
+        res => {
+          console.log("sent");
+        }
+      )
+ 
+
+
+
+
+
+
+
     this.submitted = true;
     console.log(this.plan, this.data);
 

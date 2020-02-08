@@ -3,7 +3,7 @@ import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 
-//import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore'; 
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore'; 
 
 import { Plan } from '../models/plan';
 
@@ -12,6 +12,16 @@ interface Post {
     test:string
 }
 
+class Guid {
+    static newGuid() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0,
+          v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+  }
+
 
 
 
@@ -19,15 +29,26 @@ interface Post {
 export class PlanService {
     private plansUrl = 'api/plans';
     
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private db:AngularFirestore) { }
+
+     newPlan(formData,formValue){
+        return this.db.collection('plans').doc(Guid.newGuid()).set({
+            name:formValue.name,
+            moneyIn:formValue.moneyIn,
+            expenses:formValue.expenses,
+            saving:formValue.saving,
+            dateRange:formValue.dateRange,
+            totalLeft:formData.totalLeft,
+            weeklyLeft:formData.weeklyLeft,
+            dailyleft:formData.dailyLeft,
+            days:formData.days,
+            weekendCount:formData.weekendCount           
+        })
+    } 
         
 
 
-    //postCollection: AngularFirestoreCollection<Post>;
-    posts: Observable<Post[]>;
-
-
-    getCollection
+   
 
 
 

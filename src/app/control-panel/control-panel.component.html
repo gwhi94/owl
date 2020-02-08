@@ -1,0 +1,57 @@
+<div class="control-panel-container">  
+  <!--this will be ngFor passing in the id on click to fetch that particular plan-->
+  <!-- <mat-card *ngFor= "let plan of plans" (click)="focusPlan(plan.id)" class="payload-card">
+    <mat-card-title-group>
+      <span></span>
+      <span class="fill-remaining-space"></span>
+      <a></a>
+    </mat-card-title-group>
+  </mat-card> -->
+
+  <mat-card *ngFor= "let plan of plans" (click)="focusPlan(plan.id)" class="plan-card">
+    <div class="container">
+      <div class="row plan-card-row h-100">
+        <div class="col-sm">
+          <p>{{plan.name}}</p>
+        </div>
+        <div class="col-sm">
+          <p>Center info</p>
+        </div>
+        <div class="col-sm text-right" (click)="deletePlan(plan);$event.stopPropagation()">
+          <p><i class="material-icons">delete</i></p>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+
+
+
+
+
+  <mat-card class="payload-card-new" (click)="openConfirmDialog()">
+    <i class="material-icons">
+      add_circle
+      </i>
+  </mat-card>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+
+  <button>Set New Monthly Values</button>
+<button (click)="test()">TEST</button>
+<!--Need a confirm on this-->
+
+
+
+</div>
+
+
+
+
+
+
+

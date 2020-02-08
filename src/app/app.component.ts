@@ -1,0 +1,50 @@
+import { Component } from '@angular/core';
+
+import { RouterModule, Routes } from '@angular/router';
+
+import * as moment from 'moment';
+import { Router } from '@angular/router';
+import { PlanService } from '../app/services/plan-service';
+import { Plan } from '../app/models/plan';
+
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
+})
+
+export class AppComponent {
+  constructor(private router: Router, private planService: PlanService ) {
+
+  }
+  title = 'finance-app';
+  date;
+
+  navLinks = [
+    {name:'DASHBOARD', icon:'insert_chart', active:false},
+    {name:'PLANS', icon:'insert_invitation', active:false},
+    {name:'SETTINGS', icon:'build', active:false},
+    {name:'LOG OUT', icon:'account_box', active:false},
+    
+
+  ]
+
+  ngOnInit(){
+    this.date = moment(new Date()).format('DD/MM/YYYY');
+
+
+  }
+
+  activateClass(navLink){
+    this.navLinks.forEach(function(link){
+      link.active = false;
+    });
+    navLink.active = !navLink.active;
+  }
+  
+  
+}
+
+
+

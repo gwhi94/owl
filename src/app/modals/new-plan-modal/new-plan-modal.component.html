@@ -1,0 +1,81 @@
+<div class="container">
+    <div class="row">
+        <div class="col input-left-panel">
+           
+            <mat-checkbox name="excludeWeekends" [(ngModel)]='excludeWeekends' (ngModelChange)="crunchNumbers()">Exclude Weekends ? </mat-checkbox>
+           
+            <form [formGroup]="rForm" (ngSubmit)="onSubmit(rForm.value)">
+                                           
+               
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Plan Name" formControlName="name" type="text">                       
+                    </mat-form-field>     
+                    <div class="form-alert" *ngIf="!rForm.controls['name'].valid && rForm.controls['name'].touched">{{fieldAlert}}</div>
+                   
+                            
+               
+                
+                    <mat-form-field class="full-width">
+                        <input matInput
+                            required
+                            placeholder="Choose a date"
+                            [satDatepicker]="picker"
+                            formControlName="dateRange"
+                            >
+                        <sat-datepicker #picker [rangeMode]="true" [selectFirstDateOnClose]="true"(closed)="setDays()"></sat-datepicker>
+                        <sat-datepicker-toggle matSuffix [for]="picker"></sat-datepicker-toggle>
+                    </mat-form-field>
+                    <div class="form-alert" *ngIf="!rForm.controls['dateRange'].valid && rForm.controls['dateRange'].touched">{{fieldAlert}}</div>
+              
+                
+               
+                <h2>{{data.days}}</h2> <h5 *ngIf="this.data.weekendCount > 0 && this.excludeWeekends">{{this.data.weekendCount}}</h5>
+              
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Money In" type="number" formControlName="moneyIn">
+                    </mat-form-field>  
+                    <div class="form-alert" *ngIf="!rForm.controls['moneyIn'].valid && rForm.controls['moneyIn'].touched">{{fieldAlert}} and must be greater than 1</div> 
+
+             
+             
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Expenses"  type="number" formControlName="expenses">
+                    </mat-form-field>     
+                    
+  
+               
+                                      
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Saving" type="number" formControlName="saving">
+                    </mat-form-field>      
+                     
+              
+
+               
+                <button type="submit" [disabled]="!rForm.valid" mat-button raised color="accent">Set Plan</button>
+            
+            </form>
+
+   
+                                         
+        </div>
+        <div class="col input-right-panel">
+            <div class="output">
+                <p>With {{this.data.moneyIn}} paid in</p>
+                <p>and with expenses of {{this.data.expenses}}</p>
+                <p>and saving {{this.data.saving}}</p>
+                <p>leaves you with {{this.data.totalLeft | number : '1.2-2'}} for the remainder of this plan</p>
+                <p>or {{this.data.weeklyLeft | number : '1.2-2'}} per week and {{this.data.dailyLeft | number : '1.2-2'}} left per day</p>
+            </div>
+            <canvas baseChart 
+            [data]="pieChartData" 
+            [labels]="pieChartLabels" 
+            [chartType]="pieChartType"
+            [options]="pieChartOptions"
+            [plugins]="pieChartPlugins"
+            [legend]="pieChartLegend">
+          </canvas>
+         
+        </div>
+    </div>  
+</div> 

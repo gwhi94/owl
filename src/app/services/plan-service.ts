@@ -17,12 +17,12 @@ export class PlanService {
             moneyIn:formValue.moneyIn,
             expenses:formValue.expenses,
             saving:formValue.saving,
-            dateRange:formValue.dateRange,
+            dateRange:formData.dateRange,
             totalLeft:formData.totalLeft,
             weeklyLeft:formData.weeklyLeft,
             dailyleft:formData.dailyLeft,
-            days:formData.days,
-            weekendCount:formData.weekendCount           
+            days:formData.days ,
+            activePlan:true  
         })
     };
 
@@ -32,6 +32,10 @@ export class PlanService {
 
     getPlan(plan){
         return this.db.collection('plans').doc(plan.payload.doc.id).valueChanges();
+    }
+    
+    deletePlan(plan){
+        return this.db.collection('plans').doc(plan.payload.doc.id).delete();
     }
 
 

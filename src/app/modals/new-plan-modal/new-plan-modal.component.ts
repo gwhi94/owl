@@ -17,9 +17,7 @@ import { analytics } from 'firebase';
 
 
 export class NewPlanModalComponent implements OnInit {
-
   
-
   rForm: FormGroup;
   plan: any;
   name: string = '';
@@ -42,6 +40,7 @@ export class NewPlanModalComponent implements OnInit {
     weeklyLeft:0, 
     dailyLeft:0,
     days:0,
+    dateRange:{},
   }
 
   constructor(private fb: FormBuilder, private planService:PlanService, public dialogRef: MatDialogRef<NewPlanModalComponent>,
@@ -55,8 +54,7 @@ export class NewPlanModalComponent implements OnInit {
       'expenses':[null,Validators.compose([Validators.min(1), Validators.max(100000000)])],
       'saving':[null, Validators.compose([Validators.min(1), Validators.max(100000000)])],
     });
-
-    
+  
   }
 
   onSubmit(plan) { 
@@ -67,14 +65,9 @@ export class NewPlanModalComponent implements OnInit {
     //this.getRange(this.rForm.get('dateRange').value);
 
     //TODO these data values will change so updates need to happen
-
-
     
-    
-
-
-
-
+    console.log(formData, formValue);
+    formValue.dateRange = formData.dateRange;
 
      this.planService.newPlan(formData,formValue)
       .then(
@@ -82,11 +75,7 @@ export class NewPlanModalComponent implements OnInit {
           console.log("sent");
         }
       )
- 
-
-    this.submitted = true;
-    
-     
+    this.submitted = true;      
   }
 
   closeDialog(plan) {
@@ -107,34 +96,22 @@ export class NewPlanModalComponent implements OnInit {
 
 
   ngOnInit() {
-
-    console.log(this.dataPassedFromSet);
+    this.data.days = this.dataPassedFromSet.dataPassedFromSet.days;
+    this.data.dateRange = this.dataPassedFromSet.dataPassedFromSet.dateRange;
 
     this.rForm.valueChanges.subscribe(()=> {
       this.crunchNumbers(this.rForm.value);
     });
 
-
   }
 
   crunchNumbers(form) {
-    console.log(form);
-  
+   
+    var daysLeft = this.data.days;        
+    this.data.totalLeft = (form.moneyIn - form.expenses - form.saving); //80
+    this.data.weeklyLeft = (this.data.totalLeft / this.data.days) * 5; //80
+    this.data.dailyLeft = this.data.totalLeft / daysLeft;           
     
-
-    console.log(this.excludeWeekends);
-
-
-    var daysLeft = this.data.days;
-
-
-    if(this.data.days !== 0){
-      
-      
-      this.data.totalLeft = (form.moneyIn - form.expenses - form.saving); //80
-      this.data.weeklyLeft = (this.data.totalLeft / this.data.days) * 5; //80
-      this.data.dailyLeft = this.data.totalLeft / daysLeft;           
-    } 
   }
 
 

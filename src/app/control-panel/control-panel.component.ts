@@ -46,16 +46,24 @@ export class ControlPanelComponent implements OnInit {
 
   }
 
-  deletePlan(){
+  deletePlan(plan){
+    console.log("deleting plan");
+    this.planService.deletePlan(plan)
+      .then(
+        res => {
+          console.log("deleted");
+        },
+        err => {
+          console.log("Could not delete plan");
+        }
+      )
+
     
   }
 
-   updatePlan(){
-
+  updatePlan(){
     //this will be called anytime the user inputs a cost
     //will need to recalculate the figures
-
-
 
    }
 

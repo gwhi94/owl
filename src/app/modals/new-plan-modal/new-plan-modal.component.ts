@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject} from '@angular/core';
 import { ChartType, ChartOptions } from 'chart.js';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { SingleDataSet, Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip } from 'ng2-charts';
@@ -17,6 +17,8 @@ import { analytics } from 'firebase';
 
 
 export class NewPlanModalComponent implements OnInit {
+
+  
 
   rForm: FormGroup;
   plan: any;
@@ -40,23 +42,21 @@ export class NewPlanModalComponent implements OnInit {
     weeklyLeft:0, 
     dailyLeft:0,
     days:0,
-    weekendCount:0
   }
 
-  constructor(private fb: FormBuilder, private planService:PlanService, public dialogRef: MatDialogRef<NewPlanModalComponent>) {
+  constructor(private fb: FormBuilder, private planService:PlanService, public dialogRef: MatDialogRef<NewPlanModalComponent>,
+     @Inject(MAT_DIALOG_DATA) public dataPassedFromSet: any) {
     monkeyPatchChartJsTooltip();
     monkeyPatchChartJsLegend(); 
 
     this.rForm = fb.group({
-      'name':[null,Validators.compose([Validators.required, Validators.maxLength(20), Validators.minLength(3)])],
+      'name':[null,Validators.compose([Validators.required, Validators.maxLength(40), Validators.minLength(3)])],
       'moneyIn':[null,Validators.compose([Validators.required, Validators.min(1), Validators.max(1000000000)])],
       'expenses':[null,Validators.compose([Validators.min(1), Validators.max(100000000)])],
       'saving':[null, Validators.compose([Validators.min(1), Validators.max(100000000)])],
-      'dateRange':[null,Validators.required],
     });
 
     
-
   }
 
   onSubmit(plan) { 
@@ -70,10 +70,7 @@ export class NewPlanModalComponent implements OnInit {
 
 
     
-    formValue.dateRange = {
-      begin:moment(formValue.dateRange.begin).format('DD/MM/YYYY'),
-      end:moment(formValue.dateRange.end).format('DD/MM/YYYY')
-    }
+    
 
 
 
@@ -111,83 +108,36 @@ export class NewPlanModalComponent implements OnInit {
 
   ngOnInit() {
 
+    console.log(this.dataPassedFromSet);
+
     this.rForm.valueChanges.subscribe(()=> {
       this.crunchNumbers(this.rForm.value);
     });
-    this.rForm.get('dateRange').valueChanges.subscribe(val => {
-      this.getRange(this.rForm.get('dateRange').value);
-    }) 
 
-  }
 
-  public setDays() {
-    if(this.data.weekendCount !== 0 && this.excludeWeekends){
-      this.data.days = this.data.days - this.data.weekendCount;
-    }  
   }
 
   crunchNumbers(form) {
     console.log(form);
   
-    console.log(form.moneyIn, form.saving, form.expenses);
+    
 
     console.log(this.excludeWeekends);
 
-    var moneyIn = form.moneyIn; //100
-    var expenses = form.expenses; //10
-    var saving = form.saving; //10
-    
+
     var daysLeft = this.data.days;
 
 
     if(this.data.days !== 0){
-
-      if(this.excludeWeekends) {
-        
-        console.log("here");
-        daysLeft = daysLeft - this.data.weekendCount}; 
-        console.log(daysLeft);
-     
-         this.data.totalLeft = (form.moneyIn - form.expenses - form.saving); //80
-         this.data.weeklyLeft = (this.data.totalLeft / this.data.days) * 5; //80
-         this.data.dailyLeft = this.data.totalLeft / daysLeft;
-    
+      
+      
+      this.data.totalLeft = (form.moneyIn - form.expenses - form.saving); //80
+      this.data.weeklyLeft = (this.data.totalLeft / this.data.days) * 5; //80
+      this.data.dailyLeft = this.data.totalLeft / daysLeft;           
     } 
   }
 
-  //first problem, dateRange is suffering from lag in the RF value changes. 
-  //value changes is a step behind again, fix that.
 
-  public getRange(dateRange){
-    console.log(dateRange);
-    var start = dateRange['begin'];
-    var end = dateRange['end'];
-    
-
-    let difference = moment.duration(end.diff(start));
-    var days = difference.asDays() + 1;
-    //number of days in range
-    //use while loop to start at end day and loop towards start using days as counter
-
-
-    var weekendCount = 0;
-    var dateToCompare = end;  
-    this.data.days = days;
-    
-    
-    while(days > 0) {
-      var dateToCompareFormat = dateToCompare.format('dddd');              
-      if(dateToCompareFormat == 'Saturday' || dateToCompareFormat == 'Sunday'){
-        weekendCount ++
-      }
-      dateToCompare = dateToCompare.subtract(1, "days");
-      days --;
-
-    
-    }
-    this.data.weekendCount = weekendCount;
-    weekendCount = weekendCount;
-  }
 
   
 }

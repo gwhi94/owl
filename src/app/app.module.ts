@@ -41,6 +41,7 @@ import { ConfirmModalComponent } from './modals/confirm-modal/confirm-modal.comp
 import { NewPlanModalComponent } from './modals/new-plan-modal/new-plan-modal.component';
 import { PlanDetailComponent } from './plan-detail/plan-detail.component';
 import { FocusPlanModalComponent } from './modals/focus-plan-modal/focus-plan-modal.component';
+import { SetDateModalComponent } from './modals/set-date-modal/set-date-modal.component';
 
 
 
@@ -66,14 +67,16 @@ export const DateFormats = {
     ConfirmModalComponent,
     NewPlanModalComponent,
     PlanDetailComponent,
-    FocusPlanModalComponent
+    FocusPlanModalComponent,
+    SetDateModalComponent
      
   ],
 
   entryComponents: [
      ConfirmModalComponent,
      NewPlanModalComponent,
-     FocusPlanModalComponent 
+     FocusPlanModalComponent ,
+     SetDateModalComponent
     ],
    
   imports: [

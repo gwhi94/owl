@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component'
 import { NewPlanModalComponent } from '../modals/new-plan-modal/new-plan-modal.component'
+import { SetDateModalComponent } from '../modals/set-date-modal/set-date-modal.component'
 import { FocusPlanModalComponent } from '../modals/focus-plan-modal/focus-plan-modal.component';
 import { PlanService } from '../services/plan-service'
 import { Plan } from '../models/plan';
@@ -35,11 +36,28 @@ export class ControlPanelComponent implements OnInit {
   getPlan(plan){
     this.planService.getPlan(plan)
       .subscribe(res => (this.openFocusPlanDialog(res)));
+
+  }
+
+  getActivePlan(){
+    //this is fired when loading the active plan
+    //pull out the active plan
+    //re calculate everything
+
   }
 
   deletePlan(){
     
   }
+
+   updatePlan(){
+
+    //this will be called anytime the user inputs a cost
+    //will need to recalculate the figures
+
+
+
+   }
 
 
     
@@ -66,15 +84,32 @@ export class ControlPanelComponent implements OnInit {
       dialogRef.afterClosed().subscribe((confirmed:boolean) =>{
         if(confirmed){
           console.log("confirmed");
-          this.openNewPlanDialog();
+          //this.openNewPlanDialog();
+          this.openSetDateModal();
         }else{
           console.log("not confirmed");
         }
       })
     }
 
-    private openNewPlanDialog(): void {
+    private openSetDateModal(): void {
+      let dialogRef = this.dialog.open(SetDateModalComponent, {
+
+      });
+
+     dialogRef.afterClosed().subscribe(result=> {
+       console.log(result);
+
+       this.openNewPlanDialog({days:result.days, dateRange:result.dateRange})
+     });
+  
+
+    }
+
+    private openNewPlanDialog(dataPassedFromSet): void {
       let dialogRef = this.dialog.open(NewPlanModalComponent,{
+
+        data:{dataPassedFromSet}
         
       });
 

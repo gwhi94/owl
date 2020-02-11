@@ -59,6 +59,9 @@ export class NewPlanModalComponent implements OnInit {
 
   onSubmit(plan) { 
 
+    //need to add logic in here before saving, to set the current
+    //active to false. 
+
     var formData = this.data;
     var formValue = this.rForm.value;
 

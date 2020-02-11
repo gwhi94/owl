@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-
 import { RouterModule, Routes } from '@angular/router';
-
 import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { PlanService } from '../app/services/plan-service';
@@ -32,6 +30,12 @@ export class AppComponent {
 
   ngOnInit(){
     this.date = moment(new Date()).format('DD/MM/YYYY');
+
+    //this is where we need to get the active plan
+    //so db query logic fired from here. 
+
+   this.planService.getActivePlan()
+    
 
 
   }

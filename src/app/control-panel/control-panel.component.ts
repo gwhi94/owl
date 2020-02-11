@@ -57,8 +57,7 @@ export class ControlPanelComponent implements OnInit {
           console.log("Could not delete plan");
         }
       )
-
-    
+   
   }
 
   updatePlan(){
@@ -66,9 +65,7 @@ export class ControlPanelComponent implements OnInit {
     //will need to recalculate the figures
 
    }
-
-
-    
+   
   private openFocusPlanDialog(inFocusPlan): void {
     //Dies here as this modal needs styling
     let dialogRef = this.dialog.open(FocusPlanModalComponent,{
@@ -77,8 +74,10 @@ export class ControlPanelComponent implements OnInit {
     });
   }
 
-
    private openConfirmDialog(): void {
+    if(this.plans.length == 0){
+      this.openSetDateModal();
+    }else{
       let dialogRef = this.dialog.open(ConfirmModalComponent,{
         data:{
           message: 'End your current plan and start a new one ?',
@@ -88,7 +87,6 @@ export class ControlPanelComponent implements OnInit {
           }
         },
       });
-
       dialogRef.afterClosed().subscribe((confirmed:boolean) =>{
         if(confirmed){
           console.log("confirmed");
@@ -98,6 +96,8 @@ export class ControlPanelComponent implements OnInit {
           console.log("not confirmed");
         }
       })
+      
+      }    
     }
 
     private openSetDateModal(): void {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, tap, switchMap } from 'rxjs/operators';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore'; 
 
 
@@ -33,10 +33,28 @@ export class PlanService {
     getPlan(plan){
         return this.db.collection('plans').doc(plan.payload.doc.id).valueChanges();
     }
+
+    getActivePlan(active){  
+             
+        console.log("hit");
+        const active$ = new Subject<boolean>();
+        const queryObservable = active$.pipe(
+            switchMap(active => 
+                this.db.collection('plans', ref => ref.where('active', '==', true)).valueChanges())
+        );
+
+        queryObservable.subscribe(queriedItems => {
+            console.log(queriedItems);
+        })
+
+       
+      
+
+
+    }
     
     deletePlan(plan){
         return this.db.collection('plans').doc(plan.payload.doc.id).delete();
     }
-
 
 }

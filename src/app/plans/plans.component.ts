@@ -10,13 +10,13 @@ import { Plan } from '../models/plan';
 
 
 @Component({
-  selector: 'app-control-panel',
-  templateUrl: './control-panel.component.html',
-  styleUrls: ['./control-panel.component.scss']
+  selector: 'app-plans',
+  templateUrl: './plans.component.html',
+  styleUrls: ['./plans.component.scss']
 })
 
 
-export class ControlPanelComponent implements OnInit {
+export class PlansComponent implements OnInit {
 
   plans: Array<any>;
   plan: {};

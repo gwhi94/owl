@@ -1,34 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
 @import './theme.scss';
 
-
-
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-*{
+
+*:not(h1, h2, h3, h4, h5, h6){
     font-family: 'Roboto Condensed', sans-serif;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
 }
 
 .material-icons {
     font-size: 35px !important;
 }
 
-header{
-    background-color: #3f51b5;
-    color:white;
-}
-
-.home-header {
-    height:20vh;
-    display:flex;
-    align-items: center;
-    justify-content: center;
-
-    h1 {
-        font-size: 51px;
-    }
-
-}
 
 .full-width {
     width:100%;

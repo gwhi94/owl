@@ -25,7 +25,6 @@ export class AppComponent {
     {name:'SETTINGS', icon:'build', active:false},
     {name:'LOG OUT', icon:'account_box', active:false},
     
-
   ]
 
   ngOnInit(){
@@ -34,9 +33,8 @@ export class AppComponent {
     //this is where we need to get the active plan
     //so db query logic fired from here. 
 
-   this.planService.getActivePlan()
+   
     
-
 
   }
 

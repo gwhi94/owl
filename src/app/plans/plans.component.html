@@ -1,4 +1,4 @@
-<div class="control-panel-container">  
+
   <!--this will be ngFor passing in the id on click to fetch that particular plan-->
   <!-- <mat-card *ngFor= "let plan of plans" (click)="focusPlan(plan.id)" class="payload-card">
     <mat-card-title-group>
@@ -8,9 +8,9 @@
     </mat-card-title-group>
   </mat-card> -->
 
-  <mat-card *ngFor= "let plan of plans" (click)="this.getPlan(plan)" class="plan-card">
+  <mat-card *ngFor= "let plan of plans" (click)="this.getPlan(plan)" class="plan-card-slim">
     <div class="container">
-      <div class="row plan-card-row h-100">
+      <div class="row plan-card-slim-row h-100">
         <div class="col-sm">
           <p>{{plan.payload.doc.data().name}}</p>
         </div>
@@ -33,7 +33,7 @@
 
 
 
-</div>
+
 
 
 

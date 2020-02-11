@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ControlPanelComponent } from './control-panel/control-panel.component';
+import { PlansComponent } from './plans/plans.component';
 import { HomeComponent } from './home/home.component';
 import { SatDatepickerModule, DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, } from 'saturn-datepicker';
 import { SatNativeDateModule  } from 'saturn-datepicker';
@@ -42,6 +42,7 @@ import { NewPlanModalComponent } from './modals/new-plan-modal/new-plan-modal.co
 import { PlanDetailComponent } from './plan-detail/plan-detail.component';
 import { FocusPlanModalComponent } from './modals/focus-plan-modal/focus-plan-modal.component';
 import { SetDateModalComponent } from './modals/set-date-modal/set-date-modal.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 
@@ -62,13 +63,14 @@ export const DateFormats = {
 @NgModule({
   declarations: [
     AppComponent,
-    ControlPanelComponent,
+    PlansComponent,
     HomeComponent,
     ConfirmModalComponent,
     NewPlanModalComponent,
     PlanDetailComponent,
     FocusPlanModalComponent,
-    SetDateModalComponent
+    SetDateModalComponent,
+    DashboardComponent
      
   ],
 

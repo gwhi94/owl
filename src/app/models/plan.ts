@@ -1,16 +1,17 @@
 export class Plan {
-    id:number;
-    name:string;
-    moneyIn:number;
-    expenses:number;
-    saving:number;
-    totalLeft:number;
-    weeklyLeft:number;
+    activePlan:boolean;
     dailyLeft:number;
     dateRange:object;
     days:number;
-    weekendCount:number;
-    active:boolean;
+    expenses:number;
+    moneyIn:number;
+    name:string;
+    saving:number;
+    totalLeft:number;
+    weeklyLeft:number;
+    
+    currentSpent:number;
+    currentLeft:number;
    
 }
 

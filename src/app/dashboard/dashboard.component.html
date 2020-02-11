@@ -1,0 +1,14 @@
+ 
+<mat-card *ngIf="this.activePlan" class="plan-card-active">
+    <div class="container">
+        <p>Current plan <span id="plan-name">{{this.activePlan.name | lowercase}}</span></p>
+        <h1>£ {{this.activePlan.totalLeft}}</h1>
+        <p>element in here to give visual representation of how much left</p>
+        
+    </div>
+</mat-card>
+
+  
+  
+
+  

@@ -1,0 +1,9 @@
+@import '../../theme.scss';
+@import '~@angular/material/theming';
+
+.plan-card-active {
+    #plan-name{
+        color: mat-color($my-theme-primary);
+    }
+
+}

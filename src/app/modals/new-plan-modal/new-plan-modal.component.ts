@@ -108,12 +108,11 @@ export class NewPlanModalComponent implements OnInit {
 
   }
 
-  crunchNumbers(form) {
-   
+  crunchNumbers(form) {  
     var daysLeft = this.data.days;        
-    this.data.totalLeft = (form.moneyIn - form.expenses - form.saving); //80
-    this.data.weeklyLeft = (this.data.totalLeft / this.data.days) * 5; //80
-    this.data.dailyLeft = this.data.totalLeft / daysLeft;           
+    this.data.totalLeft = Math.round((form.moneyIn - form.expenses - form.saving) * 100) /100; //80
+    this.data.weeklyLeft = Math.round(((this.data.totalLeft / this.data.days) * 5) * 100) /100; //80
+    this.data.dailyLeft = Math.round(this.data.totalLeft / daysLeft) * 100 /100;           
     
   }
 

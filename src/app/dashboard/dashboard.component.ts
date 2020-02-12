@@ -12,12 +12,15 @@ import { PlanService } from '../services/plan-service';
 export class DashboardComponent implements OnInit {
 
   activePlan:Object;
+  planProgressPercentage:number;
 
   constructor(private planService:PlanService) { }
 
   ngOnInit() {
     this.planService.getActivePlan()
       .subscribe(res => this.activePlan = res[0]);
+
+      this.planProgressPercentage = 50;
   }
 
   addCost(){

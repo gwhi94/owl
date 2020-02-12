@@ -19,8 +19,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ChartsModule } from 'ng2-charts';
 import { PlanService } from './services/plan-service';
 
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService }  from './services/in-memory-data.service';
+
 
 
 import {
@@ -104,10 +103,7 @@ export const DateFormats = {
     MatSidenavModule,
     MatListModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFirestoreModule, 
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, { dataEncapsulation: false }
-    )
+    AngularFirestoreModule
          
   ],
 

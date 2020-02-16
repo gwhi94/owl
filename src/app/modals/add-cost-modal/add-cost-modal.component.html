@@ -1,0 +1,14 @@
+
+<div class="app-modal add-cost-modal">
+    <div class="app-modal-head">
+        <h3>Add a Payment</h3>
+    </div>
+    <div class="app-modal-container">
+          <input name="cost" [(ngModel)]="cost" class="app-input-field" type="number">                
+    </div>
+
+    <div class="app-modal-footer">
+        <button (click)="addCost()" class="modal-button" type="submit" mat-button color="accent">Add</button> 
+        <button class="modal-button" type="cancel" mat-button color="warn">Cancel</button>  
+    </div>   
+</div>

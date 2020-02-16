@@ -4,9 +4,7 @@ $card-elements-spacing:15px;
 
 .plan-card-active {
     
-    #plan-name{
-        color: mat-color($my-theme-primary);
-    }
+
     .total-left-headers{
         display: inline;
     }
@@ -15,6 +13,7 @@ $card-elements-spacing:15px;
         border-radius: 15px !important;
         box-shadow: -5px -5px 15px #353535, 5px 5px 15px #1E1E1E !important;
         transition: 0.4s all ease-in-out;
+        
 
         i {
             color:mat-color($my-theme-accent) !important;
@@ -26,9 +25,13 @@ $card-elements-spacing:15px;
         box-shadow: inset -5px -5px 25px #171717, inset 5px 5px 5px  #363636;
         transform: translateY(1px) scale(0.99);
     }
+    .card-button-cost:focus{
+        outline:0 !important;
+    }
 
     .progress-bar{
         margin-top:$card-elements-spacing;
+        margin-bottom:$card-elements-spacing;
         background: #303030;
         height: 15px;
         border-radius: 15px;
@@ -40,6 +43,25 @@ $card-elements-spacing:15px;
             border-radius: 15px;
         }
 
+    }
+
+    .remainder-box {
+        border-radius:15px !important;
+        box-shadow: inset 1px -1px 10px #1F1F1F, inset 1px 1px 10px #1F1F1F;
+        height:200px;
+        padding:6px;
+        padding-top:15px;
+
+        .tags {
+            color:$my-theme-grey-text;
+            margin-bottom:0px;
+        }
+
+        .col {
+            padding-left:15px;
+        }
+       
+        
     }
 
 }

@@ -26,7 +26,13 @@ export class PlanService {
             totalLeft:formData.totalLeft,
             weeklyLeft:formData.weeklyLeft,
             dailyleft:formData.dailyLeft,
-            days:formData.days ,
+            days:formData.days,
+            currentSpent:formData.currentSpent,
+            currentLeft:formData.currentLeft,
+            
+            lastUpdated:formData.dateRange.begin,
+            surplus:0,
+            
             activePlan:true  
         })
     };

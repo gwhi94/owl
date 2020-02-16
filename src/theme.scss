@@ -40,4 +40,8 @@ $my-theme-accent:mat-palette($my-primary-palette);
 $my-theme-warn:mat-palette($mat-red);
 $my-theme: mat-dark-theme($my-theme-primary, $my-theme-accent, $my-theme-warn);
 
+$my-theme-grey-light:#424242;
+$my-theme-grey-dark:#303030;
+$my-theme-grey-text:#9e9e9e;
+
 @include angular-material-theme($my-theme);

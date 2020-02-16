@@ -12,6 +12,8 @@ export class Plan {
     
     currentSpent:number;
     currentLeft:number;
+    surplus:number;
+    lastUpdated:string;
    
 }
 

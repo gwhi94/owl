@@ -2,13 +2,13 @@
 @import './theme.scss';
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; }
 
 *:not(h1, h2, h3, h4, h5, h6){
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Roboto Condensed', sans-serif !important;
 }
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat', sans-serif !important;
 }
 
 .material-icons {
@@ -21,7 +21,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 mat-card {
-    background-color:#303030 !important;
+    background-color:$my-theme-grey-dark !important;
 }
 
 
@@ -29,12 +29,11 @@ mat-card {
     border-radius: 15px !important;
     box-shadow: -5px -5px 15px #353535, 5px 5px 15px #1E1E1E !important;
 
-
-
 }
 
-
-
+.accent-this{
+    color: mat-color($my-theme-primary);
+}
 
 .form-alert {
     background:#343a40;
@@ -55,4 +54,96 @@ mat-card {
         opacity:1;
         transform: translateY(0);
     }
+}
+
+
+
+//modals 
+
+.mat-dialog-container {
+    border-left:2px solid mat-color($my-theme-accent);
+    border-radius:0px 15px 15px 0px !important;
+    background-color:$my-theme-grey-dark !important;
+}
+
+
+.modal-button{
+    border-radius: 15px !important;
+    box-shadow: -5px -5px 15px #353535, 5px 5px 15px #1E1E1E !important;
+    transition: 0.4s all ease-in-out;
+    
+    
+}
+
+.modal-button:hover {
+    box-shadow: inset -5px -5px 25px #171717, inset 5px 5px 5px  #363636;
+    transform: translateY(1px) scale(0.99);
+}
+.modal-button:focus{
+    outline:0 !important;
+}
+
+
+
+
+.app-modal-head {
+    display:flex;
+    justify-content: center;
+    margin-bottom:15px;
+
+}
+.app-modal-head, .app-modal-container {
+    padding:25px;
+    padding-top:5px;
+    padding-bottom:5px;
+    display:flex;
+    justify-content: center;
+}
+
+.app-modal-footer {
+    display:flex;
+    justify-content: flex-end;
+    padding:10px;
+    button {
+        margin-right: 10px;
+    }
+}
+
+.add-cost-modal {
+    width:400px;
+    h3 {
+        color:$my-theme-grey-text;
+    }
+}
+
+//REMOVING NUMBER ARROWS
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type=number] {
+  -moz-appearance:textfield;
+}
+///////////////////////
+
+.app-input-field {
+    height: 34px;
+    width: 100%;
+    border-radius: 15px;
+    border: 1px solid #303030;
+    border-top: none;
+    box-shadow: inset 1px -1px 10px #1F1F1F, inset 1px 1px 10px #1F1F1F;
+    background-color: $my-theme-grey-dark;
+    padding:15px;
+    color:mat-color($my-theme-accent);
+}
+.app-input-field:focus {
+    outline:none;
+}
+
+//OVERRIDES 
+.mat-dialog-container {
+    padding: 0px !important;
 }

@@ -41,6 +41,9 @@ export class NewPlanModalComponent implements OnInit {
     dailyLeft:0,
     days:0,
     dateRange:{},
+    currentSpent:0,
+    currentLeft:0,
+
   }
 
   constructor(private fb: FormBuilder, private planService:PlanService, public dialogRef: MatDialogRef<NewPlanModalComponent>,
@@ -64,6 +67,8 @@ export class NewPlanModalComponent implements OnInit {
 
     var formData = this.data;
     var formValue = this.rForm.value;
+
+    formData.currentLeft = formData.totalLeft;
 
     //this.getRange(this.rForm.get('dateRange').value);
 

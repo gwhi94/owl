@@ -60,30 +60,10 @@ export class PlanService {
             ),
         );
 
-            
-    
-       
+    }
 
-
-
-
-
-        /*      
-        console.log("hit");
-        const active$ = new Subject<boolean>();
-        const queryObservable = active$.pipe(
-            switchMap(active => 
-                this.db.collection('plans', ref => ref.where('active', '==', true)).valueChanges())
-        );
-
-        queryObservable.subscribe(queriedItems => {
-            console.log(queriedItems);
-        })
- */
-       
-      
-
-
+    updatePlan(userKey, value){
+        
     }
     
     deletePlan(plan){

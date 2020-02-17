@@ -70,11 +70,15 @@ export class NewPlanModalComponent implements OnInit {
 
     formData.currentLeft = formData.totalLeft;
 
-    //this.getRange(this.rForm.get('dateRange').value);
-
-    //TODO these data values will change so updates need to happen
+  
     
-    console.log(formData, formValue);
+    //satidfying momentJs when plan comes back in for update
+    let splitBegin =  formData.dateRange['begin'].split("/");
+    formData.dateRange['begin'] = splitBegin[2] + '-' + splitBegin[1] + '-' + splitBegin[0];
+    let splitEnd =  formData.dateRange['end'].split("/");
+    formData.dateRange['end'] = splitEnd[2] + '-' + splitEnd[1] + '-' + splitEnd[0];
+
+
     formValue.dateRange = formData.dateRange;
 
      this.planService.newPlan(formData,formValue)

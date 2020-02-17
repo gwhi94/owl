@@ -7,6 +7,7 @@ import { AddCostModalComponent } from '../modals/add-cost-modal/add-cost-modal.c
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -27,37 +28,33 @@ export class DashboardComponent implements OnInit {
     this.planService.getActivePlan()
       .subscribe(result => {
 
+        console.log(result);
+
+        var plan = result[0];
+
         
+        //updating days left
+        let today =  moment(moment());    
+        let planEnd = moment(plan['dateRange']['end']);
+        plan.days = planEnd.diff(today, 'days');
 
-        let today =  moment().format('DD/MM/YYYY');
-        let planEnd = result[0].dateRange['end'];
+        //calculating any surplus
+        //need to do a check here to only do this if last updated is not today
+        //otherwise we get multiplication by zero and it resets the surplus.
+        let lastUpdated = moment(plan['lastUpdated']);
+        let afkPeriod  = today.diff(lastUpdated, 'days');       
+        plan.surplus = (afkPeriod * plan['dailyleft']);
+        //plan.lastUpdated = 
+        plan.lastUpdated = today.format('YYYY-MM-DD');
+        //updating plan before setting as active plan
+        console.log(plan);
+
+       
 
 
-        console.log(today,planEnd);
 
-        var test = moment(new Date());
-        var test2 = moment(planEnd);
-        console.log(test2,test);
-        //update days left
-        //need to make sure user cant select past date at new plan
-        //result[0].days = 
 
-        console.log(moment(today));
-
-        console.log(planEnd);
         
-        console.log(moment().diff(planEnd, 'days'));
-
-        //calculate surplus
-        //result[0].surplus = 
-        
-        console.log(moment(today).diff(moment(result[0].lastUpdated)) * result[0].dailyLeft);
-        
-        
-        
-        //this.activePlan = res[0]
-      
-      
       
       
       });
@@ -79,6 +76,14 @@ export class DashboardComponent implements OnInit {
     //need to put this in if below certain percentage turn red.
       this.planProgessColor = 'green';
       this.planProgressPercentage = 50;
+  }
+
+  updatePlan(plan){
+    console.log(plan);
+
+    
+    
+
   }
 
   addCost(){

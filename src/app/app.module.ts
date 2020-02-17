@@ -49,13 +49,13 @@ import { AddCostModalComponent } from './modals/add-cost-modal/add-cost-modal.co
 
 export const DateFormats = {
   parse: {
-      dateInput: ['DD-MM-YY']
+      dateInput: ['DD-MM-YYYY']
   },
   display: {
-      dateInput: 'DD-MM-YY',
-      monthYearLabel: 'MMM YY',
+      dateInput: 'DD-MM-YYYY',
+      monthYearLabel: 'MMM YYYY',
       dateA11yLabel: 'LL',
-      monthYearA11yLabel: 'MMMM YY',
+      monthYearA11yLabel: 'MMMM YYYY',
   },
 };
 

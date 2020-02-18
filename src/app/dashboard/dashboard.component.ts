@@ -8,6 +8,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { DatePipe } from '@angular/common';
 
 
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -23,56 +24,42 @@ export class DashboardComponent implements OnInit {
   constructor(private planService:PlanService, public dialog: MatDialog ) { }
 
   ngOnInit() {
-
-    
+   
     this.planService.getActivePlan()
       .subscribe(result => {
 
-        console.log(result);
+        var plan = result[0];         
+          let today =  moment(moment());    
+          //only update days left and surplus if plan is more than a day old
+          if(!moment(plan.lastUpdated).isSame(today, 'd')){  
+            //updating days left      
+            let planEnd = moment(plan['dateRange']['end']);
+            plan.days = planEnd.diff(today, 'days');
 
-        var plan = result[0];
-
+            //calculating any surplus
+            //need to do a check here to only do this if last updated is not today
+            //otherwise we get multiplication by zero and it resets the surplus.
+            let lastUpdated = moment(plan['lastUpdated']);
+            let afkPeriod  = today.diff(lastUpdated, 'days');       
+            
+            if(afkPeriod != 0){
+              plan.surplus = plan.surplus + (afkPeriod * plan['dailyleft']);        
+            }
+            plan.lastUpdated = today.format('YYYY-MM-DD');
+            plan.variableDailyLeft = plan.dailyLeft;
         
-        //updating days left
-        let today =  moment(moment());    
-        let planEnd = moment(plan['dateRange']['end']);
-        plan.days = planEnd.diff(today, 'days');
-
-        //calculating any surplus
-        //need to do a check here to only do this if last updated is not today
-        //otherwise we get multiplication by zero and it resets the surplus.
-        let lastUpdated = moment(plan['lastUpdated']);
-        let afkPeriod  = today.diff(lastUpdated, 'days');       
-        plan.surplus = (afkPeriod * plan['dailyleft']);
-        //plan.lastUpdated = 
-        plan.lastUpdated = today.format('YYYY-MM-DD');
-        //updating plan before setting as active plan
-        console.log(plan);
-
-       
-
-
-
-
-        
-      
-      
+            //updating plan before setting as active plan
+            this.planService.updatePlan(plan.id, plan)
+              .then(
+                res => {
+                  console.log("Plan updated");
+                }
+              )
+          }else {
+            console.log("Plan has been updated today");
+          }
+          this.activePlan = plan;         
       });
-
-
-      //when active plan is got
-      //get todays date and the end plan date and recalculate the days left
-      //update days left.
-      //add last logged in field
-      //take last logged in and find diff
-      //between todays date and last logged in
-      //multiply these days by the dailyLeft and you have the surplus
-      //add the suplus and update plan
-
-
-
-
-
     //need to put this in if below certain percentage turn red.
       this.planProgessColor = 'green';
       this.planProgressPercentage = 50;
@@ -81,9 +68,6 @@ export class DashboardComponent implements OnInit {
   updatePlan(plan){
     console.log(plan);
 
-    
-    
-
   }
 
   addCost(){
@@ -91,7 +75,7 @@ export class DashboardComponent implements OnInit {
 
     let dialogRef = this.dialog.open(AddCostModalComponent, {     
     })
-   dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(result => {
       this.recalculatePlan(result);
 
     })
@@ -99,14 +83,26 @@ export class DashboardComponent implements OnInit {
   }
 
   recalculatePlan(cost) {
-
+    console.log(cost);
+    this.activePlan['currentSpent'] = (this.activePlan['currentSpent'] + cost.cost);
+    this.activePlan['currentLeft'] = (this.activePlan['currentLeft'] - this.activePlan['currentSpent']); 
+    
     console.log(this.activePlan);
 
-    this.activePlan['currentSpent'] = this.activePlan['currentSpent'] + cost;
-    this.activePlan['currentLeft'] = this.activePlan['currentLeft'] - this.activePlan['currentSpent']; 
-    
+    this.activePlan['variableDailyLeft'] =  (this.activePlan['variableDailyLeft'] - cost.cost);
+
+    //need to be recalculating total left and left this week
+    //total left is a running count so am free to manipulate that 
+    //left this week is a tick amount like daily left so will need a variable weekly left as well.
 
     
+    //when daily left hits zero, no more payments can be added(yet)
+    //this means that the original daily left never needs to be recalculated.
+
+    
+
+
+
 
 
   }

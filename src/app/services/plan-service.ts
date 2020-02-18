@@ -30,8 +30,9 @@ export class PlanService {
             currentSpent:formData.currentSpent,
             currentLeft:formData.currentLeft,
             
-            lastUpdated:formData.dateRange.begin,
+            lastUpdated:formData.lastUpdated,
             surplus:0,
+            variableDailyLeft:formData.variableDailyLeft,
             
             activePlan:true  
         })
@@ -54,7 +55,7 @@ export class PlanService {
                 this.db
                 .collection<Plan>('plans', ref => ref.where
                 ('activePlan', '==' ,active))                  
-                .valueChanges()
+                .valueChanges({idField:'id'})
                 
 
             ),
@@ -62,8 +63,10 @@ export class PlanService {
 
     }
 
-    updatePlan(userKey, value){
-        
+    updatePlan(id, plan){
+        return this.db.collection('plans').doc(id).set(plan);
+
+
     }
     
     deletePlan(plan){

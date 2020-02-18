@@ -43,6 +43,8 @@ export class NewPlanModalComponent implements OnInit {
     dateRange:{},
     currentSpent:0,
     currentLeft:0,
+    variableDailyLeft:0,
+    lastUpdated:''
 
   }
 
@@ -69,9 +71,12 @@ export class NewPlanModalComponent implements OnInit {
     var formValue = this.rForm.value;
 
     formData.currentLeft = formData.totalLeft;
+    formData.variableDailyLeft = formData.dailyLeft;
+    formData.lastUpdated = moment(moment()).format('YYYY-MM-DD');
 
-  
-    
+    console.log(formData);
+
+
     //satidfying momentJs when plan comes back in for update
     let splitBegin =  formData.dateRange['begin'].split("/");
     formData.dateRange['begin'] = splitBegin[2] + '-' + splitBegin[1] + '-' + splitBegin[0];

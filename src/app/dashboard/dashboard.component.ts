@@ -27,18 +27,13 @@ export class DashboardComponent implements OnInit {
     let today = moment(moment());    
   
     this.planService.getActivePlan()
-      .subscribe(result => {
-         
-        if(!moment(result[0].lastUpdated).isSame(today, 'd')){
-          console.log(result[0]);  
+      .subscribe(result => {       
+        if(!moment(result[0].lastUpdated).isSame(today, 'd')){ 
           this.updatePlan(result[0])
-
         }else {
           console.log("Plan has been updated today");
           this.activePlan = result[0];  
-        }
-
-               
+        }               
       });
     //need to put this in if below certain percentage turn red.
       this.planProgessColor = 'green';
@@ -46,9 +41,6 @@ export class DashboardComponent implements OnInit {
   }
 
   updatePlan(plan){
-    console.log(plan);
-    console.log("update plan called");
-
           let today = moment(moment());    
           //only update days left and surplus if plan is more than a day old
 
@@ -84,7 +76,7 @@ export class DashboardComponent implements OnInit {
                             
             }
             plan.lastUpdated = today.format('YYYY-MM-DD');
-            plan.variableDailyLeft = plan.dailyLeft;
+            plan.variableDailyLeft = plan.dailyleft;
 
         
             //updating plan before setting as active plan

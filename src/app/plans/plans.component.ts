@@ -108,7 +108,7 @@ export class PlansComponent implements OnInit {
      dialogRef.afterClosed().subscribe(result=> {
        console.log(result);
 
-       this.openNewPlanDialog({days:result.days, dateRange:result.dateRange})
+       this.openNewPlanDialog({days:result.days, dateRange:result.dateRange, excludeWeekends:result.excludeWeekends})
      });
   
 

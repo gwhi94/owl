@@ -70,9 +70,8 @@ export class SetDateModalComponent implements OnInit {
       end:moment(formValue.dateRange.end).format('DD/MM/YYYY')
     }
 
-    console.log(this.days, this.dateRange);
 
-    this.dialogRef.close({days:this.days, dateRange:this.dateRange});
+    this.dialogRef.close({days:this.days, dateRange:this.dateRange, excludeWeekends:this.excludeWeekends});
     
   }
 

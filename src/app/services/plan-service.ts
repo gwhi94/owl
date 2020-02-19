@@ -33,6 +33,9 @@ export class PlanService {
             lastUpdated:formData.lastUpdated,
             surplus:0,
             variableDailyLeft:formData.variableDailyLeft,
+            variableWeeklyLeft:formData.variableWeeklyLeft,
+            weekUpdated:'null',
+            excludeWeekends:formData.excludeWeekends,
             
             activePlan:true  
         })
@@ -47,23 +50,22 @@ export class PlanService {
     }
 
     getActivePlan(){  
-
+        console.log("called e");
         this.active$ = new BehaviorSubject(true);
-
         return this.plan$ = this.active$.pipe(
             switchMap(active => 
                 this.db
                 .collection<Plan>('plans', ref => ref.where
                 ('activePlan', '==' ,active))                  
                 .valueChanges({idField:'id'})
-                
-
             ),
         );
 
     }
 
     updatePlan(id, plan){
+        console.log("called");
+        console.log(id, plan);
         return this.db.collection('plans').doc(id).set(plan);
 
 

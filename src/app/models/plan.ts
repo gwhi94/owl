@@ -15,6 +15,9 @@ export class Plan {
     surplus:number;
     lastUpdated:string;
     variableDailyLeft:number;
+    variableWeeklyLeft:number;
+    weekUpdated:string;
+    excludeWeekends:boolean;
    
 }
 

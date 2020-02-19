@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject} from '@angular/core';
 import { ChartType, ChartOptions } from 'chart.js';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, matFormFieldAnimations } from '@angular/material';
 import { SingleDataSet, Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip } from 'ng2-charts';
 import * as moment from 'moment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -44,14 +44,16 @@ export class NewPlanModalComponent implements OnInit {
     currentSpent:0,
     currentLeft:0,
     variableDailyLeft:0,
-    lastUpdated:''
+    variableWeeklyLeft:0,
+    lastUpdated:'',
+    excludeWeekends:false
 
   }
 
   constructor(private fb: FormBuilder, private planService:PlanService, public dialogRef: MatDialogRef<NewPlanModalComponent>,
      @Inject(MAT_DIALOG_DATA) public dataPassedFromSet: any) {
-    monkeyPatchChartJsTooltip();
-    monkeyPatchChartJsLegend(); 
+      monkeyPatchChartJsTooltip();
+      monkeyPatchChartJsLegend(); 
 
     this.rForm = fb.group({
       'name':[null,Validators.compose([Validators.required, Validators.maxLength(40), Validators.minLength(3)])],
@@ -72,12 +74,13 @@ export class NewPlanModalComponent implements OnInit {
 
     formData.currentLeft = formData.totalLeft;
     formData.variableDailyLeft = formData.dailyLeft;
+    formData.variableWeeklyLeft = formData.weeklyLeft;
     formData.lastUpdated = moment(moment()).format('YYYY-MM-DD');
 
     console.log(formData);
 
 
-    //satidfying momentJs when plan comes back in for update
+    //satisfying momentJs when plan comes back in for update
     let splitBegin =  formData.dateRange['begin'].split("/");
     formData.dateRange['begin'] = splitBegin[2] + '-' + splitBegin[1] + '-' + splitBegin[0];
     let splitEnd =  formData.dateRange['end'].split("/");
@@ -115,6 +118,7 @@ export class NewPlanModalComponent implements OnInit {
   ngOnInit() {
     this.data.days = this.dataPassedFromSet.dataPassedFromSet.days;
     this.data.dateRange = this.dataPassedFromSet.dataPassedFromSet.dateRange;
+    this.data.excludeWeekends = this.dataPassedFromSet.dataPassedFromSet.excludeWeekends;
 
     this.rForm.valueChanges.subscribe(()=> {
       this.crunchNumbers(this.rForm.value);

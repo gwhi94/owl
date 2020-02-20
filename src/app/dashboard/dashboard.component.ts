@@ -21,6 +21,8 @@ export class DashboardComponent implements OnInit {
   planProgessColor:string;
   currentDate:string; 
 
+  today = moment(moment());  ;
+
   constructor(private planService:PlanService, public dialog: MatDialog ) { }
 
   ngOnInit() {
@@ -28,65 +30,154 @@ export class DashboardComponent implements OnInit {
   
     this.planService.getActivePlan()
       .subscribe(result => {       
-        if(!moment(result[0].lastUpdated).isSame(today, 'd')){ 
-          this.updatePlan(result[0])
+        if(!moment(result[0].lastUpdated).isSame(this.today, 'd')){ 
+          this.updatePlanData(result[0])
         }else {
           console.log("Plan has been updated today");
+          //user is loggin in on a daily basis, do week passed check
+
+          if(result[0].excludeWeekends){
+            //week is 5 days
+  
+            if(moment(result[0].weekUpdated).diff(this.today, 'days') == 5){
+              console.log("Exlcuding Weekends and 5 days has passed");
+            }else{
+              console.log("False");
+            }
+          }else{
+            //week is 7 days
+            if(moment(result[0].weekUpdated).diff(this.today, 'days') == 7){
+              console.log("Including Weekends and excatly 7 days has passed");
+            }else{
+              console.log("False");
+            }
+  
+            }
+
+
           this.activePlan = result[0];  
-        }               
+        }
+
+
+        
+
+
+          //If the log in difference is more than 7, we get the day number i.e 3 then we minus 7 and
+          //3 to get 4, there is 4 days left in the week, the weekly left goes to 4*daily left
+          // and rest gets put into surplus. (Works if the user logs in the following week.)
+         
+
+
+
+
+
+
       });
     //need to put this in if below certain percentage turn red.
       this.planProgessColor = 'green';
       this.planProgressPercentage = 50;
   }
 
-  updatePlan(plan){
-          let today = moment(moment());    
-          //only update days left and surplus if plan is more than a day old
+  updatePlanData(plan){
+   
+    //only update days left and surplus if plan is more than a day old
 
-           /*    if(plan.weekUpdated !== null){
-                //logic to check to see if excatly 1 week has passed
-                //if it has then update weekUpdated and reset variable weekly left
+     
 
-              }else if(logic to see if a week has passed since the begin date)
-                //logic to reset variable weekly left
+      //updating days left      
+      let planEnd = moment(plan['dateRange']['end']);
+      planEnd.diff(this.today, 'days');
+      plan.days = planEnd.diff(this.today, 'days');
 
-            } */
-
-            //updating days left      
-            let planEnd = moment(plan['dateRange']['end']);
-            planEnd.diff(today, 'days');
-            plan.days = planEnd.diff(today, 'days');
-
-            //calculating any surplus
-            //need to do a check here to only do this if last updated is not today
-            //otherwise we get multiplication by zero and it resets the surplus.
-            let lastUpdated = moment(plan['lastUpdated']);
-            let afkPeriod  = today.diff(lastUpdated, 'days');       
-            
-            if(afkPeriod > 1){
-
-              if((!plan.excludeWeekends) && (moment().day() != 1)){
-                plan.surplus = plan.surplus + (afkPeriod * plan['dailyleft']);    
-
-              }else{
-                console.log("We are excluding weekends and it is a monday so no suplus increase");
-              }
-              //if today is monday and exclude weekends is on then dont do this. 
-                            
-            }
-            plan.lastUpdated = today.format('YYYY-MM-DD');
-            plan.variableDailyLeft = plan.dailyleft;
+      //calculating any surplus
+      //need to do a check here to only do this if last updated is not today
+      //otherwise we get multiplication by zero and it resets the surplus.
+      let lastUpdated = moment(plan['lastUpdated']);
+      let afkPeriod  = this.today.diff(lastUpdated, 'days');           
+      var dayInTheWeek = moment().day();
 
         
-            //updating plan before setting as active plan
-            this.planService.updatePlan(plan.id, plan)
-              .then(
-                res => {
-                  console.log("Plan updated");
-                  this.activePlan = plan;  
-                }
-              )       
+
+      if(afkPeriod > 1){
+        if(plan.excludeWeekends){
+          //week is 5 days
+         if(afkPeriod > 5){
+            console.log("Afk period is greater than 5");
+
+
+
+            let weekDays = this.getWorkDays(moment(plan.lastUpdated), this.today);
+            console.log(weekDays);
+
+            //This works
+            //What is the scope of let!!
+
+
+            let weekAmountToSet = ((5 - dayInTheWeek) * (plan.dailyleft)) + 1;
+            plan.surplus = plan.surplus + (weekDays * plan['dailyleft']); 
+           
+
+            //Needs testing !!!!
+           
+           
+           
+            // console.log(weekAmountToSet);
+          }        
+        }else{
+          //week is 7 days
+         if (afkPeriod > 7){
+            console.log("User hasnt looged in for more than 7 days, so setting var weekly");
+            let weekAmountToSet = ((7 - dayInTheWeek) * (plan.dailyleft)) + 1;
+            plan.variableWeeklyLeft = weekAmountToSet;
+            plan.surplus = plan.surplus + (afkPeriod * plan['dailyleft']); 
+            console.log(weekAmountToSet);
+          }
+
+          }
+
+      }
+
+
+
+
+        
+
+
+
+
+         
+                      
+      
+      plan.lastUpdated = this.today.format('YYYY-MM-DD');
+      plan.variableDailyLeft = plan.dailyleft;
+
+  
+      //updating plan before setting as active plan
+      this.planService.updatePlan(plan.id, plan)
+        .then(
+          res => {
+            console.log("Plan updated");
+            this.activePlan = plan;  
+          }
+        )       
+
+  }
+
+
+  getWorkDays(start, end){
+
+    console.log(start, end);
+
+    var first = start.clone().endOf('week'); // end of first week
+    var last = end.clone().startOf('week'); // start of last week
+    var days = last.diff(first,'days') * 5 / 7; // this will always multiply of 7
+    var wfirst = first.day() - start.day(); // check first week
+    if(start.day() == 0) --wfirst; // -1 if start with sunday 
+    var wlast = end.day() - last.day(); // check last week
+    if(end.day() == 6) --wlast; // -1 if end with saturday
+  
+    return (Math.round((wfirst + days + wlast))) -1; // get the total
+
 
   }
 

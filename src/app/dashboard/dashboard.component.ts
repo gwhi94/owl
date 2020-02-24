@@ -42,8 +42,13 @@ export class DashboardComponent implements OnInit {
         
 
 
-        if(!moment(result[0].lastUpdated).isSame(this.today, 'd')){ 
-          this.updatePlanData(result[0])
+        if(!moment(result[0].lastUpdated).isSame(this.today, 'd')){
+
+          result[0].variableDailyLeft = result[0].dailyLeft; 
+          //this will definitely need testing 
+                         
+          this.updatePlanData(result[0]);
+        
         }else {
           console.log("Plan has been updated today");
           result[0].lastUpdated = this.today.format('YYYY-MM-DDYYYY-MM-DDTHH:mm:ss.SSS');
@@ -76,22 +81,8 @@ export class DashboardComponent implements OnInit {
           )  
         }
 
-
-        
-
-
-          //If the log in difference is more than 7, we get the day number i.e 3 then we minus 7 and
-          //3 to get 4, there is 4 days left in the week, the weekly left goes to 4*daily left
-          // and rest gets put into surplus. (Works if the user logs in the following week.)
-         
-
-
-
-
-
-
       });
-    //need to put this in if below certain percentage turn red.
+      //need to put this in if below certain percentage turn red.
       this.planProgessColor = 'green';
       this.planProgressPercentage = 50;
   }

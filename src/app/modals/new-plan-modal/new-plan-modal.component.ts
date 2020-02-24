@@ -75,7 +75,7 @@ export class NewPlanModalComponent implements OnInit {
     formData.currentLeft = formData.totalLeft;
     formData.variableDailyLeft = formData.dailyLeft;
     formData.variableWeeklyLeft = formData.weeklyLeft;
-    formData.lastUpdated = moment(moment()).format('YYYY-MM-DD');
+    formData.lastUpdated = moment(moment()).format('YYYY-MM-DDTHH:mm:ss.SSS');
 
     console.log(formData);
 

@@ -20,6 +20,7 @@ export class DashboardComponent implements OnInit {
   planProgressPercentage:number;
   planProgessColor:string;
   currentDate:string; 
+  lockPlan = false;
 
   today = moment(moment());  ;
 
@@ -29,33 +30,50 @@ export class DashboardComponent implements OnInit {
     let today = moment(moment());    
   
     this.planService.getActivePlan()
-      .subscribe(result => {       
+      .subscribe(result => {     
+        
+        if(result[0].excludeWeekends){
+          if(moment().day() == 0 || moment().day() == 6){
+            this.lockPlan = true;
+          }else {
+            this.lockPlan = false;
+          }        
+        }
+        
+
+
         if(!moment(result[0].lastUpdated).isSame(this.today, 'd')){ 
           this.updatePlanData(result[0])
         }else {
           console.log("Plan has been updated today");
-          //user is loggin in on a daily basis, do week passed check
+          result[0].lastUpdated = this.today.format('YYYY-MM-DDYYYY-MM-DDTHH:mm:ss.SSS');
+          //user is logging in on a daily basis, do week passed check
 
           if(result[0].excludeWeekends){
-            //week is 5 days
-  
+            //week is 5 days 
             if(moment(result[0].weekUpdated).diff(this.today, 'days') == 5){
-              console.log("Exlcuding Weekends and 5 days has passed");
+              console.log("Exlcuding Weekends and 5 days has passed so reset weekly left");
+              //and set week updated to today
             }else{
               console.log("False");
             }
           }else{
             //week is 7 days
             if(moment(result[0].weekUpdated).diff(this.today, 'days') == 7){
-              console.log("Including Weekends and excatly 7 days has passed");
+              console.log("Including Weekends and excatly 7 days has passed so reset weekly left");
+              //and set week updated to today
             }else{
               console.log("False");
             }
   
-            }
-
-
-          this.activePlan = result[0];  
+          }
+          this.planService.updatePlan(result[0].id, result[0])
+            .then(
+               res => {
+                console.log("Plan updated");
+                this.activePlan = result[0];  
+              } 
+          )  
         }
 
 
@@ -83,7 +101,6 @@ export class DashboardComponent implements OnInit {
     //only update days left and surplus if plan is more than a day old
 
      
-
       //updating days left      
       let planEnd = moment(plan['dateRange']['end']);
       planEnd.diff(this.today, 'days');
@@ -96,6 +113,11 @@ export class DashboardComponent implements OnInit {
       let afkPeriod  = this.today.diff(lastUpdated, 'days');           
       var dayInTheWeek = moment().day();
 
+
+      //FOR TESTING REMOVE AFTER
+      dayInTheWeek = 1
+      //FOR TESTING REMOVE AFTER
+
         
 
       if(afkPeriod > 1){
@@ -105,18 +127,14 @@ export class DashboardComponent implements OnInit {
             console.log("Afk period is greater than 5");
 
 
-
             let weekDays = this.getWorkDays(moment(plan.lastUpdated), this.today);
             console.log(weekDays);
 
-            //This works
-            //What is the scope of let!!
-
 
             let weekAmountToSet = ((5 - dayInTheWeek) * (plan.dailyleft)) + 1;
+            plan.variableWeeklyLeft = weekAmountToSet;
             plan.surplus = plan.surplus + (weekDays * plan['dailyleft']); 
-           
-
+          
             //Needs testing !!!!
            
            
@@ -130,28 +148,16 @@ export class DashboardComponent implements OnInit {
             let weekAmountToSet = ((7 - dayInTheWeek) * (plan.dailyleft)) + 1;
             plan.variableWeeklyLeft = weekAmountToSet;
             plan.surplus = plan.surplus + (afkPeriod * plan['dailyleft']); 
+            plan.variableDailyLeft = plan.dailyleft;
             console.log(weekAmountToSet);
           }
 
-          }
+        }
 
       }
-
-
-
-
-        
-
-
-
-
-         
-                      
+       
+      plan.lastUpdated = this.today.format('YYYY-MM-DDYYYY-MM-DDTHH:mm:ss.SSS');
       
-      plan.lastUpdated = this.today.format('YYYY-MM-DD');
-      plan.variableDailyLeft = plan.dailyleft;
-
-  
       //updating plan before setting as active plan
       this.planService.updatePlan(plan.id, plan)
         .then(
@@ -165,7 +171,7 @@ export class DashboardComponent implements OnInit {
 
 
   getWorkDays(start, end){
-
+   
     console.log(start, end);
 
     var first = start.clone().endOf('week'); // end of first week
@@ -198,7 +204,9 @@ export class DashboardComponent implements OnInit {
     
     console.log(this.activePlan);
 
-    this.activePlan['variableDailyLeft'] =  (this.activePlan['variableDailyLeft'] - cost.cost);
+    this.activePlan['variableDailyLeft'] = (this.activePlan['variableDailyLeft'] - cost.cost);
+
+
 
     //need to be recalculating total left and left this week
     //total left is a running count so am free to manipulate that 

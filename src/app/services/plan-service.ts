@@ -3,7 +3,7 @@ import { Observable, of, Subject, BehaviorSubject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap, switchMap } from 'rxjs/operators';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore'; 
-
+import * as moment from 'moment';
 import { Plan } from '../models/plan';
 
 
@@ -12,6 +12,8 @@ export class PlanService {
 
     plan$:Observable<Plan[]>;
     active$:BehaviorSubject<Boolean>;
+
+    today = moment(moment());
     
     
     constructor(private http: HttpClient, private db:AngularFirestore) { }
@@ -64,6 +66,9 @@ export class PlanService {
     }
 
     updatePlan(id, plan){
+        console.log("hitthis");
+        
+        //console.log(plan);
         return this.db.collection('plans').doc(id).set(plan);
 
 

@@ -40,18 +40,20 @@ export class DashboardComponent implements OnInit {
           }        
         }
         
+        let testForSameLastUpdated  = moment(moment(result[0].lastUpdated).format('YYYY-MM-DD'));
+        let testForSameToday = moment(moment().format('YYYY-MM-DD'));
 
+        if(!moment(testForSameLastUpdated).isSame(testForSameToday)){
+          console.log("Not updated today");
 
-        if(!moment(result[0].lastUpdated).isSame(this.today, 'd')){
-
-          result[0].variableDailyLeft = result[0].dailyLeft; 
+          result[0].variableDailyLeft = result[0]['dailyleft']; 
           //this will definitely need testing 
                          
           this.updatePlanData(result[0]);
         
         }else {
           console.log("Plan has been updated today");
-          result[0].lastUpdated = this.today.format('YYYY-MM-DDYYYY-MM-DDTHH:mm:ss.SSS');
+          result[0].lastUpdated = this.today.format('YYYY-MM-DDTHH:mm:ss.SSS');
           //user is logging in on a daily basis, do week passed check
 
           if(result[0].excludeWeekends){
@@ -147,7 +149,7 @@ export class DashboardComponent implements OnInit {
 
       }
        
-      plan.lastUpdated = this.today.format('YYYY-MM-DDYYYY-MM-DDTHH:mm:ss.SSS');
+      plan.lastUpdated = this.today.format('YYYY-MM-DDTHH:mm:ss.SSS');
       
       //updating plan before setting as active plan
       this.planService.updatePlan(plan.id, plan)
@@ -191,11 +193,19 @@ export class DashboardComponent implements OnInit {
   recalculatePlan(cost) {
     console.log(cost);
     this.activePlan['currentSpent'] = (this.activePlan['currentSpent'] + cost.cost);
-    this.activePlan['currentLeft'] = (this.activePlan['currentLeft'] - this.activePlan['currentSpent']); 
+    this.activePlan['currentLeft'] = (this.activePlan['currentLeft'] - cost.cost); 
     
     console.log(this.activePlan);
 
-    this.activePlan['variableDailyLeft'] = (this.activePlan['variableDailyLeft'] - cost.cost);
+    this.activePlan['variableDailyLeft'] = Math.round((this.activePlan['variableDailyLeft'] - cost.cost) * 100) /100;
+    this.activePlan['variableWeeklyLeft'] = Math.round((this.activePlan['variableWeeklyLeft'] - cost.cost) * 100 ) /100;
+
+    this.planService.updatePlan(this.activePlan['id'], this.activePlan)
+      .then(
+        res => {
+          console.log("Plan updated");
+        }
+      )
 
 
 
@@ -207,7 +217,6 @@ export class DashboardComponent implements OnInit {
     //when daily left hits zero, no more payments can be added(yet)
     //this means that the original daily left never needs to be recalculated.
 
-    
 
 
 

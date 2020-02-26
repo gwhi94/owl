@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
@@ -9,15 +9,24 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 export class AddCostModalComponent implements OnInit {
 
   cost:number;
+  denySpend = false;
+  leftToSpend:number;
   
 
-  constructor(public dialogRef: MatDialogRef<AddCostModalComponent>) { }
+  constructor(public dialogRef: MatDialogRef<AddCostModalComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
+
+    this.leftToSpend = this.data.leftToSpend;
+    console.log(this.leftToSpend);
+    console.log(this.leftToSpend);
   }
 
   addCost() {
-    this.dialogRef.close({cost:this.cost});
+
+    this.cost > this.leftToSpend ? this.denySpend = true : this.dialogRef.close({cost:this.cost});
+
+    
   }
 
 }

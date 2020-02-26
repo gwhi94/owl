@@ -52,21 +52,12 @@ export class PlanService {
     }
 
     getActivePlan(){  
-        console.log("Getting active plan");
-        this.active$ = new BehaviorSubject(true);
-        return this.plan$ = this.active$.pipe(
-            switchMap(active => 
-                this.db
-                .collection<Plan>('plans', ref => ref.where
-                ('activePlan', '==' ,active))                  
-                .valueChanges({idField:'id'})
-            ),
-        );
+        return this.db.collection('plans', (ref) => ref.where('activePlan', '==', true)).valueChanges();
 
     }
 
     updatePlan(id, plan){
-        console.log("hitthis");
+        console.log("Updating Plan");
         
         //console.log(plan);
         return this.db.collection('plans').doc(id).set(plan);

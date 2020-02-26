@@ -20,8 +20,8 @@ export class AppComponent {
   date;
 
   navLinks = [
-    {name:'DASHBOARD', icon:'insert_chart', active:false},
-    {name:'PLANS', icon:'insert_invitation', active:false},
+    {name:'DASHBOARD', icon:'insert_chart', active:false, link:'/'},
+    {name:'PLANS', icon:'insert_invitation', active:false, link:'/plans'},
     {name:'SETTINGS', icon:'build', active:false},
     {name:'LOG OUT', icon:'account_box', active:false},
     

@@ -1,5 +1,4 @@
 
-
 $top-padding:50px;
 mat-sidenav {
     width: 200px;
@@ -22,16 +21,16 @@ mat-sidenav {
             text-align: center;
             margin-bottom:45px;
             color:grey;
+            cursor: pointer;
+            
         }
 
         .active {
             color:white !important;
+            outline:none !important;
         }
         
-
     }
-
-
 
   }
 

@@ -65,10 +65,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       plan.variableDailyLeft == 0 ? this.lockPlan = true: this.lockPlan = false;
 
-
-
-
-      
+   
       let testForSameLastUpdated  = moment(moment(plan.lastUpdated).format('YYYY-MM-DD'));
       let testForSameToday = moment(moment().format('YYYY-MM-DD'));
 

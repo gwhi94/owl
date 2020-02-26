@@ -4,10 +4,10 @@
       <div class="image-container">
         <img id="owl-logo" src="../assets/icons/owl-logo.svg">
       </div>     
-      <ul class="navLinks" role="list">
-        <li *ngFor="let navLink of navLinks" (click)="activateClass(navLink)" [ngClass]="{'active': navLink.active}" role="listitem"><i class="material-icons">{{navLink.icon}}</i>
-          <p>{{navLink.name}}</p>
-        </li>
+      <ul class="navLinks" role="list">       
+          <li *ngFor="let navLink of navLinks" (click)="activateClass(navLink)" routerLink="{{navLink.link}}" [ngClass]="{'active': navLink.active}" role="listitem"><i class="material-icons">{{navLink.icon}}</i>
+            <p>{{navLink.name}}</p>
+          </li>       
       </ul>
     </div>    
   </mat-sidenav>

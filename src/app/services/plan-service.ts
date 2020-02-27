@@ -30,8 +30,7 @@ export class PlanService {
             dailyleft:formData.dailyLeft,
             days:formData.days,
             currentSpent:formData.currentSpent,
-            currentLeft:formData.currentLeft,
-            
+            currentLeft:formData.currentLeft,           
             lastUpdated:formData.lastUpdated,
             surplus:0,
             variableDailyLeft:formData.variableDailyLeft,
@@ -52,13 +51,13 @@ export class PlanService {
     }
 
     getActivePlan(){  
-        return this.db.collection('plans', (ref) => ref.where('activePlan', '==', true)).valueChanges();
+        return this.db.collection('plans', (ref) => ref.where('activePlan', '==', true)).valueChanges({idField:'id'});
 
     }
 
     updatePlan(id, plan){
-        console.log("Updating Plan");
-        
+        console.log(id, plan);
+        console.log("Updating Plan");        
         //console.log(plan);
         return this.db.collection('plans').doc(id).set(plan);
 

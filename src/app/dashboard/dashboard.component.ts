@@ -57,6 +57,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       
       if(plan.excludeWeekends){
         if(moment().day() == 0 || moment().day() == 6){
+          console.log("locking plan as it is weekend and excluding weekends")
           this.lockPlan = true;
         }else {
           this.lockPlan = false;
@@ -77,17 +78,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }else{
         console.log("Plan has been updated today");                  
         if(plan.excludeWeekends){
-          if(moment(plan.weekUpdated).diff(this.today, 'days') == 5){
-            console.log("Exlcuding Weekends and 5 days has passed so reset weekly left");
+          if(moment(this.today).diff(plan.weekUpdated, 'days') == 5){
             plan.variableWeeklyLeft = plan.weeklyLeft;
             plan.weekUpdated = this.today.format('YYYY-MM-DD'); 
           }else{
             console.log("Week hasnt passed yet");
           }
         }else{
-          //week is 7 days
-          if(moment(plan.weekUpdated).diff(this.today, 'days') == 7){
-            console.log("Including Weekends and exactly 7 days has passed so reset weekly left");
+          console.log(moment(plan.weekUpdated).diff(this.today, 'days'));         
+          //this logic works and so does reset
+          if(moment(this.today).diff(plan.weekUpdated, 'days') == 7){
             plan.variableWeeklyLeft = plan.weeklyLeft;
             plan.weekUpdated = this.today.format('YYYY-MM-DD'); 
           }else{
@@ -107,8 +107,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   
     updateAfkPlan(plan){
-    console.log("hit");
-    
+    console.log("hit");   
       //updating days left      
       let planEnd = moment(plan['dateRange']['end']);
       planEnd.diff(this.today, 'days');

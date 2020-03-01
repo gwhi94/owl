@@ -134,9 +134,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             let weekAmountToSet = ((5 - dayInTheWeek) * (plan.dailyleft)) + 1;
             plan.variableWeeklyLeft = weekAmountToSet;
             plan.surplus = plan.surplus + (weekDays * plan['dailyleft']);         
-            //Needs testing !!!!
-           
-           
+            //Needs testing !!!!                   
           }        
         }else{
           //week is 7 days
@@ -184,20 +182,70 @@ export class DashboardComponent implements OnInit, OnDestroy {
       data:{leftToSpend:this.activePlan['variableDailyLeft']}  
     })
     dialogRef.afterClosed().subscribe(result => {
-      this.recalculatePlan(result);
-
+      if(result){
+        this.recalculatePlan(result);
+      }
     })
 
   }
 
-  recalculatePlan(cost) {
+  recalculatePlan(costData) {
+    console.log(costData);
 
-    this.activePlan['currentSpent'] = (this.activePlan['currentSpent'] + cost.cost);
-    this.activePlan['currentLeft'] = (this.activePlan['currentLeft'] - cost.cost); 
+    this.activePlan['currentSpent'] = (this.activePlan['currentSpent'] + costData.cost);
+    this.activePlan['currentLeft'] = (this.activePlan['currentLeft'] - costData.cost); 
 
-    this.activePlan['variableDailyLeft'] = Math.round((this.activePlan['variableDailyLeft'] - cost.cost) * 100) /100;
-    this.activePlan['variableWeeklyLeft'] = Math.round((this.activePlan['variableWeeklyLeft'] - cost.cost) * 100 ) /100;
+    this.activePlan['variableDailyLeft'] = Math.round((this.activePlan['variableDailyLeft'] - costData.cost) * 100) /100;
+    this.activePlan['variableWeeklyLeft'] = Math.round((this.activePlan['variableWeeklyLeft'] - costData.cost) * 100 ) /100;
 
+    console.log(this.activePlan);
+
+  
+     
+    if(this.activePlan['costCategories'].some(c => c.category == costData.category)){
+      console.log("Exists");
+      
+      for(let i = 0 ; i < this.activePlan['costCategories'].length; i++){
+        if(this.activePlan['costCategories'][i].category == costData.category){
+          console.log("Incrementing");
+          this.activePlan['costCategories'][i].count = this.activePlan['costCategories'][i].count + 1;
+
+
+        }
+
+      }
+    }else {
+      console.log("Doesnt Exist");
+      this.activePlan['costCategories'].push({category:costData.category, count:1});
+    }
+
+
+
+
+/*     this.activePlan['costCategories'].forEach(element => {
+      console.log(element);
+
+     if(element.category == costData.category){
+        element.count = element.count + 1;
+        console.log("Found in")
+      }else{
+        console.log("Not Found")
+        this.activePlan['costCategories'].push({category:costData.category, count:1});
+      } 
+ 
+
+
+     
+
+
+
+
+
+
+
+    }); 
+     */
+    
     this.planService.updatePlan(this.activePlan['id'], this.activePlan)
       .then(
         res => {

@@ -11,10 +11,6 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Montserrat', sans-serif !important;
 }
 
-.material-icons {
-    font-size: 35px !important;
-}
-
 
 .full-width {
     width:100%;
@@ -110,8 +106,7 @@ mat-card {
 }
 
 .add-cost-modal {
-    width:400px;
-    h3 {
+    h4 {
         color:$my-theme-grey-text;
     }
 }
@@ -147,3 +142,4 @@ input[type=number] {
 .mat-dialog-container {
     padding: 0px !important;
 }
+

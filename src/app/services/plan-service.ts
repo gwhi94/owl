@@ -37,6 +37,7 @@ export class PlanService {
             variableWeeklyLeft:formData.variableWeeklyLeft,
             weekUpdated:formData.dateRange.begin,
             excludeWeekends:formData.excludeWeekends,
+            costCategories:[],
             
             activePlan:true  
         })
@@ -56,9 +57,6 @@ export class PlanService {
     }
 
     updatePlan(id, plan){
-        console.log(id, plan);
-        console.log("Updating Plan");        
-        //console.log(plan);
         return this.db.collection('plans').doc(id).set(plan);
 
 

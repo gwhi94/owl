@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component'
 import { NewPlanModalComponent } from '../modals/new-plan-modal/new-plan-modal.component'
@@ -33,8 +32,7 @@ export class PlansComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    this.subscription.unsubscribe();
-    console.log("destroyed");
+    
   }
 
   getPlans(){

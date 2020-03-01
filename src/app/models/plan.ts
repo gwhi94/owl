@@ -18,6 +18,7 @@ export class Plan {
     variableWeeklyLeft:number;
     weekUpdated:string;
     excludeWeekends:boolean;
+    costCategories:Array<Object>;
    
 }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component'
@@ -7,6 +7,7 @@ import { SetDateModalComponent } from '../modals/set-date-modal/set-date-modal.c
 import { FocusPlanModalComponent } from '../modals/focus-plan-modal/focus-plan-modal.component';
 import { PlanService } from '../services/plan-service'
 import { Plan } from '../models/plan';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -16,16 +17,24 @@ import { Plan } from '../models/plan';
 })
 
 
-export class PlansComponent implements OnInit {
+export class PlansComponent implements OnInit, OnDestroy {
+
+  private subscription: Subscription;
 
   plans: Array<any>;
   plan: {};
+  activePlan:Object;
 
   constructor(public dialog: MatDialog, private planService:PlanService) { }
 
   ngOnInit() {
    this.getPlans();
       
+  }
+
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
+    console.log("destroyed");
   }
 
   getPlans(){
@@ -89,68 +98,59 @@ export class PlansComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe((confirmed:boolean) =>{
         if(confirmed){
-          console.log("confirmed");
-          //this.openNewPlanDialog();
-          this.openSetDateModal();
-        }else{
-          console.log("not confirmed");
+
+          this.subscription = this.planService.getActivePlan()
+            .subscribe(result => {
+              console.log(result);
+              this.activePlan = result[0];
+              this.subscription.unsubscribe();
+              this.deactivatePlan();          
+            })      
         }
-      })
-      
+      })     
       }    
     }
 
     private openSetDateModal(): void {
       let dialogRef = this.dialog.open(SetDateModalComponent, {
-
+        disableClose: true
       });
 
      dialogRef.afterClosed().subscribe(result=> {
-       console.log(result);
-
-       this.openNewPlanDialog({days:result.days, dateRange:result.dateRange, excludeWeekends:result.excludeWeekends})
+       if(result) 
+       this.openNewPlanDialog({days:result.days, dateRange:result.dateRange, excludeWeekends:result.excludeWeekends})      
      });
-  
-
     }
 
     private openNewPlanDialog(dataPassedFromSet): void {
       let dialogRef = this.dialog.open(NewPlanModalComponent,{
-
+        disableClose: true,
         data:{dataPassedFromSet}
         
       });
 
       dialogRef.afterClosed().subscribe(result =>{
-        this.plans.push(result);
-        //this would then trigger a single get request on this ID to update the ngFor array. 
-
-       
+        if(result){
+          this.plans.push(result);
+        }else{
+          console.log("no");
+        }     
       })
+    }
+
+    deactivatePlan() {
+      this.activePlan['activePlan'] = false;
+      this.planService.updatePlan(this.activePlan['id'], this.activePlan)
+        .then(res => {
+          this.openSetDateModal();
+        })
+      
     }
 
  
 
 }
 
-
-  //  UI/LOGIC FLOW
-
-  //User sets range first
-  //User selects checkbox to exclude weekends
-  //at this point we have num of days, num of weekends
-  //if excluding weekends minus weekend count from days
-  //=> unlock the other fields
-  //run crunchNumbers on field changes update view
-
-//adding new plan ui flow
-
-//on complete new, only add panel should show
-//user clicks add new
-//new plan form should show as modal
-//on save
-//plan is saved to local storage for now
-//on html, ngFor loops through and displays plans as cards (need guid here!)
 
 
 

@@ -10,8 +10,6 @@ import { Subscription } from 'rxjs';
 import { catchError, map, tap, switchMap } from 'rxjs/operators';
 
 
-
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -53,8 +51,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
     inspectPlan(plan){
-      console.log("inspect plan called");
-      
+      console.log("inspect plan called");    
       if(plan.excludeWeekends){
         if(moment().day() == 0 || moment().day() == 6){
           console.log("locking plan as it is weekend and excluding weekends")
@@ -150,9 +147,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             plan.surplus = plan.surplus + (afkPeriod * plan['dailyleft']); 
             plan.variableDailyLeft = plan.dailyleft;
           }
-
         }
-
       }
        
       plan.lastUpdated = this.today.format('YYYY-MM-DDTHH:mm:ss.SSS');

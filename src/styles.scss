@@ -62,15 +62,11 @@ mat-card {
     background-color:$my-theme-grey-dark !important;
 }
 
-
 .modal-button{
     border-radius: 15px !important;
     box-shadow: -5px -5px 15px #353535, 5px 5px 15px #1E1E1E !important;
-    transition: 0.4s all ease-in-out;
-    
-    
+    transition: 0.4s all ease-in-out;      
 }
-
 .modal-button:hover {
     box-shadow: inset -5px -5px 25px #171717, inset 5px 5px 5px  #363636;
     transform: translateY(1px) scale(0.99);
@@ -78,9 +74,6 @@ mat-card {
 .modal-button:focus{
     outline:0 !important;
 }
-
-
-
 
 .app-modal-head {
     display:flex;
@@ -110,6 +103,28 @@ mat-card {
         color:$my-theme-grey-text;
     }
 }
+
+
+//alerts
+
+.app-alert {
+    min-width:100vw !important;
+    margin:0 !important;
+    border-radius:0 !important;
+    display:flex !important;
+    justify-content:center !important;
+
+}
+
+snack-bar-container {
+    &.error {
+      background-color: mat-color($my-theme-warn);
+    }
+   
+    &.success {
+      background-color: mat-color($my-theme-accent);
+    }
+  }
 
 //REMOVING NUMBER ARROWS
 input::-webkit-outer-spin-button,

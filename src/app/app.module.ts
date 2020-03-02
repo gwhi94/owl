@@ -32,7 +32,9 @@ import {
   MatCardModule,
   MatCheckboxModule,
   MatSidenavModule,
-  MatListModule
+  MatListModule,
+  MatSnackBar,
+  MatSnackBarModule
 } from '@angular/material';
 
 //modals
@@ -105,6 +107,7 @@ export const DateFormats = {
     MatCheckboxModule,
     MatSidenavModule,
     MatListModule,
+    MatSnackBarModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule
          

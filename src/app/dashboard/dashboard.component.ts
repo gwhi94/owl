@@ -8,6 +8,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { catchError, map, tap, switchMap } from 'rxjs/operators';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -28,7 +29,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   today = moment(moment());  
 
-  constructor(private planService:PlanService, public dialog: MatDialog ) { }
+  constructor(private snackBar:MatSnackBar, private planService:PlanService, public dialog: MatDialog ) { }
 
   ngOnDestroy(){
     this.subscription.unsubscribe();
@@ -183,6 +184,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     })
     dialogRef.afterClosed().subscribe(result => {
       if(result){
+        this.snackBar.open('Cost added', undefined, {
+          duration: 3000,
+          panelClass: ['success', 'app-alert'],
+          verticalPosition: 'top'
+        });
+          
+
         this.recalculatePlan(result);
       }
     })

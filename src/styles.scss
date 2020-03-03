@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import './theme.scss';
+@import './cards.scss';
 
 html, body { height: 100%; }
 body { margin: 0; }
@@ -29,6 +30,9 @@ mat-card {
 
 .accent-this{
     color: mat-color($my-theme-primary);
+}
+.warn-this{
+    color: mat-color($my-theme-warn);
 }
 
 .form-alert {
@@ -119,6 +123,7 @@ mat-card {
 snack-bar-container {
     &.error {
       background-color: mat-color($my-theme-warn);
+
     }
    
     &.success {

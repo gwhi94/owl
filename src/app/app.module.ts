@@ -45,6 +45,7 @@ import { FocusPlanModalComponent } from './modals/focus-plan-modal/focus-plan-mo
 import { SetDateModalComponent } from './modals/set-date-modal/set-date-modal.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AddCostModalComponent } from './modals/add-cost-modal/add-cost-modal.component';
+import { PaymentsComponent } from './payments/payments.component';
 
 
 
@@ -73,7 +74,8 @@ export const DateFormats = {
     FocusPlanModalComponent,
     SetDateModalComponent,
     DashboardComponent,
-    AddCostModalComponent
+    AddCostModalComponent,
+    PaymentsComponent
      
   ],
 

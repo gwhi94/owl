@@ -22,6 +22,7 @@ export class AppComponent {
   navLinks = [
     {name:'DASHBOARD', icon:'insert_chart', active:false, link:'/'},
     {name:'PLANS', icon:'insert_invitation', active:false, link:'/plans'},
+    {name:'PAYMENTS', icon:'money', active:false, link:'/payments'},
     {name:'SETTINGS', icon:'build', active:false},
     {name:'LOG OUT', icon:'account_box', active:false},
     

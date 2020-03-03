@@ -82,8 +82,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           }else{
             console.log("Week hasnt passed yet");
           }
-        }else{
-          console.log(moment(plan.weekUpdated).diff(this.today, 'days'));         
+        }else{       
           //this logic works and so does reset
           if(moment(this.today).diff(plan.weekUpdated, 'days') == 7){
             plan.variableWeeklyLeft = plan.weeklyLeft;
@@ -184,13 +183,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     })
     dialogRef.afterClosed().subscribe(result => {
       if(result){
+        console.log(result);
         this.snackBar.open('Cost added', undefined, {
-          duration: 3000,
+          duration: 5000,
           panelClass: ['success', 'app-alert'],
           verticalPosition: 'top'
         });
           
-
         this.recalculatePlan(result);
       }
     })
@@ -216,43 +215,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
       for(let i = 0 ; i < this.activePlan['costCategories'].length; i++){
         if(this.activePlan['costCategories'][i].category == costData.category){
           console.log("Incrementing");
-          this.activePlan['costCategories'][i].count = this.activePlan['costCategories'][i].count + 1;
-
-
+          this.activePlan['costCategories'][i].count = this.activePlan['costCategories'][i].count + costData.cost;
         }
-
       }
     }else {
       console.log("Doesnt Exist");
-      this.activePlan['costCategories'].push({category:costData.category, count:1});
+      this.activePlan['costCategories'].push({category:costData.category, count:costData.cost});
     }
 
 
 
-
-/*     this.activePlan['costCategories'].forEach(element => {
-      console.log(element);
-
-     if(element.category == costData.category){
-        element.count = element.count + 1;
-        console.log("Found in")
-      }else{
-        console.log("Not Found")
-        this.activePlan['costCategories'].push({category:costData.category, count:1});
-      } 
- 
-
-
-     
-
-
-
-
-
-
-
-    }); 
-     */
     
     this.planService.updatePlan(this.activePlan['id'], this.activePlan)
       .then(
@@ -262,6 +234,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
       )
 
 
+  }
+
+
+
+  setBreakdown(){
+    //get all categories with costs
+    //get upcoming payments 
   }
 
   

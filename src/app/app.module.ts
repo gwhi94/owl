@@ -18,6 +18,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ChartsModule } from 'ng2-charts';
 import { PlanService } from './services/plan-service';
+import { PaymentsService } from './services/payments-service';
 
 
 
@@ -122,6 +123,7 @@ export const DateFormats = {
 
   providers: [
     PlanService,
+    PaymentsService,
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
     {provide: MAT_DATE_FORMATS, useValue: DateFormats},
   ],

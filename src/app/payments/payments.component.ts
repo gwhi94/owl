@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NewPaymentModalComponent } from '../modals/new-payment-modal/new-payment-modal.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { PaymentsService } from '../services/payments-service';
+
+
 
 @Component({
   selector: 'app-payments',
@@ -17,7 +20,7 @@ export class PaymentsComponent implements OnInit {
   //payments will total to give the expenses
   
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private paymentsService:PaymentsService) { }
 
   ngOnInit() {
   }
@@ -31,6 +34,12 @@ export class PaymentsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result =>{
       console.log(result);
+
+      this.paymentsService.newPayment(result)
+        .then(res => {
+          console.log("Payment added");
+        })
+
     })
 
 

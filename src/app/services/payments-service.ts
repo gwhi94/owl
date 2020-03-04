@@ -8,7 +8,7 @@ import { Payment } from '../models/payment';
 
 
 @Injectable({ providedIn: 'root' })
-export class PaymentService {
+export class PaymentsService {
 
     plan$:Observable<Payment[]>;
    

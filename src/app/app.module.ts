@@ -34,7 +34,8 @@ import {
   MatSidenavModule,
   MatListModule,
   MatSnackBar,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatCheckbox
 } from '@angular/material';
 
 //modals
@@ -46,6 +47,7 @@ import { SetDateModalComponent } from './modals/set-date-modal/set-date-modal.co
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AddCostModalComponent } from './modals/add-cost-modal/add-cost-modal.component';
 import { PaymentsComponent } from './payments/payments.component';
+import { NewPaymentModalComponent } from './modals/new-payment-modal/new-payment-modal.component';
 
 
 
@@ -75,7 +77,8 @@ export const DateFormats = {
     SetDateModalComponent,
     DashboardComponent,
     AddCostModalComponent,
-    PaymentsComponent
+    PaymentsComponent,
+    NewPaymentModalComponent
      
   ],
 
@@ -84,7 +87,8 @@ export const DateFormats = {
      NewPlanModalComponent,
      FocusPlanModalComponent ,
      SetDateModalComponent,
-     AddCostModalComponent
+     AddCostModalComponent,
+     NewPaymentModalComponent
     ],
    
   imports: [

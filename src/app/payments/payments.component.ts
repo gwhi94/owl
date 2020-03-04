@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NewPaymentModalComponent } from '../modals/new-payment-modal/new-payment-modal.component';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-payments',
@@ -12,9 +14,26 @@ export class PaymentsComponent implements OnInit {
   //must clear one offs after payment date reached. 
   //expenses will no longer be manual input at new plan modal
 
-  constructor() { }
+  //payments will total to give the expenses
+  
+
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
+  }
+
+
+  addPayment(){
+    let dialogRef = this.dialog.open(NewPaymentModalComponent,{
+      data:{}
+
+    })
+
+    dialogRef.afterClosed().subscribe(result =>{
+      console.log(result);
+    })
+
+
   }
 
 }

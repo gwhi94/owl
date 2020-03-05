@@ -36,8 +36,8 @@ export class PaymentsService {
         //need to be careful with this one as it will edit the expenses value, need #
         //to make sure we dont pull from the updated one when a plan is in progress
     }    
-    deletePayment(plan){
-        return this.db.collection('payments').doc(plan.payload.doc.id).delete();
+    deletePayment(payment){
+        return this.db.collection('payments').doc(payment.payload.doc.id).delete();
     }
 
 }

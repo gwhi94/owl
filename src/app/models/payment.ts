@@ -1,6 +1,6 @@
 export class Payment {
     adHoc:boolean;
     amount:number;
-    dueDate:string;
+    due:string;
     name:string;
 }

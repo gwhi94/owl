@@ -99,7 +99,6 @@ export class PlansComponent implements OnInit, OnDestroy {
 
           this.subscription = this.planService.getActivePlan()
             .subscribe(result => {
-              console.log(result);
               this.activePlan = result[0];
               this.subscription.unsubscribe();
               this.deactivatePlan();          
@@ -116,7 +115,7 @@ export class PlansComponent implements OnInit, OnDestroy {
 
      dialogRef.afterClosed().subscribe(result=> {
        if(result) 
-       this.openNewPlanDialog({days:result.days, dateRange:result.dateRange, excludeWeekends:result.excludeWeekends})      
+       this.openNewPlanDialog({days:result.days, dateRange:result.dateRange, excludeWeekends:result.excludeWeekends, expenses:result.expenses})      
      });
     }
 

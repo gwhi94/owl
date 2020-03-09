@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import * as moment from 'moment';
+import { PaymentsService } from '../../services/payments-service';
+
 
 @Component({
   selector: 'app-set-date-modal',
@@ -15,9 +17,10 @@ export class SetDateModalComponent implements OnInit {
   fieldAlert: string = 'Field is Required';
   excludeWeekends = false;
   days: number;
+  expenses:number;
 
 
-  constructor(private fb: FormBuilder, public dialogRef: MatDialogRef<SetDateModalComponent>) {
+  constructor(private paymentsService:PaymentsService, private fb: FormBuilder, public dialogRef: MatDialogRef<SetDateModalComponent>) {
     this.rFormSet = fb.group({
       'dateRange':[null,Validators.required]
     });
@@ -25,6 +28,23 @@ export class SetDateModalComponent implements OnInit {
    }
 
   ngOnInit() {
+
+    this.paymentsService.getPayments()
+      .subscribe(res => {
+        this.calculateExpenses(res);
+
+      })
+  }
+
+  calculateExpenses(payments){
+    console.log(payments);
+    let total = 0;
+
+    payments.forEach(element => {
+      total += element.payload.doc.data().amount;
+    });
+
+    this.expenses = total;
   }
 
   onSubmit(){
@@ -71,7 +91,7 @@ export class SetDateModalComponent implements OnInit {
     }
 
 
-    this.dialogRef.close({days:this.days, dateRange:this.dateRange, excludeWeekends:this.excludeWeekends});
+    this.dialogRef.close({days:this.days, dateRange:this.dateRange, excludeWeekends:this.excludeWeekends, expenses:this.expenses});
     
   }
 

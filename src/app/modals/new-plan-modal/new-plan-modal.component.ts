@@ -66,9 +66,6 @@ export class NewPlanModalComponent implements OnInit {
 
   onSubmit(plan) { 
 
-    //need to add logic in here before saving, to set the current
-    //active to false. 
-
     var formData = this.data;
     var formValue = this.rForm.value;
 
@@ -117,10 +114,15 @@ export class NewPlanModalComponent implements OnInit {
     this.data.days = this.dataPassedFromSet.dataPassedFromSet.days;
     this.data.dateRange = this.dataPassedFromSet.dataPassedFromSet.dateRange;
     this.data.excludeWeekends = this.dataPassedFromSet.dataPassedFromSet.excludeWeekends;
+    this.rForm.controls.expenses.setValue(this.dataPassedFromSet.dataPassedFromSet.expenses);
+
+    console.log(this.dataPassedFromSet);
 
     this.rForm.valueChanges.subscribe(()=> {
       this.crunchNumbers(this.rForm.value);
     });
+
+    console.log(this.rForm.controls.expenses);
 
   }
 

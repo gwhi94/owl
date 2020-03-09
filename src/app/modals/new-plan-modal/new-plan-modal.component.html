@@ -13,15 +13,14 @@
                 <div class="form-alert" *ngIf="!rForm.controls['moneyIn'].valid && rForm.controls['moneyIn'].touched">{{fieldAlert}} and must be greater than 1</div> 
                      
                 <mat-form-field class="full-width">
-                    <input matInput placeholder="Expenses"  type="number" formControlName="expenses">
+                    <input disabled="true" matInput placeholder="Expenses" type="number" formControlName="expenses">
                 </mat-form-field>     
                                                                          
                 <mat-form-field class="full-width">
                     <input matInput placeholder="Saving" type="number" formControlName="saving">
                 </mat-form-field>      
                                                 
-                <button type="submit" [disabled]="!rForm.valid" mat-button raised color="accent">Set Plan</button>
-            
+                <button type="submit" [disabled]="!rForm.valid" mat-button raised color="accent">Set Plan</button>            
             </form>
 
    

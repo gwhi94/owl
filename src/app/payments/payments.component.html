@@ -21,7 +21,7 @@
                 <div class="col mr-2">
                     <h5 class="tags text-center mb-2">Due</h5>
                     <ul class="payments-list">
-                        <li *ngFor="let payment of payments" class="text-center mb-3">{{payment.payload.doc.data().due}}</li>
+                        <li *ngFor="let payment of payments" class="text-center mb-3">{{payment.payload.doc.data().due | DateSuffix}}</li>
                     </ul>  
                 </div>
                 <div class="col mr-2">

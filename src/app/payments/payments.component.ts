@@ -4,6 +4,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { PaymentsService } from '../services/payments-service';
 import { Subscription } from 'rxjs';
 
+import { DateSuffix } from '../pipes/date-suffix.pipe';
+
 
 
 @Component({
@@ -23,13 +25,20 @@ export class PaymentsComponent implements OnInit, OnDestroy {
 
   payments = [];
   paymentsTotal:number;
+  dateString:string;
 
 
   constructor(public dialog: MatDialog, private paymentsService:PaymentsService) { }
 
 
   ngOnInit() {
+
+
+
+
     this.getPayments();
+
+
   }
 
   ngOnDestroy(){

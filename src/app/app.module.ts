@@ -20,6 +20,8 @@ import { ChartsModule } from 'ng2-charts';
 import { PlanService } from './services/plan-service';
 import { PaymentsService } from './services/payments-service';
 
+import { DateSuffix } from './pipes/date-suffix.pipe';
+
 
 
 
@@ -79,7 +81,8 @@ export const DateFormats = {
     DashboardComponent,
     AddCostModalComponent,
     PaymentsComponent,
-    NewPaymentModalComponent
+    NewPaymentModalComponent,
+    DateSuffix
      
   ],
 
@@ -124,6 +127,7 @@ export const DateFormats = {
   providers: [
     PlanService,
     PaymentsService,
+    DateSuffix, 
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
     {provide: MAT_DATE_FORMATS, useValue: DateFormats},
   ],

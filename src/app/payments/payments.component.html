@@ -3,13 +3,11 @@
     <div class="container">
         <p>Your upcoming <span class="accent-this">payments </span></p> 
         <h2 class="total-left-headers mb-10"><span class="accent-this">5</span> payments totalling <span class="warn-this">£ {{paymentsTotal}}</span></h2>
-        
-        
+                
         <div class="add-payment-button-container mt-4 mb-4">
             <button (click)="addPayment()" class="card-button payments" mat-button [disableRipple]="true"><i class="material-icons">add_circle_outline</i> </button>          
         </div>
-
-          
+         
         <div class="inset-box payments-list-box">
             <div class="row no-gutters w-100 h-100">         
                 <div class="col mr-2">
@@ -21,7 +19,7 @@
                 <div class="col mr-2">
                     <h5 class="tags text-center mb-2">Due</h5>
                     <ul class="payments-list">
-                        <li *ngFor="let payment of payments" class="text-center mb-3">{{payment.payload.doc.data().due}}</li>
+                        <li *ngFor="let payment of payments" class="text-center mb-3">{{payment.payload.doc.data().due}}{{payment.payload.doc.data().due | dateSuffix}}</li>
                     </ul>  
                 </div>
                 <div class="col mr-2">

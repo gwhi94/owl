@@ -4,14 +4,14 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { PaymentsService } from '../services/payments-service';
 import { Subscription } from 'rxjs';
 
-import { DateSuffix } from '../pipes/date-suffix.pipe';
+
 
 
 
 @Component({
   selector: 'app-payments',
   templateUrl: './payments.component.html',
-  styleUrls: ['./payments.component.scss']
+  styleUrls: ['./payments.component.scss'],
 })
 export class PaymentsComponent implements OnInit, OnDestroy {
   //will have to programmtically apend the year and month to the payment due date
@@ -32,14 +32,10 @@ export class PaymentsComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-
     this.getPayments();
-
-
   }
 
   ngOnDestroy(){
-
   }
 
   getPayments(){

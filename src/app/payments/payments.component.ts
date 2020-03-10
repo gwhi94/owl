@@ -33,9 +33,6 @@ export class PaymentsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-
-
-
     this.getPayments();
 
 

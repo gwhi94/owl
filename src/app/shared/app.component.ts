@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
-import { PlanService } from '../app/services/plan-service';
-import { Plan } from '../app/models/plan';
+import { PlanService } from '../../app/services/plan-service';
+import { Plan } from '../../app/models/plan';
 
 
 @Component({

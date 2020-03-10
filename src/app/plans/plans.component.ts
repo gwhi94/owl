@@ -96,13 +96,7 @@ export class PlansComponent implements OnInit, OnDestroy {
       });
       dialogRef.afterClosed().subscribe((confirmed:boolean) =>{
         if(confirmed){
-
-          this.subscription = this.planService.getActivePlan()
-            .subscribe(result => {
-              this.activePlan = result[0];
-              this.subscription.unsubscribe();
-              this.deactivatePlan();          
-            })      
+          this.openSetDateModal();        
         }
       })     
       }    
@@ -134,17 +128,6 @@ export class PlansComponent implements OnInit, OnDestroy {
         }     
       })
     }
-
-    deactivatePlan() {
-      this.activePlan['activePlan'] = false;
-      this.planService.updatePlan(this.activePlan['id'], this.activePlan)
-        .then(res => {
-          this.openSetDateModal();
-        })
-      
-    }
-
- 
 
 }
 

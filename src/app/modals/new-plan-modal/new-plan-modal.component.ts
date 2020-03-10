@@ -34,6 +34,8 @@ export class NewPlanModalComponent implements OnInit {
 
   submitted = false;
   excludeWeekends = false;
+
+  activePlan:Object;
   
   data = {
     totalLeft:0,
@@ -80,10 +82,22 @@ export class NewPlanModalComponent implements OnInit {
     let splitEnd =  formData.dateRange['end'].split("/");
     formData.dateRange['end'] = splitEnd[2] + '-' + splitEnd[1] + '-' + splitEnd[0];
 
-
     formValue.dateRange = formData.dateRange;
 
-     this.planService.newPlan(formData,formValue)
+    this.activePlan['activePlan'] = false;
+    this.planService.updatePlan(this.activePlan['id'], this.activePlan)
+      .then(res => {
+        this.savePlan(plan);     
+      })
+
+  }
+
+
+  savePlan(plan){
+    var formData = this.data;
+    var formValue = this.rForm.value;
+    
+    this.planService.newPlan(formData,formValue)
       .then(
         res => {
           console.log("sent");
@@ -91,6 +105,7 @@ export class NewPlanModalComponent implements OnInit {
         }
       )
     this.submitted = true;      
+
   }
 
   closeDialog(plan) {
@@ -111,6 +126,14 @@ export class NewPlanModalComponent implements OnInit {
 
 
   ngOnInit() {
+
+    this.planService.getActivePlan()
+    .subscribe(res => {
+      this.activePlan = res[0];
+    })
+
+
+
     this.data.days = this.dataPassedFromSet.dataPassedFromSet.days;
     this.data.dateRange = this.dataPassedFromSet.dataPassedFromSet.dateRange;
     this.data.excludeWeekends = this.dataPassedFromSet.dataPassedFromSet.excludeWeekends;

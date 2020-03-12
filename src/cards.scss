@@ -54,6 +54,10 @@ $card-elements-spacing:15px;
 
     }
 
+    .tags {
+        color:$my-theme-grey-text;
+        margin-bottom:0px;
+    }
 
     .inset-box {
         border-radius:15px !important;
@@ -61,10 +65,6 @@ $card-elements-spacing:15px;
         padding:6px;
         padding-top:15px;
 
-        .tags {
-            color:$my-theme-grey-text;
-            margin-bottom:0px;
-        }
 
         .col {
             padding-left:15px;

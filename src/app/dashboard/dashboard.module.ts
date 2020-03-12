@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-
+import { ChartsModule } from 'ng2-charts';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 
 import {
@@ -16,6 +16,7 @@ import {
   MatSidenavModule,
   MatListModule,
   MatSnackBarModule,
+  
 
 } from '@angular/material';
 
@@ -37,6 +38,8 @@ import {
     MatSidenavModule,
     MatListModule,
     MatSnackBarModule,
+    ChartsModule
+
   ]
 })
 export class DashboardModule { }

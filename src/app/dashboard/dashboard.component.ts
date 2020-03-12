@@ -9,6 +9,9 @@ import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { catchError, map, tap, switchMap } from 'rxjs/operators';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { ChartType, ChartOptions } from 'chart.js';
+import { SingleDataSet, Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip } from 'ng2-charts';
+
 
 
 @Component({
@@ -26,10 +29,39 @@ export class DashboardComponent implements OnInit, OnDestroy {
   planProgessColor:string;
   currentDate:string; 
   lockPlan = false;
+  mostSpent:String = '';
 
   today = moment(moment());  
 
-  constructor(private snackBar:MatSnackBar, private planService:PlanService, public dialog: MatDialog ) { }
+  constructor(private snackBar:MatSnackBar, private planService:PlanService, public dialog: MatDialog ) {
+    monkeyPatchChartJsTooltip();
+    monkeyPatchChartJsLegend(); 
+   }
+
+
+  public pieChartOptions: ChartOptions = {
+    responsive: true,
+    legend :{
+      position:'left'
+    }
+  };
+  public pieChartLabels: Label[] = [
+    ['Travel'],
+    ['Food & Drink'],
+    ['Entertainment'],
+    ['Technology'],
+    ['Bills'],
+    ['Cash'] 
+      ];
+  public pieChartData: SingleDataSet;
+  public pieChartType: ChartType = 'pie';
+  public pieChartLegend = true;
+  public pieChartPlugins = [];
+
+
+
+
+
 
   ngOnDestroy(){
     this.subscription.unsubscribe();
@@ -42,6 +74,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .subscribe(result => {   
         this.activePlan = result[0];
         this.inspectPlan(this.activePlan);
+        this.setBreakdown();
         this.subscription.unsubscribe();           
       });
  
@@ -241,6 +274,75 @@ export class DashboardComponent implements OnInit, OnDestroy {
   setBreakdown(){
     //get all categories with costs
     //get upcoming payments 
+
+   /*  ['Travel'],
+    ['Food & Drink'],
+    ['Entertainment'],
+    ['Technology'],
+    ['Bills'],
+    ['Cash']  */
+
+    let costObj = {
+      Travel:0,
+      foodAndDrink:0,
+      Entertainment:0,
+      Technology:0,
+      Bills:0,
+      Cash:0
+    }
+    
+    console.log(this.activePlan['costCategories'].length);
+
+    
+    
+    for(let i = 0 ; i < this.activePlan['costCategories'].length;i++){
+      console.log("loop");
+      if(this.activePlan['costCategories'][i].category == 'Travel'){
+        costObj.Travel = this.activePlan['costCategories'][i].count
+
+      }else if (this.activePlan['costCategories'][i].category == 'Food and Drink'){
+        costObj.foodAndDrink = this.activePlan['costCategories'][i].count
+      
+      }else if(this.activePlan['costCategories'][i].category == 'Entertainment'){
+        costObj.Entertainment = this.activePlan['costCategories'][i].count
+     
+      }else if(this.activePlan['costCategories'][i].category == 'Technology'){
+        costObj.Technology = this.activePlan['costCategories'][i].count
+      
+      }else if (this.activePlan['countCategories'][i].category == 'Bills'){
+        costObj.Bills = this.activePlan['costCategories'][i].count
+      
+      }else if (this.activePlan['costCategories'][i].category == 'Cash'){
+        costObj.Cash = this.activePlan['costCategories'][i].count
+
+      }
+    }
+
+    this.mostSpent = Object.keys(costObj).reduce((a, b) => costObj[a] > costObj[b] ? a:b);
+
+    if(this.activePlan['costCategories'].length == 0)this.mostSpent = '';
+
+    if(this.mostSpent == 'foodAndDrink')this.mostSpent = 'Food and Drink';
+
+
+
+    console.log(this.mostSpent);
+
+
+
+
+  
+
+    this.pieChartData = [
+      costObj.Travel,
+       costObj.foodAndDrink,
+        costObj.Entertainment,
+         costObj.Technology,
+          costObj.Bills,
+           costObj.Cash
+        ];
+
+    console.log(this.activePlan);
   }
 
   

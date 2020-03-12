@@ -37,17 +37,24 @@
 <mat-card click="this.addCost" *ngIf="this.activePlan" class="plan-card-active plan-card ">
     <div class="container">
         <p>Breakdown for plan <span class="accent-this">{{this.activePlan.name | lowercase}} </span></p> 
-        <h1 class="total-left-headers">£ {{this.activePlan.currentSpent}} total <span class="warn-this">spent</span></h1>
-        <div class="progress-bar">
-        <div class="plan-progress" [ngStyle]="{'width': planProgressPercentage + '%' , 'background-color':planProgressColor}"></div>           
+        <h1 class="total-left-headers">£ {{this.activePlan.currentSpent}} <span class="warn-this">spent</span> this plan</h1>
+        <div class="mt-2 mb-2">
+            <h5 *ngIf="this.mostSpent != ''" class="tags">You have spent the most on <span class="accent-this">{{this.mostSpent}}</span></h5> 
+            <h5 *ngIf="this.mostSpent == '' " class="tags">You have not spent anything this plan ! </h5>                     
         </div> 
-        
-           
+                  
         <div class="inset-box plan-breakdown-box " (click)="this.test()">
             <div class="row no-gutters h-100">
                 <div class="col">
-                    <p class="tags">Total Left</p>
-                    <h3>{{this.activePlan.currentLeft}}</h3>
+                    
+                    <canvas *ngIf="this.mostSpent != '' " baseChart 
+                    [data]="pieChartData" 
+                    [labels]="pieChartLabels" 
+                    [chartType]="pieChartType"
+                    [options]="pieChartOptions"
+                    [plugins]="pieChartPlugins"
+                    [legend]="pieChartLegend">
+                  </canvas>
                 </div>
                 <div class="col">
                     <p class="tags">Left this Week</p>

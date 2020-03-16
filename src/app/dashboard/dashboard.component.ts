@@ -10,8 +10,9 @@ import { Subscription } from 'rxjs';
 import { catchError, map, tap, switchMap } from 'rxjs/operators';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { ChartType, ChartOptions } from 'chart.js';
-import { SingleDataSet, Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip } from 'ng2-charts';
+import { SingleDataSet, Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, Color } from 'ng2-charts';
 
+import { PaymentsService } from '../services/payments-service';
 
 
 @Component({
@@ -30,22 +31,37 @@ export class DashboardComponent implements OnInit, OnDestroy {
   currentDate:string; 
   lockPlan = false;
   mostSpent:String = '';
+  mostSpentColorIndicator:String;
+  payments = [];
+  upcomingPayments = [];
 
   today = moment(moment());  
 
-  constructor(private snackBar:MatSnackBar, private planService:PlanService, public dialog: MatDialog ) {
+  constructor(private paymentsService:PaymentsService, private snackBar:MatSnackBar, private planService:PlanService, public dialog: MatDialog ) {
     monkeyPatchChartJsTooltip();
     monkeyPatchChartJsLegend(); 
    }
 
 
-  public pieChartOptions: ChartOptions = {
+  public doughnutChartOptions: ChartOptions = {
+    elements :{
+      arc : {
+        borderWidth:0
+      }
+    },
     responsive: true,
+    maintainAspectRatio: true,
     legend :{
-      position:'left'
+      position:'left',
+      labels :{
+        padding:10,
+        usePointStyle:true
+
+      }
+     
     }
   };
-  public pieChartLabels: Label[] = [
+  public doughnutChartLabels: Label[] = [
     ['Travel'],
     ['Food & Drink'],
     ['Entertainment'],
@@ -53,15 +69,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
     ['Bills'],
     ['Cash'] 
       ];
-  public pieChartData: SingleDataSet;
-  public pieChartType: ChartType = 'pie';
-  public pieChartLegend = true;
-  public pieChartPlugins = [];
-
-
-
-
-
+  public doughnutChartData: SingleDataSet;
+  public doughnutChartType: ChartType = 'doughnut';
+  public doughnutChartLegend = true;
+  public doughnutChartPlugins = [];
+  private doughnutChartColors = [
+    {
+      backgroundColor: [
+        '#42a5f5',
+        '#fbc02d',
+        '#ff77a9',
+        '#80e27e',
+        '#ef5350',
+        '#9575cd'
+    ]
+    }
+  
+]
 
   ngOnDestroy(){
     this.subscription.unsubscribe();
@@ -263,6 +287,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .then(
         res => {
           console.log("Plan updated");
+          this.setBreakdown();
         }
       )
 
@@ -274,6 +299,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   setBreakdown(){
     //get all categories with costs
     //get upcoming payments 
+    //show surplus
 
    /*  ['Travel'],
     ['Food & Drink'],
@@ -281,6 +307,31 @@ export class DashboardComponent implements OnInit, OnDestroy {
     ['Technology'],
     ['Bills'],
     ['Cash']  */
+    let today = moment().format('DD');
+    let upcoming = [];
+    console.log(today);
+    this.paymentsService.getPayments()
+      .subscribe(res => {
+        this.payments = res;
+        console.log(this.payments);
+
+        for(let i = 0; i < this.payments.length;i++){
+          console.log(this.payments[i].payload.doc.data().due);
+          if(this.payments[i].payload.doc.data().due > today){
+            upcoming.push(this.payments[i].payload.doc.data());
+
+            
+          }
+        }
+
+
+        this.upcomingPayments = upcoming.sort((a, b) => a.due - b.due);
+
+
+
+
+
+      })
 
     let costObj = {
       Travel:0,
@@ -291,10 +342,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       Cash:0
     }
     
-    console.log(this.activePlan['costCategories'].length);
 
-    
-    
     for(let i = 0 ; i < this.activePlan['costCategories'].length;i++){
       console.log("loop");
       if(this.activePlan['costCategories'][i].category == 'Travel'){
@@ -320,20 +368,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.mostSpent = Object.keys(costObj).reduce((a, b) => costObj[a] > costObj[b] ? a:b);
 
+    
+    if(this.mostSpent == 'foodAndDrink')this.mostSpent = 'Food and Drink';   
     if(this.activePlan['costCategories'].length == 0)this.mostSpent = '';
 
-    if(this.mostSpent == 'foodAndDrink')this.mostSpent = 'Food and Drink';
-
-
-
-    console.log(this.mostSpent);
 
 
 
 
-  
-
-    this.pieChartData = [
+    this.doughnutChartData = [
       costObj.Travel,
        costObj.foodAndDrink,
         costObj.Entertainment,
@@ -343,6 +386,32 @@ export class DashboardComponent implements OnInit, OnDestroy {
         ];
 
     console.log(this.activePlan);
+  }
+
+
+  getCatColor(){
+    switch(this.mostSpent){
+      case 'Food and Drink':
+        this.mostSpentColorIndicator = 'food-drink-color';
+        break;
+      case 'Travel':
+        this.mostSpentColorIndicator = 'travel-color';
+        break;
+      case 'Entertainment':
+        this.mostSpentColorIndicator = 'entertainment-color';
+        break;
+      case 'Technology':
+        this.mostSpentColorIndicator = 'technology-color';
+        break;
+      case 'Bills':
+        this.mostSpentColorIndicator = 'bills-color';
+          break;
+      case 'Cash':
+        this.mostSpentColorIndicator = 'Cash';
+    }
+
+    return this.mostSpentColorIndicator;
+    
   }
 
   

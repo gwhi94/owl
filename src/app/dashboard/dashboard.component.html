@@ -39,7 +39,7 @@
         <p>Breakdown for plan <span class="accent-this">{{this.activePlan.name | lowercase}} </span></p> 
         <h1 class="total-left-headers">£ {{this.activePlan.currentSpent}} <span class="warn-this">spent</span> this plan</h1>
         <div class="mt-2 mb-2">
-            <h5 *ngIf="this.mostSpent != ''" class="tags">You have spent the most on <span class="accent-this">{{this.mostSpent}}</span></h5> 
+            <h5 *ngIf="this.mostSpent != ''" class="tags">You have spent the most on <span [ngClass]="getCatColor(class)">{{this.mostSpent}}</span></h5> 
             <h5 *ngIf="this.mostSpent == '' " class="tags">You have not spent anything this plan ! </h5>                     
         </div> 
                   
@@ -48,32 +48,23 @@
                 <div class="col">
                     
                     <canvas *ngIf="this.mostSpent != '' " baseChart 
-                    [data]="pieChartData" 
-                    [labels]="pieChartLabels" 
-                    [chartType]="pieChartType"
-                    [options]="pieChartOptions"
-                    [plugins]="pieChartPlugins"
-                    [legend]="pieChartLegend">
+                    [data]="doughnutChartData" 
+                    [labels]="doughnutChartLabels" 
+                    [chartType]="doughnutChartType"
+                    [options]="doughnutChartOptions"
+                    [plugins]="doughnutChartPlugins"
+                    [legend]="doughnutChartLegend"
+                    [colors]="doughnutChartColors">
                   </canvas>
                 </div>
                 <div class="col">
-                    <p class="tags">Left this Week</p>
-                    <h3>{{this.activePlan.variableWeeklyLeft}}</h3>
-                </div>
-                <div class="w-100"></div>
-                <div class="col">
-                    <p class="tags">Surplus</p>
-                    <h3>0</h3>
-                </div>    
-                <div class="col">
-                    <p class="tags">Most Spent on</p>
-                    <h3>Test</h3>
-                </div>  
+                    <p class="tags">Upcoming Payments</p>
+                    <ul>
+                        <li *ngFor="let upcomingPayment of this.upcomingPayments">{{upcomingPayment.due}}</li>
+                    </ul>
+                </div>              
             </div>
         </div>
-
-
-
     </div>
 </mat-card>
 

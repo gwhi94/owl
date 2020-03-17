@@ -30,10 +30,14 @@ mat-card {
 
 .accent-this{
     color: mat-color($my-theme-primary);
+    font-weight:600;
 }
 .warn-this{
     color: mat-color($my-theme-warn);
+    font-weight:600;
 }
+
+
 
 .form-alert {
     background:#343a40;

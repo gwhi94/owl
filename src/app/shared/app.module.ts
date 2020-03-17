@@ -14,6 +14,8 @@ import { SharedModule } from '../shared/shared.module';
 //import { PipesModule } from '../pipes/pipes.module';
 import { MatSidenavModule } from '@angular/material';
 
+import { MatToolbarModule } from '@angular/material/toolbar';
+
 
 @NgModule({
   declarations: [
@@ -37,6 +39,7 @@ import { MatSidenavModule } from '@angular/material';
     HttpClientModule,
     AppRoutingModule,
     MatSidenavModule,
+    MatToolbarModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule
          

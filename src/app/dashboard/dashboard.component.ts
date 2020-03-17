@@ -34,6 +34,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   mostSpentColorIndicator:String;
   payments = [];
   upcomingPayments = [];
+  completedPayments = [];
 
   today = moment(moment());  
 
@@ -52,7 +53,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: true,
     legend :{
-      position:'left',
+      position:'bottom',
       labels :{
         padding:10,
         usePointStyle:true
@@ -309,6 +310,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     ['Cash']  */
     let today = moment().format('DD');
     let upcoming = [];
+    let completed = [];
     console.log(today);
     this.paymentsService.getPayments()
       .subscribe(res => {
@@ -316,15 +318,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
         console.log(this.payments);
 
         for(let i = 0; i < this.payments.length;i++){
-          console.log(this.payments[i].payload.doc.data().due);
           if(this.payments[i].payload.doc.data().due > today){
-            upcoming.push(this.payments[i].payload.doc.data());
-
-            
+            if(upcoming.length <=3)
+            upcoming.push(this.payments[i].payload.doc.data());           
+          }else{
+            if(completed.length <=3)
+            completed.push(this.payments[i].payload.doc.data());
           }
         }
 
-
+        this.completedPayments = completed.sort((a, b) => a.due - b.due);
         this.upcomingPayments = upcoming.sort((a, b) => a.due - b.due);
 
 

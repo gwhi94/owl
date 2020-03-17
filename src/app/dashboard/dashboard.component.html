@@ -37,33 +37,46 @@
 <mat-card click="this.addCost" *ngIf="this.activePlan" class="plan-card-active plan-card ">
     <div class="container">
         <p>Breakdown for plan <span class="accent-this">{{this.activePlan.name | lowercase}} </span></p> 
-        <h1 class="total-left-headers">£ {{this.activePlan.currentSpent}} <span class="warn-this">spent</span> this plan</h1>
+        <div class="snapshot-breakdown-line"><h1 class="total-left-headers">£ {{this.activePlan.currentSpent}} <span class="warn-this">spent</span> this plan</h1> <h3 class="accent-this">Surplus:</h3> <h3 class="ml-1 tags"> {{this.activePlan.surplus}}</h3></div>
         <div class="mt-2 mb-2">
             <h5 *ngIf="this.mostSpent != ''" class="tags">You have spent the most on <span [ngClass]="getCatColor(class)">{{this.mostSpent}}</span></h5> 
             <h5 *ngIf="this.mostSpent == '' " class="tags">You have not spent anything this plan ! </h5>                     
         </div> 
                   
         <div class="inset-box plan-breakdown-box " (click)="this.test()">
-            <div class="row no-gutters h-100">
-                <div class="col">
-                    
-                    <canvas *ngIf="this.mostSpent != '' " baseChart 
-                    [data]="doughnutChartData" 
-                    [labels]="doughnutChartLabels" 
-                    [chartType]="doughnutChartType"
-                    [options]="doughnutChartOptions"
-                    [plugins]="doughnutChartPlugins"
-                    [legend]="doughnutChartLegend"
-                    [colors]="doughnutChartColors">
-                  </canvas>
-                </div>
-                <div class="col">
-                    <p class="tags">Upcoming Payments</p>
-                    <ul>
-                        <li *ngFor="let upcomingPayment of this.upcomingPayments">{{upcomingPayment.due}}</li>
-                    </ul>
-                </div>              
-            </div>
+            <div class="row no-gutters h-100">           
+                             
+                    <div class="col-sm-12">
+                        <div class="doughnut-wrapper">
+                            <canvas style="height: 20rem" *ngIf="this.mostSpent != '' " baseChart 
+                            [data]="doughnutChartData" 
+                            [labels]="doughnutChartLabels" 
+                            [chartType]="doughnutChartType"
+                            [options]="doughnutChartOptions"
+                            [plugins]="doughnutChartPlugins"
+                            [legend]="doughnutChartLegend"
+                            [colors]="doughnutChartColors">
+                          </canvas>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 text-center">
+                        <p class="mb-2 mt-3 warn-this">Upcoming Payments</p>
+                        <ul class="upcoming-list-name">
+                            <li *ngFor="let upcomingPayment of this.upcomingPayments">{{upcomingPayment.name}}</li>
+                        </ul>
+                        <ul class="upcoming-list-due">
+                            <li *ngFor="let upcomingPayment of this.upcomingPayments">{{upcomingPayment.due}}</li>
+                        </ul>
+                    </div>     
+                    <div class="col-sm-6 text-center">
+                        <p class="mb-2 mt-3 accent-this">Recent Payments</p>
+                        <ul class="completed-list-name">
+                            <li *ngFor="let completedPayment of this.completedPayments">{{completedPayment.name}}</li>
+                            
+                        </ul>
+                    </div>       
+                               
+            </div>                     
         </div>
     </div>
 </mat-card>

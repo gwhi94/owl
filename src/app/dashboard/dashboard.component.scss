@@ -26,6 +26,30 @@
 
 }
 
+.upcoming-list-name, .upcoming-list-due, .completed-list-name {  
+    list-style-type: none;
+    padding-left:0;
+    
+}
+
+.upcoming-list-due, .upcoming-list-name {
+    width:50%;
+    float:left;
+
+}
+
+.snapshot-breakdown-line{
+    display:flex;
+    align-items:baseline;
+
+    h3 {
+        margin-left:auto;
+        order:2;
+    }
+
+}
+
+
 
 
 

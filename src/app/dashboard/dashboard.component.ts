@@ -263,10 +263,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.activePlan['variableDailyLeft'] = Math.round((this.activePlan['variableDailyLeft'] - costData.cost) * 100) /100;
     this.activePlan['variableWeeklyLeft'] = Math.round((this.activePlan['variableWeeklyLeft'] - costData.cost) * 100 ) /100;
 
-    console.log(this.activePlan);
-
-  
-     
     if(this.activePlan['costCategories'].some(c => c.category == costData.category)){
       console.log("Exists");
       
@@ -298,16 +294,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
   setBreakdown(){
-    //get all categories with costs
-    //get upcoming payments 
-    //show surplus
-
-   /*  ['Travel'],
-    ['Food & Drink'],
-    ['Entertainment'],
-    ['Technology'],
-    ['Bills'],
-    ['Cash']  */
     let today = moment().format('DD');
     let upcoming = [];
     let completed = [];
@@ -322,17 +308,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
             if(upcoming.length <=3)
             upcoming.push(this.payments[i].payload.doc.data());           
           }else{
-            if(completed.length <=3)
+            if(completed.length <=3 )
             completed.push(this.payments[i].payload.doc.data());
           }
         }
 
         this.completedPayments = completed.sort((a, b) => a.due - b.due);
         this.upcomingPayments = upcoming.sort((a, b) => a.due - b.due);
-
-
-
-
 
       })
 

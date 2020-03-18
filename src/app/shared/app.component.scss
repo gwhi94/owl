@@ -9,11 +9,10 @@ mat-sidenav {
 
     .sidenav-container {
         text-align:center;     
-        padding-top:$top-padding;
-         
+        padding-top:$top-padding;        
     }
 
-    .navLinks{
+    .nav-links{
         padding:0;
         list-style: none;
         list-style-type: none;
@@ -40,5 +39,51 @@ mat-sidenav {
   #owl-logo{
       width:150px;
   }
+  #owl-logo-small{
+    width:47px;
+}
+
+.nav-links-mobile{
+    padding:0;
+    list-style: none;
+    list-style-type: none;
+    li {
+        float:left;
+        text-align: center;
+        color:grey;
+        cursor: pointer;
+        
+    }
+
+    .active {
+        color:white !important;
+        outline:none !important;
+    }
+
+    .nav-links-mobile-icons{
+
+        .icons-mobile {
+            font-size: 33px;;
+        }
+       
+        @media screen and(max-width:575px){
+            span {
+                font-size: 12px !important;
+            }
+            .icons-mobile {
+                font-size: 31px;;
+            }
+           
+        }
+        
+        span{
+            font-size: 15px;
+        }
+        display:flex;
+        align-items: center;
+
+    }
+    
+}
     
     

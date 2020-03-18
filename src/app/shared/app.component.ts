@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, HostListener } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { RouterModule, Routes } from '@angular/router';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { PlanService } from '../../app/services/plan-service';
 import { Plan } from '../../app/models/plan';
+import { MatSidenav } from '@angular/material';
 
 
 @Component({
@@ -13,6 +15,16 @@ import { Plan } from '../../app/models/plan';
 })
 
 export class AppComponent {
+  
+  screenWidth:number;
+  private screenWidth$ = new BehaviorSubject<number>(window.innerWidth);
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.screenWidth$.next(event.target.innerWidth);
+  }
+  
+  @ViewChild ('sidenav') sidenav: MatSidenav;
+  
   constructor(private router: Router, private planService: PlanService ) {
 
   }
@@ -20,7 +32,7 @@ export class AppComponent {
   date;
 
   navLinks = [
-    {name:'DASHBOARD', icon:'insert_chart', active:false, link:'/'},
+    {name:'DASHBOARD', icon:'insert_chart', active:true, link:'/'},
     {name:'PLANS', icon:'insert_invitation', active:false, link:'/plans'},
     {name:'PAYMENTS', icon:'money', active:false, link:'/payments'},
     {name:'SETTINGS', icon:'build', active:false},
@@ -29,6 +41,10 @@ export class AppComponent {
   ]
 
   ngOnInit(){
+
+    this.screenWidth$.subscribe(width => {
+      this.screenWidth = width;
+    });
 
     this.date = moment(new Date()).format('DD/MM/YYYY');
     //this is where we need to get the active plan

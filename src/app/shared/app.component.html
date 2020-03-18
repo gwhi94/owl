@@ -1,17 +1,11 @@
 
-<mat-toolbar>
-  <span>My Application</span>
-</mat-toolbar>
-
-
-
 <mat-sidenav-container class="side-nav" fullscreen>
-  <mat-sidenav mode="side" [opened]="false">
+  <mat-sidenav #sidenav mode="side" [opened]="screenWidth > 945" class="">
     <div class="sidenav-container">
       <div class="image-container">
         <img id="owl-logo" src="../assets/icons/owl-logo.svg">
       </div>     
-      <ul class="navLinks" role="list">       
+      <ul class="nav-links" role="list">       
           <li *ngFor="let navLink of navLinks" (click)="activateClass(navLink)" routerLink="{{navLink.link}}" [ngClass]="{'active': navLink.active}" role="listitem"><i class="material-icons">{{navLink.icon}}</i>
             <p>{{navLink.name}}</p>
           </li>       
@@ -19,6 +13,22 @@
     </div>    
   </mat-sidenav>
   <mat-sidenav-content>
+    <mat-toolbar *ngIf="screenWidth <= 945">
+     
+      <ul class="nav-links-mobile mb-0" role="list">       
+        <li *ngFor="let navLink of navLinks" (click)="activateClass(navLink)" routerLink="{{navLink.link}}" [ngClass]="{'active': navLink.active}" class="mr-4" role="listitem">
+          <div class="nav-links-mobile-icons"><i class="icons-mobile material-icons mr-2">{{navLink.icon}}</i> <span *ngIf="navLink.active">{{navLink.name}}</span></div>
+        </li>       
+    </ul>
+
+    <div class="image-container" style="margin-left: auto;">
+      <img id="owl-logo-small" src="../assets/icons/owl-logo.svg">
+    </div> 
+       
+    </mat-toolbar>
+    
+    
+    
     <div class="container content-container">
       <div class="row">
         <div class="col-sm-12">
@@ -29,3 +39,4 @@
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
+

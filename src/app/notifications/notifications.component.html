@@ -1,1 +1,35 @@
-<p>notifications works!</p>
+<h1>HELLO</h1>
+
+<mat-card click="this.addCost" class="plan-card-active plan-card mb-5">
+
+    <div class="container">
+        <p>Current plan <span class="accent-this">{{this.activePlan.name | lowercase}} </span> <button (click)="addCost()" class="card-button cost" mat-button [disableRipple]="true"><i *ngIf="!lockPlan" class="material-icons">attach_money</i><i *ngIf="lockPlan" class="material-icons">lock</i> </button></p> 
+        <h1 class="total-left-headers">£ {{this.activePlan.variableDailyLeft}} left <span class="accent-this">today</span></h1>
+        <div class="progress-bar">
+        <div class="plan-progress" [ngStyle]="{'width': planProgressPercentage + '%' , 'background-color':planProgressColor}"></div>           
+        </div> 
+        
+           
+        <div class="inset-box remainder-box" (click)="this.test()">
+            <div class="row no-gutters h-100">
+                <div class="col">
+                    <p class="tags">Total Left in the Plan</p>
+                    <h3>{{this.activePlan.currentLeft}}</h3>
+                </div>
+                <div class="col">
+                    <p class="tags">Left this Week</p>
+                    <h3>{{this.activePlan.variableWeeklyLeft}}</h3>
+                </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <p class="tags">Surplus</p>
+                    <h3>0</h3>
+                </div>    
+                <div class="col">
+                    <p class="tags">Most Spent on</p>
+                    <h3>Test</h3>
+                </div>  
+            </div>
+        </div>
+    </div>
+</mat-card>

@@ -44,7 +44,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    }
 
 
-  public doughnutChartOptions: ChartOptions = {
+  public barChartOptions: ChartOptions = {
     elements :{
       arc : {
         borderWidth:0
@@ -52,17 +52,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     },
     responsive: true,
     maintainAspectRatio: true,
-    legend :{
-      position:'bottom',
-      labels :{
-        padding:10,
-        usePointStyle:true
-
+    legend: {
+      display: false
       }
-     
-    }
   };
-  public doughnutChartLabels: Label[] = [
+  public barChartLabels: Label[] = [
     ['Travel'],
     ['Food & Drink'],
     ['Entertainment'],
@@ -70,11 +64,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     ['Bills'],
     ['Cash'] 
       ];
-  public doughnutChartData: SingleDataSet;
-  public doughnutChartType: ChartType = 'doughnut';
-  public doughnutChartLegend = true;
-  public doughnutChartPlugins = [];
-  private doughnutChartColors = [
+  public barChartData: SingleDataSet;
+  public barChartType: ChartType = 'horizontalBar';
+  public barChartLegend = true;
+  public barChartPlugins = [];
+  private barChartColors = [
     {
       backgroundColor: [
         '#42a5f5',
@@ -361,7 +355,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
 
-    this.doughnutChartData = [
+    this.barChartData = [
       costObj.Travel,
        costObj.foodAndDrink,
         costObj.Entertainment,

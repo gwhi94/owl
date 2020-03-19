@@ -1,3 +1,10 @@
+ 
+ 
+
+ <app-notifications></app-notifications>
+ 
+ 
+ 
  <mat-card click="this.addCost" *ngIf="this.activePlan" class="plan-card-active plan-card mb-5">
     <div class="container">
         <p>Current plan <span class="accent-this">{{this.activePlan.name | lowercase}} </span> <button (click)="addCost()" class="card-button cost" mat-button [disableRipple]="true"><i *ngIf="!lockPlan" class="material-icons">attach_money</i><i *ngIf="lockPlan" class="material-icons">lock</i> </button></p> 
@@ -10,7 +17,7 @@
         <div class="inset-box remainder-box" (click)="this.test()">
             <div class="row no-gutters h-100">
                 <div class="col">
-                    <p class="tags">Total Left</p>
+                    <p class="tags">Total Left in the Plan</p>
                     <h3>{{this.activePlan.currentLeft}}</h3>
                 </div>
                 <div class="col">
@@ -28,9 +35,6 @@
                 </div>  
             </div>
         </div>
-
-
-
     </div>
 </mat-card>
 
@@ -49,17 +53,28 @@
                     <div class="col-sm-12">
                         <div class="doughnut-wrapper">
                             <canvas style="height: 20rem" *ngIf="this.mostSpent != '' " baseChart 
-                            [data]="doughnutChartData" 
-                            [labels]="doughnutChartLabels" 
-                            [chartType]="doughnutChartType"
-                            [options]="doughnutChartOptions"
-                            [plugins]="doughnutChartPlugins"
-                            [legend]="doughnutChartLegend"
-                            [colors]="doughnutChartColors">
+                            [data]="barChartData" 
+                            [labels]="barChartLabels" 
+                            [chartType]="barChartType"
+                            [options]="barChartOptions"
+                            [plugins]="barChartPlugins"
+                           
+                            [colors]="barChartColors">
                           </canvas>
                         </div>
                     </div>
-                    <div class="col-sm-6 text-center">
+
+                   <!--  <div class="col-sm-6 text-center">
+                        <p class="mb-2 mt-3 warn-this">Upcoming Payments</p>
+                        <ul class="upcoming-list-name">
+                            <li *ngFor="let upcomingPayment of this.upcomingPayments">{{upcomingPayment.name}}</li>
+                        </ul>
+                        <ul class="upcoming-list-due">
+                            <li *ngFor="let upcomingPayment of this.upcomingPayments">{{upcomingPayment.due}}</li>
+                        </ul>
+                    </div>      -->
+                    
+                   <!--  <div class="col-sm-6 text-center">
                         <p class="mb-2 mt-3 warn-this">Upcoming Payments</p>
                         <ul class="upcoming-list-name">
                             <li *ngFor="let upcomingPayment of this.upcomingPayments">{{upcomingPayment.name}}</li>
@@ -68,13 +83,14 @@
                             <li *ngFor="let upcomingPayment of this.upcomingPayments">{{upcomingPayment.due}}</li>
                         </ul>
                     </div>     
+                    
                     <div class="col-sm-6 text-center">
                         <p class="mb-2 mt-3 accent-this">Recent Payments</p>
                         <ul class="completed-list-name">
                             <li *ngFor="let completedPayment of this.completedPayments">{{completedPayment.name}}</li>
                             
                         </ul>
-                    </div>       
+                    </div>       -->
                                
             </div>                     
         </div>

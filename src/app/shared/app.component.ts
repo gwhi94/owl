@@ -23,7 +23,7 @@ export class AppComponent {
     this.screenWidth$.next(event.target.innerWidth);
   }
   
-  @ViewChild ('sidenav') sidenav: MatSidenav;
+  @ViewChild ('sidenav', {static: false}) sidenav: MatSidenav;
   
   constructor(private router: Router, private planService: PlanService ) {
 

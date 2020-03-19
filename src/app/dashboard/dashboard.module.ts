@@ -4,6 +4,10 @@ import { CommonModule } from '@angular/common';
 import { ChartsModule } from 'ng2-charts';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 
+import { NotificationsModule } from '../notifications/notifications.module';
+
+import { NotificationsComponent } from '../notifications/notifications.component';
+
 import {
   MatButtonModule,
   MatFormFieldModule,
@@ -17,15 +21,16 @@ import {
   MatListModule,
   MatSnackBarModule,
   
-
 } from '@angular/material';
 
 @NgModule({
   declarations: [
-    DashboardComponent
-
+    DashboardComponent,
+    NotificationsComponent
+    
   ],
   imports: [
+ 
     CommonModule,
     MatButtonModule,
     MatFormFieldModule,

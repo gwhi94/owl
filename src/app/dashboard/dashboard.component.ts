@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
@@ -12,7 +12,9 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { ChartType, ChartOptions } from 'chart.js';
 import { SingleDataSet, Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, Color } from 'ng2-charts';
 
+import { DataService } from '../services/data-service';
 import { PaymentsService } from '../services/payments-service';
+
 
 
 @Component({
@@ -38,7 +40,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   today = moment(moment());  
 
-  constructor(private paymentsService:PaymentsService, private snackBar:MatSnackBar, private planService:PlanService, public dialog: MatDialog ) {
+
+  constructor(private dataService:DataService, private paymentsService:PaymentsService, private snackBar:MatSnackBar, private planService:PlanService, public dialog: MatDialog ) {
     monkeyPatchChartJsTooltip();
     monkeyPatchChartJsLegend(); 
    }
@@ -286,16 +289,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
 
-
   setBreakdown(){
     let today = moment().format('DD');
     let upcoming = [];
     let completed = [];
-    console.log(today);
+
     this.paymentsService.getPayments()
       .subscribe(res => {
         this.payments = res;
-        console.log(this.payments);
+
 
         for(let i = 0; i < this.payments.length;i++){
           if(this.payments[i].payload.doc.data().due > today){
@@ -323,7 +325,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     
 
     for(let i = 0 ; i < this.activePlan['costCategories'].length;i++){
-      console.log("loop");
       if(this.activePlan['costCategories'][i].category == 'Travel'){
         costObj.Travel = this.activePlan['costCategories'][i].count
 
@@ -346,13 +347,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     this.mostSpent = Object.keys(costObj).reduce((a, b) => costObj[a] > costObj[b] ? a:b);
-
     
+
+    this.sendMostSpent(this.mostSpent);
+   
     if(this.mostSpent == 'foodAndDrink')this.mostSpent = 'Food and Drink';   
     if(this.activePlan['costCategories'].length == 0)this.mostSpent = '';
-
-
-
 
 
     this.barChartData = [
@@ -363,12 +363,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
           costObj.Bills,
            costObj.Cash
         ];
-
-    console.log(this.activePlan);
   }
 
 
   getCatColor(){
+    //getting called multiple times
     switch(this.mostSpent){
       case 'Food and Drink':
         this.mostSpentColorIndicator = 'food-drink-color';
@@ -388,9 +387,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
       case 'Cash':
         this.mostSpentColorIndicator = 'Cash';
     }
-
-    return this.mostSpentColorIndicator;
     
+    return this.mostSpentColorIndicator;    
+  }
+
+
+  sendMostSpent(send){
+    console.log(send);
+    this.dataService.currentMostSpent.subscribe(mostSpent => this.mostSpent = send)
+    this.dataService.changeMostSpent(this.mostSpent);
   }
 
   

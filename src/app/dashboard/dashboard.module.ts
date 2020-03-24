@@ -26,7 +26,7 @@ import {
 @NgModule({
   declarations: [
     DashboardComponent,
-    NotificationsComponent
+   
     
   ],
   imports: [

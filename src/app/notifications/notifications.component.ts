@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+
+import { DataService } from '../services/data-service';
 
 @Component({
   selector: 'app-notifications',
@@ -7,9 +9,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NotificationsComponent implements OnInit {
 
-  constructor() { }
+  //Things in notifications
+    //Upcoming payments query firestore maybe
+    //Spent today daily left minus var daily left
+    //Spent this week same as above
+    //Currently spent the most on  get from dashboard component
+
+  mostSpent:String;
+
+  constructor(private dataService:DataService) { }
 
   ngOnInit() {
+    this.dataService.currentMostSpent.subscribe(mostSpent => this.mostSpent = mostSpent)
+
+    
+
+    
   }
 
 }

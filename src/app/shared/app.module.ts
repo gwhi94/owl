@@ -12,14 +12,31 @@ import { PaymentsModule } from '../payments/payments.module';
 import { PlansModule } from '../plans/plans.module';
 import { SharedModule } from '../shared/shared.module';
 //import { PipesModule } from '../pipes/pipes.module';
-import { MatSidenavModule } from '@angular/material';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
+
+import { NotificationsComponent } from '../notifications/notifications.component';
+
+import {
+  MatButtonModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatRippleModule,
+  MatSelectModule,
+  MatDatepickerModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatSidenavModule,
+  MatListModule,
+  MatSnackBarModule,
+  
+} from '@angular/material';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    NotificationsComponent
 
   
   ],
@@ -29,6 +46,17 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   ],
    
   imports: [
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatRippleModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatSidenavModule,
+    MatListModule,
+    MatSnackBarModule,
     SharedModule,
     PlansModule,
     PaymentsModule,

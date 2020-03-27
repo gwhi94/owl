@@ -33,6 +33,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   currentDate:string; 
   lockPlan = false;
   mostSpent:String = '';
+  spentToday:Number;
+  spentThisWeek:Number;
   mostSpentColorIndicator:String;
   payments = [];
   upcomingPayments = [];
@@ -150,7 +152,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         plan.lastUpdated = this.today.format('YYYY-MM-DDTHH:mm:ss.SSS'); 
          this.planService.updatePlan(plan['id'], plan)
             .then( res => {
-          this.activePlan = plan;
+              this.activePlan = plan;
+              this.sendSpentToday(plan);
+              this.sendSpentThisWeek(plan);  
           }
         )  
       }
@@ -210,9 +214,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
         .then(
           res => {
             console.log("Plan updated");
-            this.activePlan = plan;  
+            this.activePlan = plan;
+            this.sendSpentToday(plan);
+            this.sendSpentThisWeek(plan);  
+            
           }
-        )       
+        )  
+        
+             
 
   }
 
@@ -282,6 +291,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         res => {
           console.log("Plan updated");
           this.setBreakdown();
+          this.sendSpentToday(this.activePlan);
+          this.sendSpentThisWeek(this.activePlan);
         }
       )
 
@@ -337,7 +348,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }else if(this.activePlan['costCategories'][i].category == 'Technology'){
         costObj.Technology = this.activePlan['costCategories'][i].count
       
-      }else if (this.activePlan['countCategories'][i].category == 'Bills'){
+      }else if (this.activePlan['costCategories'][i].category == 'Bills'){
         costObj.Bills = this.activePlan['costCategories'][i].count
       
       }else if (this.activePlan['costCategories'][i].category == 'Cash'){
@@ -391,13 +402,33 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return this.mostSpentColorIndicator;    
   }
 
-
   sendMostSpent(send){
     console.log(send);
     this.dataService.currentMostSpent.subscribe(mostSpent => this.mostSpent = send)
     this.dataService.changeMostSpent(this.mostSpent);
   }
 
-  
+  sendSpentToday(plan){
+    console.log("hit");
 
+    let spentToday = plan.dailyleft - plan.variableDailyLeft;
+    this.dataService.currentSpentToday.subscribe(spentToday => this.spentToday = spentToday)
+    this.dataService.changeSpentToday(spentToday);
+
+    //make sure these are called on update
+
+
+  }
+
+  sendSpentThisWeek(plan){
+    console.log("hit2");
+
+    
+    let spentThisWeek = plan.weeklyLeft - plan.variableWeeklyLeft;
+    console.log(spentThisWeek);
+    this.dataService.currentSpentThisWeek.subscribe(spentThisWeek => this.spentThisWeek = spentThisWeek)
+    this.dataService.changeSpentThisWeek(spentThisWeek);
+
+
+  }
 }

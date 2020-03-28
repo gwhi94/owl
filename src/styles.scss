@@ -2,9 +2,9 @@
 @import './theme.scss';
 @import './cards.scss';
 
-@import "../node_modules/uikit/src/scss/variables-theme.scss";
+/* @import "../node_modules/uikit/src/scss/variables-theme.scss";
 @import "../node_modules/uikit/src/scss/mixins-theme.scss";
-@import "../node_modules/uikit/src/scss/uikit-theme.scss";
+@import "../node_modules/uikit/src/scss/uikit-theme.scss"; */
 
 
 html, body { height: 100%; }
@@ -42,8 +42,6 @@ mat-card {
     font-weight:600;
 }
 
-
-
 .form-alert {
     background:#343a40;
     color:map-get($my-theme-primary, 900);
@@ -64,7 +62,6 @@ mat-card {
         transform: translateY(0);
     }
 }
-
 
 
 //modals 

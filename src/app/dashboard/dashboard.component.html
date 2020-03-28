@@ -1,10 +1,5 @@
  
  
-
-
- 
- 
- 
  <mat-card click="this.addCost" *ngIf="this.activePlan" class="plan-card-active plan-card mb-5">
     <div class="container">
         <p>Current plan <span class="accent-this">{{this.activePlan.name | lowercase}} </span> <button (click)="addCost()" class="card-button cost" mat-button [disableRipple]="true"><i *ngIf="!lockPlan" class="material-icons">attach_money</i><i *ngIf="lockPlan" class="material-icons">lock</i> </button></p> 
@@ -14,7 +9,7 @@
         </div> 
         
            
-        <div class="inset-box remainder-box" (click)="this.test()">
+        <div class="inset-box remainder-box">
             <div class="row no-gutters h-100">
                 <div class="col">
                     <p class="tags">Total Left in the Plan</p>

@@ -35,6 +35,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   mostSpent:String = '';
   spentToday:Number;
   spentThisWeek:Number;
+  percentageSpent:Number;
   mostSpentColorIndicator:String;
   payments = [];
   upcomingPayments = [];
@@ -155,6 +156,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
               this.activePlan = plan;
               this.sendSpentToday(plan);
               this.sendSpentThisWeek(plan);  
+              this.sendPercentageSpent(plan);
           }
         )  
       }
@@ -216,7 +218,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
             console.log("Plan updated");
             this.activePlan = plan;
             this.sendSpentToday(plan);
-            this.sendSpentThisWeek(plan);  
+            this.sendSpentThisWeek(plan); 
+            this.sendPercentageSpent(plan); 
             
           }
         )  
@@ -293,6 +296,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.setBreakdown();
           this.sendSpentToday(this.activePlan);
           this.sendSpentThisWeek(this.activePlan);
+          this.sendPercentageSpent(this.activePlan);
         }
       )
 
@@ -422,13 +426,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   sendSpentThisWeek(plan){
     console.log("hit2");
-
-    
+  
     let spentThisWeek = plan.weeklyLeft - plan.variableWeeklyLeft;
     console.log(spentThisWeek);
     this.dataService.currentSpentThisWeek.subscribe(spentThisWeek => this.spentThisWeek = spentThisWeek)
     this.dataService.changeSpentThisWeek(spentThisWeek);
 
 
+  }
+
+  sendPercentageSpent(plan){
+    let percentageSpent = Math.round(plan.currentSpent * (100/plan.totalLeft) * 100 ) / 100;
+
+    console.log(percentageSpent);
+
+    this.dataService.currentPercentageSpent.subscribe(percentageSpent => this.percentageSpent = percentageSpent)
+    this.dataService.changePercentageSpent(percentageSpent);
   }
 }

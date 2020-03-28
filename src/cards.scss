@@ -89,3 +89,20 @@ $card-elements-spacing:15px;
     }
 
 }
+
+.notifications-card {
+   
+    min-height: 150px;
+    max-height: 150px;
+    background-color: $my-theme-grey-light !important;
+
+
+    .notifications-card-header {
+    
+      
+    }
+
+    .notification-body{
+       
+    }
+}

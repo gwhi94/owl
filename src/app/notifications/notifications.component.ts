@@ -3,6 +3,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { DataService } from '../services/data-service';
 import { PlanService } from '../services/plan-service';
 
+declare var UIkit: any;
+
 @Component({
   selector: 'app-notifications',
   templateUrl: './notifications.component.html',

@@ -264,7 +264,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   recalculatePlan(costData) {
-    console.log(costData);
 
     this.activePlan['currentSpent'] = (this.activePlan['currentSpent'] + costData.cost);
     this.activePlan['currentLeft'] = (this.activePlan['currentLeft'] - costData.cost); 

@@ -91,10 +91,10 @@ $card-elements-spacing:15px;
 }
 
 .notifications-card {
-   
-    min-height: 150px;
-    max-height: 150px;
+    min-height: 120px;
     background-color: $my-theme-grey-light !important;
+    padding-bottom: 0 !important;
+   // border: 0.5px solid #1eb980;
 
 
     .notifications-card-header {
@@ -103,6 +103,9 @@ $card-elements-spacing:15px;
     }
 
     .notification-body{
+        p {
+            font-size:17px;
+        }
        
     }
 }

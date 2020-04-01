@@ -7,12 +7,31 @@ import { FocusPlanModalComponent } from '../modals/focus-plan-modal/focus-plan-m
 import { PlanService } from '../services/plan-service'
 import { Plan } from '../models/plan';
 import { Subscription } from 'rxjs';
+import { trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
 
 
 @Component({
   selector: 'app-plans',
   templateUrl: './plans.component.html',
-  styleUrls: ['./plans.component.scss']
+  styleUrls: ['./plans.component.scss'],
+  animations : [
+
+    trigger('listAnimation', [
+
+      transition('* => *', [
+
+        query(':enter', style({opacity:0}), {optional:true}),
+       
+        query(':enter', stagger('200ms', [
+          animate('1s ease-in', keyframes([
+            style({opacity:0, transform:'translateY(-75px)', offset:0}),
+            style({opacity:0.5, transform:'translateY(35px)', offset:0.3}),
+            style({opacity:1, transform:'translateY(0)', offset:1}),
+          ]))
+        ]), {optional:true})
+      ])
+    ])
+  ]
 })
 
 

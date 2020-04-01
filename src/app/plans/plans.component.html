@@ -7,9 +7,9 @@
       <a></a>
     </mat-card-title-group>
   </mat-card> -->
-
-  <mat-card *ngFor= "let plan of plans" (click)="this.getPlan(plan)" class="plan-card-slim">
-    <div class="container">
+<div id="container" [@listAnimation]="plans.length">
+  <mat-card id="list" *ngFor= "let plan of plans" (click)="this.getPlan(plan)" class="plan-card-slim">
+    <div class="container" >
       <div class="row plan-card-slim-row h-100">
         <div class="col-sm">
           <p>{{plan.payload.doc.data().name}}</p>
@@ -29,7 +29,7 @@
   <mat-card class="payload-card-new" (click)="openConfirmDialog()">
     <i class="material-icons">add_circle</i>     
   </mat-card>
-
+</div>
 
 
 

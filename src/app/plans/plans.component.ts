@@ -14,7 +14,7 @@ import { trigger, style, transition, animate, keyframes, query, stagger } from '
   selector: 'app-plans',
   templateUrl: './plans.component.html',
   styleUrls: ['./plans.component.scss'],
-  animations : [
+/*   animations : [
 
     trigger('listAnimation', [
 
@@ -31,7 +31,7 @@ import { trigger, style, transition, animate, keyframes, query, stagger } from '
         ]), {optional:true})
       ])
     ])
-  ]
+  ] */
 })
 
 
@@ -56,7 +56,16 @@ export class PlansComponent implements OnInit, OnDestroy {
 
   getPlans(){
     this.planService.getPlans()
-      .subscribe(res =>(this.plans = res));
+      .subscribe(res =>{
+        this.plans = res;
+        this.findActive()
+      })
+     
+  }
+
+  public findActive(){
+    //TODO filter out active plan and put it in its own section on view
+
   }
 
   getPlan(plan){

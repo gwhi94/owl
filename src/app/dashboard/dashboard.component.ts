@@ -60,7 +60,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
     maintainAspectRatio: true,
     legend: {
       display: false
-      }
+      },
+      scales: {
+        xAxes: [{
+            gridLines: {
+                display:false
+            }
+        }],
+        yAxes: [{
+            gridLines: {
+                display:false
+            }   
+        }]
+    }
   };
   public barChartLabels: Label[] = [
     ['Travel'],
@@ -370,13 +382,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
     this.barChartData = [
-      costObj.Travel,
-       costObj.foodAndDrink,
+        costObj.Travel,
+        costObj.foodAndDrink,
         costObj.Entertainment,
-         costObj.Technology,
-          costObj.Bills,
-           costObj.Cash
-        ];
+        costObj.Technology,
+        costObj.Bills,
+        costObj.Cash
+      ];
   }
 
 

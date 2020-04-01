@@ -23,6 +23,6 @@
 
     <div class="app-modal-footer">
         <button (click)="addCost()" [disabled]="this.selectedCategory == '' || this.cost == undefined " class="modal-button" type="submit" mat-button color="accent">Add</button> 
-        <button class="modal-button" type="cancel" mat-button color="warn">Cancel</button>  
+        <button class="modal-button" mat-dialog-close type="cancel" mat-button color="warn">Cancel</button>  
     </div>   
 </div>

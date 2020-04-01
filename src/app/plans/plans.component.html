@@ -8,8 +8,8 @@
     </mat-card-title-group>
   </mat-card> -->
 <div id="container" [@listAnimation]="plans.length">
-  <mat-card id="list" *ngFor= "let plan of plans" (click)="this.getPlan(plan)" class="plan-card-slim">
-    <div class="container" >
+  <mat-card [ngClass]="{'active-plan': plan.payload.doc.data().activePlan == true}"  id="list" *ngFor= "let plan of plans" (click)="this.getPlan(plan)" class="plan-card-slim">
+    <div class="container">
       <div class="row plan-card-slim-row h-100">
         <div class="col-sm">
           <p>{{plan.payload.doc.data().name}}</p>

@@ -1,1 +1,31 @@
-<p>{{this.data}}</p>
+<div class="app-modal-container">
+    <div class="container">
+        <p><span class="accent-this">{{this.data.inFocusPlan.name}}</span> plan from <span class="tags">{{this.data.inFocusPlan.dateRange.begin}} to {{this.data.inFocusPlan.dateRange.end}}</span></p>
+        <div class="snapshot-breakdown-line"><h1 class="total-left-headers">You <span class="warn-this">spent</span> £{{this.data.inFocusPlan.currentSpent}} this plan</h1></div>
+        <h5 class="tags mb-2">And accumulated £{{this.data.inFocusPlan.surplus}} as <span class="accent-this">Surplus</span></h5> 
+        
+           
+        <div class="inset-box plan-breakdown-box ">
+            <div class="row no-gutters h-100">                                       
+                    <div class="col-sm-12">
+                        <div class="doughnut-wrapper">
+                            <canvas style="height: 20rem" *ngIf="this.mostSpent != '' " baseChart 
+                            [data]="barChartData" 
+                            [labels]="barChartLabels" 
+                            [chartType]="barChartType"
+                            [options]="barChartOptions"
+                            [plugins]="barChartPlugins"                          
+                            [colors]="barChartColors">
+                          </canvas>
+                        </div>
+                    </div>                   
+            </div>                     
+        </div>
+    </div>
+   
+</div>
+
+<div class="app-modal-footer">
+    <button class="modal-button" mat-dialog-close type="cancel" mat-button color="warn">Close</button>  
+</div>   
+

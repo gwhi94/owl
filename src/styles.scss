@@ -63,12 +63,15 @@ mat-card {
     }
 }
 
+.tags {
+    color:$my-theme-grey-text;
+    margin-bottom:0px;
+}
 
 //modals 
-
 .mat-dialog-container {
-    border-left:2px solid mat-color($my-theme-accent);
-    border-radius:0px 15px 15px 0px !important;
+    border:2px solid $my-theme-grey-light;
+    border-radius:15px !important;
     background-color:$my-theme-grey-dark !important;
 }
 

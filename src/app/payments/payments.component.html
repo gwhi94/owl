@@ -1,4 +1,4 @@
-
+<!-- 
 <mat-card class="plan-card-active plan-card ">
     <div class="container">
         <p>Your upcoming <span class="accent-this">payments </span></p> 
@@ -40,4 +40,31 @@
         </div>
     </div>
 </mat-card>
+ -->
+
+
+<div id="container" [@listAnimation]="payments.length">
+ 
+    <h3 class="tags mt-3 mb-3">Your current Payments</h3>
+    <mat-card id="list" *ngFor= "let payment of payments" class="plan-card-slim mb-3">
+      <div class="container">
+        <div class="row plan-card-slim-row h-100">
+          <div class="col-sm">
+            <p class="accent-this">{{payment.payload.doc.data().name}} <span class="warn-this">{{payment.payload.doc.data().amount}}</span></p>
+          </div>
+          <div class="col-sm">
+            <p class="tags">{{payment.payload.doc.data().due}}<sup>{{payment.payload.doc.data().due | dateSuffix}}</sup></p>
+          </div>
+          <div class="col-sm text-right" (click)="deletePayment(payment);$event.stopPropagation()">
+            <p><i class="material-icons">delete</i></p>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  
+   
+    <mat-card class="plan-card-slim-new" (click)="addPayment()">
+      <i class="material-icons">add_circle</i>     
+    </mat-card>
+  </div>
 

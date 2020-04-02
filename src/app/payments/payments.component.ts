@@ -3,6 +3,7 @@ import { NewPaymentModalComponent } from '../modals/new-payment-modal/new-paymen
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PaymentsService } from '../services/payments-service';
 import { Subscription } from 'rxjs';
+import { trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
 
 
 
@@ -12,14 +13,29 @@ import { Subscription } from 'rxjs';
   selector: 'app-payments',
   templateUrl: './payments.component.html',
   styleUrls: ['./payments.component.scss'],
+  animations : [
+
+    trigger('listAnimation', [
+
+      transition('* => *', [
+
+        query(':enter', style({opacity:0}), {optional:true}),
+       
+        query(':enter', stagger('200ms', [
+          animate('1s ease-in', keyframes([
+            style({opacity:0, transform:'translateY(-75px)', offset:0}),
+            style({opacity:0.5, transform:'translateY(35px)', offset:0.3}),
+            style({opacity:1, transform:'translateY(0)', offset:1}),
+          ]))
+        ]), {optional:true})
+      ])
+    ])
+  ]
 })
+
 export class PaymentsComponent implements OnInit, OnDestroy {
-  //will have to programmtically apend the year and month to the payment due date
-  //all payments recur monthly
-  //can have one off payment/set as boolean
-  //must clear one offs after payment date reached. 
-  //expenses will no longer be manual input at new plan modal
-  //payments will total to give the expenses
+//currently the payments total the expenses and is passed as one number 
+//we need to check 
 
   private subscription:Subscription;
 

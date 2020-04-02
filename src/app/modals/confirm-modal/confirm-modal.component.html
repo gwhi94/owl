@@ -1,9 +1,12 @@
-<mat-dialog-content>
-	<p>
-		{{message}}
-	</p>
-</mat-dialog-content>
-<mat-dialog-actions align="center">
+<div class="app-modal-container">
+    <div class="container">
+		<div class="app-modal-head">
+			<h4 class="tags">{{message}}</h4>
+		</div>      
+    </div>   
+</div>
+
+<div class="app-modal-footer">
 	<button mat-raised-button color="primary" (click)="onConfirmClick()" tabindex="1">{{confirmButtonText}}</button>
 	<button mat-raised-button mat-dialog-close tabindex="-1">{{cancelButtonText}}</button>
-</mat-dialog-actions>
+</div>   

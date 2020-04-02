@@ -4,14 +4,13 @@
     <div class="container">
       <div class="row plan-card-slim-row h-100">
         <div class="col-sm">
-          <p>{{activePlan.payload.doc.data().name}}</p>
+          <p class="bold-this">{{activePlan.payload.doc.data().name}}</p>
         </div>
       </div>
     </div>
   </mat-card>
 
   <h3 class="tags mt-3 mb-3">Your past plans</h3>
-
   <mat-card [ngClass]="{'active-plan': plan.payload.doc.data().activePlan == true}"  id="list" *ngFor= "let plan of plans" (click)="this.getPlan(plan)" class="plan-card-slim mb-3">
     <div class="container">
       <div class="row plan-card-slim-row h-100">

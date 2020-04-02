@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
   selector: 'app-plans',
   templateUrl: './plans.component.html',
   styleUrls: ['./plans.component.scss'],
-/*   animations : [
+  animations : [
 
     trigger('listAnimation', [
 
@@ -31,7 +31,7 @@ import { Router } from '@angular/router';
         ]), {optional:true})
       ])
     ])
-  ] */
+  ]
 })
 
 
@@ -77,11 +77,6 @@ export class PlansComponent implements OnInit, OnDestroy {
     this.plans = this.plans.filter(function(value, index, arr){
       return value.payload.doc.data().activePlan == false;
     })
-
-
-    console.log(this.activePlans[0].payload.doc.data());
-
-
 
 
   }

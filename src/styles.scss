@@ -1,11 +1,5 @@
-/* You can add global styles to this file, and also import other style files */
 @import './theme.scss';
 @import './cards.scss';
-
-/* @import "../node_modules/uikit/src/scss/variables-theme.scss";
-@import "../node_modules/uikit/src/scss/mixins-theme.scss";
-@import "../node_modules/uikit/src/scss/uikit-theme.scss"; */
-
 
 html, body { height: 100%; }
 body { margin: 0; }
@@ -26,7 +20,6 @@ mat-card {
     background-color:$my-theme-grey-dark !important;
 }
 
-
 .plan-card {
     border-radius: 15px !important;
     box-shadow: -5px -5px 15px #353535, 5px 5px 15px #1E1E1E !important;
@@ -39,6 +32,9 @@ mat-card {
 }
 .warn-this{
     color: mat-color($my-theme-warn);
+    font-weight:600;
+}
+.bold-this{
     font-weight:600;
 }
 

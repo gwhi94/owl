@@ -1,28 +1,37 @@
 .plan-card-slim{
+    cursor: pointer;
     border-radius: 2px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-    margin-bottom:12px;
     padding:0;
     p {
         padding:10px;
+    }
+    i {
+        font-size: 30px;
     }
 
 }
 
 .plan-card-slim-new {
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
     border-radius: 2px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    i {
+        font-size: 30px;
+    }
 }
 
 
 .plan-card-slim-row{
     display: flex;
     align-items: center;
-
    p {
        margin-top: auto;
        margin:0;
    }
+  
 }
 
 .active-plan {

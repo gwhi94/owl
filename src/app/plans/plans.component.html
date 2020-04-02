@@ -1,21 +1,25 @@
-
-  <!--this will be ngFor passing in the id on click to fetch that particular plan-->
-  <!-- <mat-card *ngFor= "let plan of plans" (click)="focusPlan(plan.id)" class="payload-card">
-    <mat-card-title-group>
-      <span></span>
-      <span class="fill-remaining-space"></span>
-      <a></a>
-    </mat-card-title-group>
-  </mat-card> -->
 <div id="container" [@listAnimation]="plans.length">
-  <mat-card [ngClass]="{'active-plan': plan.payload.doc.data().activePlan == true}"  id="list" *ngFor= "let plan of plans" (click)="this.getPlan(plan)" class="plan-card-slim">
+  <h3 class="tags mb-3">Your current plan</h3>
+  <mat-card (click)="this.navigateToDashboard()" class="active-plan plan-card-slim" id="list" *ngFor="let activePlan of activePlans">
     <div class="container">
       <div class="row plan-card-slim-row h-100">
         <div class="col-sm">
-          <p>{{plan.payload.doc.data().name}}</p>
+          <p>{{activePlan.payload.doc.data().name}}</p>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+
+  <h3 class="tags mt-3 mb-3">Your past plans</h3>
+
+  <mat-card [ngClass]="{'active-plan': plan.payload.doc.data().activePlan == true}"  id="list" *ngFor= "let plan of plans" (click)="this.getPlan(plan)" class="plan-card-slim mb-3">
+    <div class="container">
+      <div class="row plan-card-slim-row h-100">
+        <div class="col-sm">
+          <p class="accent-this">{{plan.payload.doc.data().name}}</p>
         </div>
         <div class="col-sm">
-          <p>Center info</p>
+          <p class="tags">{{plan.payload.doc.data().dateRange.begin}} - {{plan.payload.doc.data().dateRange.end}} </p>
         </div>
         <div class="col-sm text-right" (click)="deletePlan(plan);$event.stopPropagation()">
           <p><i class="material-icons">delete</i></p>
@@ -26,7 +30,7 @@
 
  
 
-  <mat-card class="payload-card-new" (click)="openConfirmDialog()">
+  <mat-card class="plan-card-slim-new" (click)="openConfirmDialog()">
     <i class="material-icons">add_circle</i>     
   </mat-card>
 </div>

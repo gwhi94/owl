@@ -8,7 +8,7 @@ import { PlanService } from '../services/plan-service'
 import { Plan } from '../models/plan';
 import { Subscription } from 'rxjs';
 import { trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-plans',
@@ -41,9 +41,9 @@ export class PlansComponent implements OnInit, OnDestroy {
 
   plans: Array<any>;
   plan: {};
-  activePlan:Object;
+  activePlans:Array<any>;
 
-  constructor(public dialog: MatDialog, private planService:PlanService) { }
+  constructor(private router:Router, public dialog: MatDialog, private planService:PlanService) { }
 
   ngOnInit() {
    this.getPlans();
@@ -63,8 +63,26 @@ export class PlansComponent implements OnInit, OnDestroy {
      
   }
 
+  public navigateToDashboard(){
+    this.router.navigate([''])
+  }
+
   public findActive(){
     //TODO filter out active plan and put it in its own section on view
+
+    this.activePlans = this.plans.filter(function(value, index, arr){
+      return value.payload.doc.data().activePlan == true;
+    });
+
+    this.plans = this.plans.filter(function(value, index, arr){
+      return value.payload.doc.data().activePlan == false;
+    })
+
+
+    console.log(this.activePlans[0].payload.doc.data());
+
+
+
 
   }
 

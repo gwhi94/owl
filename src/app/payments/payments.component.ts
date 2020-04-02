@@ -5,10 +5,6 @@ import { PaymentsService } from '../services/payments-service';
 import { Subscription } from 'rxjs';
 import { trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
 
-
-
-
-
 @Component({
   selector: 'app-payments',
   templateUrl: './payments.component.html',
@@ -34,8 +30,11 @@ import { trigger, style, transition, animate, keyframes, query, stagger } from '
 })
 
 export class PaymentsComponent implements OnInit, OnDestroy {
-//currently the payments total the expenses and is passed as one number 
-//we need to check 
+
+
+
+
+  
 
   private subscription:Subscription;
 
@@ -90,10 +89,8 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   }
 
   deletePayment(payment){
-    console.log(payment);
     this.paymentsService.deletePayment(payment)
       .then(res => {
-        console.log("Deleted Payment");
         this.getPayments();
       })
   }

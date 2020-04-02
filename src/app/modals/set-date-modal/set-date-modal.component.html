@@ -1,25 +1,37 @@
-<div class="container">
-    <div class="row">
-                   
-            <mat-checkbox name="excludeWeekends" [(ngModel)]='excludeWeekends'>Exclude Weekends ? </mat-checkbox>           
-            <form [formGroup]="rFormSet" (ngSubmit)="onSubmit(rFormSet.value)">
 
-                <mat-form-field class="full-width">
-                    <input matInput
-                        required
-                        placeholder="Choose a date"
-                        [satDatepicker]="picker"
-                        formControlName="dateRange"
-                        >
-                    <sat-datepicker #picker [rangeMode]="true" [selectFirstDateOnClose]="true"></sat-datepicker>
-                    <sat-datepicker-toggle matSuffix [for]="picker"></sat-datepicker-toggle>
-                </mat-form-field>
-                <div class="form-alert" *ngIf="!rFormSet.controls['dateRange'].valid && rFormSet.controls['dateRange'].touched">{{fieldAlert}}</div>                                        
-                                              
-                
-                <button type="submit" [disabled]="!rFormSet.valid" mat-button raised color="accent">Continue</button>
-            
-            </form>                                          
-    </div>  
-</div> 
+<div class="app-modal-container">
+    <div class="container">         
+        <div class="snapshot-breakdown-line"><h1 class="total-left-headers">Date range and Expenses</h1></div>
+        <h5 class="tags mb-2">Select date range for Plan and choose Expenses to be included</h5>           
+            <div class="inset-box plan-breakdown-box ">
+                <div class="row no-gutters h-100">                                       
+                    <div class="col-sm-12">
+                        <mat-checkbox name="excludeWeekends" [(ngModel)]='excludeWeekends'>Exclude Weekends ? </mat-checkbox>           
+                        <form [formGroup]="rFormSet" (ngSubmit)="onSubmit(rFormSet.value)">
+                            <mat-form-field class="full-width">
+                                <input matInput
+                                    required
+                                    placeholder="Choose a date"
+                                    [satDatepicker]="picker"
+                                    formControlName="dateRange"
+                                    >
+                                <sat-datepicker #picker [rangeMode]="true" [selectFirstDateOnClose]="true"></sat-datepicker>
+                                <sat-datepicker-toggle matSuffix [for]="picker"></sat-datepicker-toggle>
+                            </mat-form-field>
+                            <div class="form-alert" *ngIf="!rFormSet.controls['dateRange'].valid && rFormSet.controls['dateRange'].touched">{{fieldAlert}}</div>                                                             
+                            <div class="app-modal-footer">
+                                <button mat-raised-button color="primary" type="submit" [disabled]="!rFormSet.valid">Continue</button>                          
+                            </div>   
+                        </form>                                       
+                    </div>                   
+                </div>                     
+            </div>
+        </div>   
+    </div>
+    
+    
+
+
+    
+
 

@@ -19,7 +19,6 @@ export class PaymentsService {
             name:formValue.name,
             amount:formValue.amount,
             due:formValue.due,
-            adhoc:formValue.adhoc,
             
         })
     };

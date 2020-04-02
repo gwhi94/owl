@@ -20,10 +20,7 @@
                         <input formControlName="due" class="app-input-field mb-2" type="number" placeholder="Payment Due on which date"> 
                     </div>
                     <div class="form-alert" *ngIf="!rForm.controls['due'].valid && rForm.controls['due'].touched">{{fieldAlert}}</div>                                                  
-                    
-                    <div class="col-sm-12 pl-4 mb-2">
-                        <mat-checkbox matInput formControlName="adhoc" >Adhoc Payment ?</mat-checkbox>
-                    </div>        
+
                 </div>
                 <div class="app-modal-footer">
                     <button type="submit" [disabled]="!rForm.valid" class="modal-button" mat-button color="accent">Add</button> 

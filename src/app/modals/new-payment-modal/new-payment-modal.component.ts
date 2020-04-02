@@ -17,7 +17,6 @@ export class NewPaymentModalComponent implements OnInit {
     'name':[null,Validators.compose([Validators.required, Validators.maxLength(40), Validators.minLength(3)])],
     'amount':[null,Validators.compose([Validators.required, Validators.min(1), Validators.max(1000000000)])],
     'due':[null,Validators.compose([Validators.required, Validators.maxLength(2), Validators.minLength(2)])],
-    'adhoc':[null],
   });
  }
 
@@ -28,11 +27,11 @@ export class NewPaymentModalComponent implements OnInit {
   onSubmit(form){
     console.log(form);
 
+
     this.dialogRef.close({
       name:form.name,
       amount:form.amount,
       due:form.due,
-      adhoc:form.adhoc
     })
 
   }

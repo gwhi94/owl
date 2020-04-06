@@ -19,6 +19,8 @@ export class SetDateModalComponent implements OnInit {
   days: number;
   expenses:number;
   payments:Array<any>;
+  paymentsWritable:Array<any> = [];
+  selectedPaymentTotal:number = 0;
 
 
   constructor(private paymentsService:PaymentsService, private fb: FormBuilder, public dialogRef: MatDialogRef<SetDateModalComponent>) {
@@ -29,31 +31,33 @@ export class SetDateModalComponent implements OnInit {
    }
 
   ngOnInit() {
-
     this.paymentsService.getPayments()
       .subscribe(res => {
         this.payments = res;
+        this.addActiveProp();
       })
   }
 
-  calculateExpenses(){
-    console.log(this.payments);
-    let total = 0;
+  addActiveProp(){
+    //array from firebase is not writable, throws a silent error
+    this.payments.forEach((item) => {
+      this.paymentsWritable.push(item.payload.doc.data())  
+    })       
+    this.paymentsWritable.forEach((item) => {
+      item.active = false;
+    })
 
-
-
-
-    this.payments.forEach(element => {
-      total += element.payload.doc.data().amount;
-    });
-
-    this.expenses = total;
-
-
-    this.dialogRef.close({days:this.days, dateRange:this.dateRange, excludeWeekends:this.excludeWeekends, expenses:this.expenses});
   }
 
+
+  selectPayment(payment){
+    payment.active ?  this.selectedPaymentTotal = this.selectedPaymentTotal - payment.amount : this.selectedPaymentTotal = this.selectedPaymentTotal + payment.amount;    
+    payment.active ? payment.active = false : payment.active = true; 
+  }
+
+  
   onSubmit(){
+    this.dialogRef.close({days:this.days, dateRange:this.dateRange, excludeWeekends:this.excludeWeekends, expenses:this.selectedPaymentTotal});
     this.getRange(this.rFormSet.get('dateRange').value);
 
   }
@@ -94,7 +98,6 @@ export class SetDateModalComponent implements OnInit {
       end:moment(formValue.dateRange.end).format('DD/MM/YYYY')
     }
 
-    this.calculateExpenses();
     
   }
 

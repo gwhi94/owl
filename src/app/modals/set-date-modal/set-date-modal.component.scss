@@ -1,0 +1,13 @@
+@import '../../plans/plans.component.scss';
+
+
+.payments-select-container{
+    max-height:300px;
+    overflow-y: scroll;
+}
+
+.set-date-inset {
+    border-radius: 15px !important;
+    box-shadow: inset 1px -1px 10px #1F1F1F, inset 1px 1px 10px #1F1F1F;
+    padding: 20px;
+}

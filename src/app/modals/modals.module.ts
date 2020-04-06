@@ -15,6 +15,7 @@ import { SatDatepickerModule, DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, } 
 import { SatNativeDateModule  } from 'saturn-datepicker';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter'
 import { ChartsModule } from 'ng2-charts';
+import { PipesModule } from '../pipes/pipes.module';
 
 import {
   MatButtonModule,
@@ -68,7 +69,8 @@ import {
     BrowserAnimationsModule,
     SatDatepickerModule,
     SatNativeDateModule,
-    ChartsModule
+    ChartsModule,
+    PipesModule.forRoot()
   ],
   entryComponents: [
     ConfirmModalComponent,

@@ -2,10 +2,11 @@
 <div class="app-modal-container">
     <div class="container">         
         <div class="snapshot-breakdown-line"><h1 class="total-left-headers">Date range and Expenses</h1></div>
-        <h5 class="tags mb-2">Select date range for Plan and choose Expenses to be included</h5>           
-            <div class="inset-box plan-breakdown-box ">
+        <h5 class="tags mb-4">Select date range for Plan and choose Expenses to be included</h5>           
+            <div class="set-date-inset plan-breakdown-box ">
                 <div class="row no-gutters h-100">                                       
                     <div class="col-sm-12">
+                        <h5 class="tags mb-4">Select date range of Plan</h5>
                         <mat-checkbox name="excludeWeekends" [(ngModel)]='excludeWeekends'>Exclude Weekends ? </mat-checkbox>           
                         <form [formGroup]="rFormSet" (ngSubmit)="onSubmit(rFormSet.value)">
                             <mat-form-field class="full-width">
@@ -18,6 +19,20 @@
                                 <sat-datepicker #picker [rangeMode]="true" [selectFirstDateOnClose]="true"></sat-datepicker>
                                 <sat-datepicker-toggle matSuffix [for]="picker"></sat-datepicker-toggle>
                             </mat-form-field>
+
+                            <h5 class="tags mb-4">Select payments to include in Plan</h5>
+                            <div class="payments-select-container">
+                                <mat-card id="list" (click)="selectPayment(paymentWritable)" *ngFor= "let paymentWritable of paymentsWritable" [ngClass]="{'active-plan': paymentWritable.active == true}" class="plan-card-slim mb-3">
+                                    <div class="container">
+                                      <div class="row plan-card-slim-row h-100">
+                                        <div class="col-sm text-center">
+                                          <p [ngClass]="{'accent-this': paymentWritable.active == false}">{{paymentWritable.name}}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </mat-card>
+                            </div>
+
                             <div class="form-alert" *ngIf="!rFormSet.controls['dateRange'].valid && rFormSet.controls['dateRange'].touched">{{fieldAlert}}</div>                                                             
                             <div class="app-modal-footer">
                                 <button mat-raised-button color="primary" type="submit" [disabled]="!rFormSet.valid">Continue</button>                          

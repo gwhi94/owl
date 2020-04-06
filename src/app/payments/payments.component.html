@@ -50,7 +50,10 @@
       <div class="container">
         <div class="row plan-card-slim-row h-100">
           <div class="col-sm">
-            <p class="accent-this">{{payment.payload.doc.data().name}} <span class="warn-this">{{payment.payload.doc.data().amount}}</span></p>
+            <p class="accent-this">{{payment.payload.doc.data().name}} </p>
+          </div>
+          <div class="col-sm">
+            <p class="accent-this"><span class="warn-this">£{{payment.payload.doc.data().amount}}</span></p>
           </div>
           <div class="col-sm">
             <p class="tags">{{payment.payload.doc.data().due}}<sup>{{payment.payload.doc.data().due | dateSuffix}}</sup></p>

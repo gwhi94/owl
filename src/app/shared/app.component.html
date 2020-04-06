@@ -16,7 +16,7 @@
     <mat-toolbar *ngIf="screenWidth <= 945">
      
       <ul class="nav-links-mobile mb-0" role="list">       
-        <li *ngFor="let navLink of navLinks" (click)="activateClass(navLink)" routerLink="{{navLink.link}}" [ngClass]="{'active': navLink.active}" class="mr-4" role="listitem">
+        <li *ngFor="let navLink of navLinks" (click)="activateClass(navLink)" routerLink="{{navLink.link}}" [ngClass]="{'active': navLink.active}" class="mr-1" role="listitem">
           <div class="nav-links-mobile-icons"><i class="icons-mobile material-icons mr-2">{{navLink.icon}}</i> <span *ngIf="navLink.active">{{navLink.name}}</span></div>
         </li>       
     </ul>

@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { PlanService } from '../../app/services/plan-service';
 import { Plan } from '../../app/models/plan';
 import { MatSidenav } from '@angular/material';
+import { AuthService } from '../services/auth.service';
 
 
 @Component({
@@ -25,7 +26,7 @@ export class AppComponent {
   
   @ViewChild ('sidenav', {static: false}) sidenav: MatSidenav;
   
-  constructor(private router: Router, private planService: PlanService ) {
+  constructor(private router: Router, private planService: PlanService, public auth:AuthService ) {
 
   }
   title = 'finance-app';
@@ -36,7 +37,7 @@ export class AppComponent {
     {name:'PLANS', icon:'insert_invitation', active:false, link:'/plans'},
     {name:'PAYMENTS', icon:'money', active:false, link:'/payments'},
     {name:'SETTINGS', icon:'build', active:false},
-    {name:'LOG OUT', icon:'account_box', active:false},
+    
     
   ]
 

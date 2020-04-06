@@ -1,5 +1,23 @@
 
-<mat-sidenav-container class="side-nav" fullscreen>
+  
+<ng-template #login>
+  <div class="login-panel mat-app-background">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12 img-row">
+          <img id="owl-logo-splash" src="../assets/icons/owl-logo.svg">  
+        </div>
+        <div class="col-sm-12 btn-row">
+          <button mat-raised-button color="primary" (click)="auth.googleSignin()">Log in with Google </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template> 
+
+
+<mat-sidenav-container *ngIf="auth.user$ | async as user;else login "  class="side-nav" fullscreen>
   <mat-sidenav #sidenav mode="side" [opened]="screenWidth > 945" class="">
     <div class="sidenav-container">
       <div class="image-container">
@@ -8,7 +26,10 @@
       <ul class="nav-links" role="list">       
           <li *ngFor="let navLink of navLinks" (click)="activateClass(navLink)" routerLink="{{navLink.link}}" [ngClass]="{'active': navLink.active}" role="listitem"><i class="material-icons">{{navLink.icon}}</i>
             <p>{{navLink.name}}</p>
-          </li>       
+          </li>          
+          <li (click)="auth.signOut()" (click)="activateClass(navLink)" role="listitem"><i class="material-icons">account_box</i>
+            <p>LOG OUT</p>
+          </li>  
       </ul>
     </div>    
   </mat-sidenav>
@@ -18,7 +39,10 @@
       <ul class="nav-links-mobile mb-0" role="list">       
         <li *ngFor="let navLink of navLinks" (click)="activateClass(navLink)" routerLink="{{navLink.link}}" [ngClass]="{'active': navLink.active}" class="mr-1" role="listitem">
           <div class="nav-links-mobile-icons"><i class="icons-mobile material-icons mr-2">{{navLink.icon}}</i> <span *ngIf="navLink.active">{{navLink.name}}</span></div>
-        </li>       
+        </li> 
+        <li (click)="auth.signOut()" class="mr-1" role="listitem">
+          <div class="nav-links-mobile-icons"><i class="icons-mobile material-icons mr-2">account_box</i></div>
+        </li>      
     </ul>
 
     <div class="image-container" style="margin-left: auto;">

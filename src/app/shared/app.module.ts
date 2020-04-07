@@ -11,11 +11,14 @@ import { ModalsModule } from '../modals/modals.module';
 import { PaymentsModule } from '../payments/payments.module';
 import { PlansModule } from '../plans/plans.module';
 import { SharedModule } from '../shared/shared.module';
+
 //import { PipesModule } from '../pipes/pipes.module';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { NotificationsComponent } from '../notifications/notifications.component';
+
+
 
 import {
   MatButtonModule,
@@ -36,8 +39,7 @@ import {
 @NgModule({
   declarations: [
     AppComponent,
-    NotificationsComponent
-
+    NotificationsComponent,
   
   ],
 
@@ -62,6 +64,7 @@ import {
     PaymentsModule,
     DashboardModule,
     ModalsModule,
+
     //PipesModule,
     BrowserModule,
     HttpClientModule,

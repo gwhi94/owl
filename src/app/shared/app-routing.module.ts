@@ -3,13 +3,16 @@ import { Routes, RouterModule } from '@angular/router';
 import { PlansComponent } from '../plans/plans.component';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { PaymentsComponent } from '../payments/payments.component';
+import { AuthGuard } from '../services/auth.guard';
 
 
 const routes: Routes = [
-  {path:'', component:DashboardComponent},
-  {path:'plans', component:PlansComponent},
-  {path:'payments', component:PaymentsComponent},
+  {path:'', component:DashboardComponent, canActivate: [AuthGuard]},
+  {path:'plans', component:PlansComponent, canActivate: [AuthGuard]},
+  {path:'payments', component:PaymentsComponent, canActivate: [AuthGuard]},
+  {path: '**', redirectTo: ''}
 ];
+
 
 
 @NgModule({

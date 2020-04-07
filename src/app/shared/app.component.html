@@ -1,24 +1,21 @@
-
-  
 <ng-template #login>
   <div class="login-panel mat-app-background">
     <div class="container">
-      <div class="row">
+    <div class="row">
         <div class="col-sm-12 img-row">
-          <img id="owl-logo-splash" src="../assets/icons/owl-logo.svg">  
+        <img id="owl-logo-splash" src="../assets/icons/owl-logo.svg">  
         </div>
         <div class="col-sm-12 btn-row">
-          <button mat-raised-button color="primary" (click)="auth.googleSignin()">Log in with Google </button>
-
+            <button mat-raised-button color="primary" (click)="auth.googleSignin()">Log in with Google </button>
         </div>
-      </div>
+    </div>
     </div>
   </div>
-</ng-template> 
+</ng-template>
 
 
-<mat-sidenav-container *ngIf="auth.user$ | async as user;else login "  class="side-nav" fullscreen>
-  <mat-sidenav #sidenav mode="side" [opened]="screenWidth > 945" class="">
+<mat-sidenav-container *ngIf="auth.user$ | async as user;else login" class="side-nav" fullscreen>
+  <mat-sidenav #sidenav mode="side" [opened]="screenWidth > 945">
     <div class="sidenav-container">
       <div class="image-container">
         <img id="owl-logo" src="../assets/icons/owl-logo.svg">
@@ -34,8 +31,7 @@
     </div>    
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-toolbar *ngIf="screenWidth <= 945">
-     
+    <mat-toolbar *ngIf="screenWidth <= 945">    
       <ul class="nav-links-mobile mb-0" role="list">       
         <li *ngFor="let navLink of navLinks" (click)="activateClass(navLink)" routerLink="{{navLink.link}}" [ngClass]="{'active': navLink.active}" class="mr-1" role="listitem">
           <div class="nav-links-mobile-icons"><i class="icons-mobile material-icons mr-2">{{navLink.icon}}</i> <span *ngIf="navLink.active">{{navLink.name}}</span></div>

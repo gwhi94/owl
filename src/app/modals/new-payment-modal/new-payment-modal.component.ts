@@ -14,7 +14,7 @@ export class NewPaymentModalComponent implements OnInit {
   fieldAlert: string = 'Field is Required';
 
   constructor(private fb:FormBuilder,public dialogRef: MatDialogRef<NewPaymentModalComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {this.rForm = fb.group({
-    'name':[null,Validators.compose([Validators.required, Validators.maxLength(40), Validators.minLength(3)])],
+    'name':[null,Validators.compose([Validators.required, Validators.maxLength(12), Validators.minLength(3)])],
     'amount':[null,Validators.compose([Validators.required, Validators.min(1), Validators.max(1000000000)])],
     'due':[null,Validators.compose([Validators.required, Validators.maxLength(2), Validators.minLength(2)])],
   });

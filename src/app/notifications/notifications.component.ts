@@ -54,7 +54,7 @@ export class NotificationsComponent implements OnInit {
         i = i + 1;
         if(i>4) {i = 1;}
   
-          if(i==1){headertext = "You have currently spent the most on "+ that.mostSpent + " during the duration of this plan."}
+          if(i==1){headertext = "You have spent the most on "+ that.mostSpent + " during this plan."}
           if(i==2){headertext = "You have spent "+that.percentageSpent+"% of your current plan so far."}
           if(i==3){headertext = "Today you have spent £"+that.spentToday}
           if(i==4){headertext = "This week you have spent £"+that.spentThisWeek}

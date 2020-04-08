@@ -13,14 +13,14 @@
   <h3 class="tags mt-3 mb-3">Your past plans</h3>
   <mat-card [ngClass]="{'active-plan': plan.payload.doc.data().activePlan == true}"  id="list" *ngFor= "let plan of plans" (click)="this.getPlan(plan)" class="plan-card-slim mb-3">
     <div class="container">
-      <div class="row plan-card-slim-row h-100">
-        <div class="col-sm">
+      <div class="row no-gutters plan-card-slim-row h-100">
+        <div class="col-5 text-center">
           <p class="accent-this">{{plan.payload.doc.data().name}}</p>
         </div>
-        <div class="col-sm">
-          <p class="tags">{{plan.payload.doc.data().dateRange.begin}} - {{plan.payload.doc.data().dateRange.end}} </p>
+        <div class="col-5 text-center">
+          <p class="tags">{{plan.payload.doc.data().dateRange.begin}}</p>
         </div>
-        <div class="col-sm text-right" (click)="deletePlan(plan);$event.stopPropagation()">
+        <div class="col text-right" (click)="deletePlan(plan);$event.stopPropagation()">
           <p><i class="material-icons">delete</i></p>
         </div>
       </div>

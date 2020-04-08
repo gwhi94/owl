@@ -18,6 +18,7 @@ h1, h2, h3, h4, h5, h6 {
 
 mat-card {
     background-color:$my-theme-grey-dark !important;
+    
 }
 
 .plan-card {
@@ -39,13 +40,11 @@ mat-card {
 }
 
 .form-alert {
-    background:#343a40;
     color:map-get($my-theme-primary, 900);
-    padding: 7px;
-    font-size: .9em;
-    margin-bottom: 20px;
+    font-size: 15px;
     display: inline-block;
     animation: 1s alertAnim forwards;
+    margin-left: 12px;
 }
 
 @keyframes alertAnim {
@@ -87,13 +86,11 @@ mat-card {
 .app-modal-head {
     display:flex;
     justify-content: center;
-    margin-bottom:15px;
+   
 
 }
 .app-modal-head, .app-modal-container {
-    padding:25px;
-    padding-left:10px;
-    padding-right:10px;
+    padding:10px;
     display:flex;
     justify-content: center;
 }
@@ -108,9 +105,7 @@ mat-card {
 }
 
 .add-cost-modal {
-    h4 {
-        color:$my-theme-grey-text;
-    }
+    
 }
 
 .inset-box {

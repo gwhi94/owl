@@ -30,7 +30,7 @@ export class NewPlanModalComponent implements OnInit {
   dateRange:{};
   days:number;
   weekendCount:number;
-  fieldAlert: string = 'Field is Required';
+  fieldAlert: string = 'Required';
 
   submitted = false;
   excludeWeekends = false;

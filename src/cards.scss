@@ -5,6 +5,7 @@
 $card-elements-spacing:15px;
 
 .plan-card-active {
+    padding:10px !important;
     
     .total-left-headers{
         display: inline;
@@ -94,7 +95,7 @@ $card-elements-spacing:15px;
         display: flex;
         justify-content: center;
         p {
-            font-size:17px;
+            font-size:15px;
         }
        
     }

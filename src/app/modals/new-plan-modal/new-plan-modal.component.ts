@@ -66,11 +66,11 @@ export class NewPlanModalComponent implements OnInit {
   
   }
 
+
   onSubmit(plan) { 
 
     var formData = this.data;
     var formValue = this.rForm.value;
-
     formData.currentLeft = formData.totalLeft;
     formData.variableDailyLeft = formData.dailyLeft;
     formData.variableWeeklyLeft = formData.weeklyLeft;
@@ -139,13 +139,11 @@ export class NewPlanModalComponent implements OnInit {
     this.data.excludeWeekends = this.dataPassedFromSet.dataPassedFromSet.excludeWeekends;
     this.rForm.controls.expenses.setValue(this.dataPassedFromSet.dataPassedFromSet.expenses);
 
-    console.log(this.dataPassedFromSet);
-
     this.rForm.valueChanges.subscribe(()=> {
       this.crunchNumbers(this.rForm.value);
     });
 
-    console.log(this.rForm.controls.expenses);
+
 
   }
 

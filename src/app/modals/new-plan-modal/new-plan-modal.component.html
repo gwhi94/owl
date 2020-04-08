@@ -1,3 +1,6 @@
+<div class="app-modal-head">
+    <h4>Plan Details</h4>
+</div>
 <div class="app-modal-container">
     <div class="container">
         <div class="row">
@@ -5,12 +8,17 @@
                 <form [formGroup]="rForm" (ngSubmit)="onSubmit(rForm.value)">                                                    
                     <div class="full-width mb-4">
                         <input class="app-input-field" placeholder="Plan Name" formControlName="name" type="text">                       
-                        <div class="form-alert " *ngIf="!rForm.controls['name'].valid && rForm.controls['name'].touched">{{fieldAlert}}</div>
+                        
+                        <div class="alert-container">
+                            <div class="form-alert " *ngIf="!rForm.controls['name'].valid && rForm.controls['name'].touched">{{fieldAlert}}</div>
+                        </div>
                     </div>     
                                                         
                     <div class="full-width mb-4">
                         <input class="app-input-field" placeholder="Money In" type="number" formControlName="moneyIn">
-                        <div class="form-alert" *ngIf="!rForm.controls['moneyIn'].valid && rForm.controls['moneyIn'].touched">{{fieldAlert}} and be greater than 1</div> 
+                        <div class="alert-container">
+                            <div class="form-alert" *ngIf="!rForm.controls['moneyIn'].valid && rForm.controls['moneyIn'].touched">{{fieldAlert}} and be greater than 1</div> 
+                        </div>
                     </div>  
                         
                     <div class="full-width mb-4">
@@ -24,16 +32,6 @@
                         <button type="submit" [disabled]="!rForm.valid" class="modal-button" mat-button color="accent">Set Plan</button>   
                     </div>                                                
                 </form>                           
-            </div>
-            <div class="col input-right-panel">
-                <canvas baseChart 
-                [data]="pieChartData" 
-                [labels]="pieChartLabels" 
-                [chartType]="pieChartType"
-                [options]="pieChartOptions"
-                [plugins]="pieChartPlugins"
-                [legend]="pieChartLegend">
-            </canvas>          
             </div>
         </div>  
     </div> 

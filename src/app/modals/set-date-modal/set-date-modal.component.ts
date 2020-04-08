@@ -25,7 +25,9 @@ export class SetDateModalComponent implements OnInit {
 
   constructor(private paymentsService:PaymentsService, private fb: FormBuilder, public dialogRef: MatDialogRef<SetDateModalComponent>) {
     this.rFormSet = fb.group({
-      'dateRange':[null,Validators.required]
+    
+      'startDate':[null,Validators.required],
+      'endDate':[null,Validators.required]
     });
 
    }
@@ -56,18 +58,17 @@ export class SetDateModalComponent implements OnInit {
   }
 
   
-  onSubmit(){
-    this.dialogRef.close({days:this.days, dateRange:this.dateRange, excludeWeekends:this.excludeWeekends, expenses:this.selectedPaymentTotal});
-    this.getRange(this.rFormSet.get('dateRange').value);
+  onSubmit(){  
+    this.getRange(this.rFormSet.get('startDate').value, this.rFormSet.get('endDate').value);
 
   }
 
   
-  public getRange(dateRange){
-    console.log(dateRange);
-    var start = dateRange['begin'];
-    var end = dateRange['end'];
-    
+  public getRange(begin, end){
+
+    var dateRange = {begin:begin, end:end};
+    var start = dateRange.begin;
+    var end = dateRange.end;
 
     let difference = moment.duration(end.diff(start));
     var days = difference.asDays() + 1;
@@ -94,9 +95,11 @@ export class SetDateModalComponent implements OnInit {
     
     var formValue = this.rFormSet.value;
     this.dateRange = {
-      begin:moment(formValue.dateRange.begin).format('DD/MM/YYYY'),
-      end:moment(formValue.dateRange.end).format('DD/MM/YYYY')
+      begin:moment(dateRange.begin).format('DD/MM/YYYY'),
+      end:moment(dateRange.end).format('DD/MM/YYYY')
     }
+
+    this.dialogRef.close({days:this.days, dateRange:this.dateRange, excludeWeekends:this.excludeWeekends, expenses:this.selectedPaymentTotal});
 
     
   }

@@ -9,16 +9,20 @@
                         <h5 class="tags mb-4 text-center">Select date range</h5>
                         <mat-checkbox name="excludeWeekends" [(ngModel)]='excludeWeekends'>Exclude Weekends ? </mat-checkbox>           
                         <form [formGroup]="rFormSet" (ngSubmit)="onSubmit(rFormSet.value)">
+                           
                             <mat-form-field class="full-width">
-                                <input matInput
-                                    required
-                                    placeholder="Choose a date"
-                                    [satDatepicker]="picker"
-                                    formControlName="dateRange"
-                                    >
-                                <sat-datepicker #picker [rangeMode]="true" [selectFirstDateOnClose]="true"></sat-datepicker>
-                                <sat-datepicker-toggle matSuffix [for]="picker"></sat-datepicker-toggle>
-                            </mat-form-field>
+                                <mat-label>Start Date</mat-label>
+                                <input matInput [matDatepicker]="pickerStart" formControlName="startDate">
+                                <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                                <mat-datepicker #pickerStart></mat-datepicker>
+                              </mat-form-field>
+
+                              <mat-form-field>
+                                <mat-label>End Date</mat-label>
+                                <input matInput [matDatepicker]="pickerEnd" formControlName="endDate">
+                                <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+                                <mat-datepicker #pickerEnd></mat-datepicker>
+                              </mat-form-field>
 
                             <h5 class="tags mb-4 text-center">Select payments</h5>
                             <div class="payments-select-container">
@@ -33,7 +37,8 @@
                                   </mat-card>
                             </div>
 
-                            <div class="form-alert" *ngIf="!rFormSet.controls['dateRange'].valid && rFormSet.controls['dateRange'].touched">{{fieldAlert}}</div>                                                             
+                            <div class="form-alert" *ngIf="!rFormSet.controls['startDate'].valid && rFormSet.controls['startDate'].touched">{{fieldAlert}}</div>                                                             
+                            <div class="form-alert" *ngIf="!rFormSet.controls['endDate'].valid && rFormSet.controls['endDate'].touched">{{fieldAlert}}</div>  
                             <div class="app-modal-footer">
                                 <button mat-raised-button color="primary" type="submit" [disabled]="!rFormSet.valid">Continue</button>                          
                             </div>   

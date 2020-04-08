@@ -6,20 +6,27 @@
         <div class="container">
             <form [formGroup]="rForm" (ngSubmit)="onSubmit(rForm.value)">
                 <div class="row">           
-                    <div class="col-sm-12 mb-2">
+                    <div class="col-sm-12 mb-4">
                         <input formControlName="name" class="app-input-field mb-2" placeholder="Payment Name"> 
+                        <div class="alert-container">
+                            <div class="form-alert" *ngIf="!rForm.controls['name'].valid && rForm.controls['name'].touched">{{fieldAlert}}</div>
+                        </div>              
                     </div>
-                    <div class="form-alert" *ngIf="!rForm.controls['name'].valid && rForm.controls['name'].touched">{{fieldAlert}}</div>
-                                       
-                    <div class="col-sm-12 mb-2">
+                   
+                    <div class="col-sm-12 mb-4">
                         <input formControlName="amount"  class="app-input-field mb-2" type="number" placeholder="Payment Amount"> 
+                        <div class="alert-container">
+                            <div class="form-alert" *ngIf="!rForm.controls['name'].valid && rForm.controls['name'].touched">{{fieldAlert}}</div>
+                        </div> 
                     </div>
-                    <div class="form-alert" *ngIf="!rForm.controls['amount'].valid && rForm.controls['amount'].touched">{{fieldAlert}}</div>
-                            
-                    <div class="col-sm-12 mb-2">
+                                             
+                    <div class="col-sm-12 mb-4">
                         <input formControlName="due" class="app-input-field mb-2" type="number" placeholder="Payment Due on which date"> 
+                        <div class="alert-container">
+                            <div class="form-alert" *ngIf="!rForm.controls['name'].valid && rForm.controls['name'].touched">{{fieldAlert}}</div>
+                        </div> 
                     </div>
-                    <div class="form-alert" *ngIf="!rForm.controls['due'].valid && rForm.controls['due'].touched">{{fieldAlert}}</div>                                                  
+                    
 
                 </div>
                 <div class="app-modal-footer">

@@ -17,6 +17,8 @@ import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-mo
 import { ChartsModule } from 'ng2-charts';
 import { PipesModule } from '../pipes/pipes.module';
 
+import { MatMomentDateModule } from "@angular/material-moment-adapter";
+
 import {
   MatButtonModule,
   MatFormFieldModule,
@@ -70,6 +72,7 @@ import {
     SatDatepickerModule,
     SatNativeDateModule,
     ChartsModule,
+    MatMomentDateModule,
     PipesModule.forRoot()
   ],
   entryComponents: [

@@ -31,6 +31,7 @@ export class AppComponent {
   }
   title = 'finance-app';
   date;
+  displayName: string;
 
   navLinks = [
     {name:'DASHBOARD', icon:'insert_chart', active:true, link:'/'},
@@ -42,6 +43,9 @@ export class AppComponent {
   ]
 
   ngOnInit(){
+
+    this.auth.user$.subscribe(res => this.displayName = res.displayName);
+      
 
     this.screenWidth$.subscribe(width => {
       this.screenWidth = width;

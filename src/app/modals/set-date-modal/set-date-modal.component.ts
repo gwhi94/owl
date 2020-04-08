@@ -25,8 +25,7 @@ export class SetDateModalComponent implements OnInit {
 
   constructor(private paymentsService:PaymentsService, private fb: FormBuilder, public dialogRef: MatDialogRef<SetDateModalComponent>) {
     this.rFormSet = fb.group({
-    
-      'startDate':[null,Validators.required],
+  
       'endDate':[null,Validators.required]
     });
 
@@ -59,7 +58,7 @@ export class SetDateModalComponent implements OnInit {
 
   
   onSubmit(){  
-    this.getRange(this.rFormSet.get('startDate').value, this.rFormSet.get('endDate').value);
+    this.getRange(moment(), this.rFormSet.get('endDate').value);
 
   }
 

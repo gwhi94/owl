@@ -1,3 +1,4 @@
+
 <ng-template #login>
   <div class="login-panel mat-app-background">
     <div class="container">
@@ -45,10 +46,12 @@
       <img id="owl-logo-small" src="../assets/icons/owl-logo.svg">
     </div>       
     </mat-toolbar>
+    <p class="accent-this mt-2 ml-2">{{displayName}}</p>
     
     <div class="container content-container">
       <div class="row">
         <div class="col-sm-12">
+          
           <!--need a mobile nav in here at top that switches on or off-->
           <app-notifications></app-notifications>
           <router-outlet></router-outlet>       

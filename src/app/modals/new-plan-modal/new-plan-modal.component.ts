@@ -58,7 +58,7 @@ export class NewPlanModalComponent implements OnInit {
       monkeyPatchChartJsLegend(); 
 
     this.rForm = fb.group({
-      'name':[null,Validators.compose([Validators.required, Validators.maxLength(40), Validators.minLength(3)])],
+      'name':[null,Validators.compose([Validators.required, Validators.maxLength(15), Validators.minLength(3)])],
       'moneyIn':[null,Validators.compose([Validators.required, Validators.min(1), Validators.max(1000000000)])],
       'expenses':[null,Validators.compose([Validators.min(1), Validators.max(100000000)])],
       'saving':[null, Validators.compose([Validators.min(1), Validators.max(100000000)])],

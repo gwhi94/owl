@@ -5,10 +5,13 @@
     <div class="app-modal-container">
         <div class="container">
             <div class="row">
-                <div class="col-sm-12">
-                    <input name="cost" [(ngModel)]="cost" class="app-input-field mb-2" type="number"> 
+                <div class="col-sm-12 mb-4">
+                    <input name="cost" [(ngModel)]="cost" class="app-input-field" type="number"> 
+                    <div class="alert-container">
+                        <div class="form-alert" *ngIf="this.denySpend">Cost exceeds left today</div>
+                    </div>   
                 </div>
-                <div class="col-sm-12  m-b-1" align="center">
+                <div class="col-sm-12  mb-1" align="center">
                     <h4 class="tags">For <span class="accent-this">{{this.selectedCategory}}</span></h4>
                 </div>
                 <div class="col-sm-12 cost-category-icons mb-2">

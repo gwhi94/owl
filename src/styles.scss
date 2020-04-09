@@ -60,11 +60,9 @@ mat-toolbar {
 @keyframes alertAnim {
     from {
         opacity:0;
-        transform: translateY(-20px);
     }
     to {
         opacity:1;
-        transform: translateY(0);
     }
 }
 
@@ -172,8 +170,9 @@ input[type=number] {
     border-top: none;
     box-shadow: inset 1px -1px 10px #1F1F1F, inset 1px 1px 10px #1F1F1F;
     background-color: $my-theme-grey-dark;
-    padding:15px;
+    padding:18px;
     color:mat-color($my-theme-accent);
+    font-weight: 600;
 }
 .app-input-field:focus {
     outline:none;

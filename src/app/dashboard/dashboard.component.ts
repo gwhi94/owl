@@ -4,6 +4,7 @@ import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { PlanService } from '../services/plan-service';
 import { AddCostModalComponent } from '../modals/add-cost-modal/add-cost-modal.component';
+import { EndPlanModalComponent } from '../modals/end-plan-modal/end-plan-modal.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
@@ -122,6 +123,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
     inspectPlan(plan){
+
+      if(moment(moment().format('YYYY-MM-DD')).isSame(moment(plan.dateRange.end))){
+        console.log("is same");
+
+        this.dialog.open(EndPlanModalComponent);
+
+        
+      }else {
+        console.log("not same");
+      }
+
+
+
       console.log("inspect plan called");    
       if(plan.excludeWeekends){
         if(moment().day() == 0 || moment().day() == 6){
@@ -170,8 +184,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
               this.sendPercentageSpent(plan);
           }
         )  
-      }
-      
+      }     
     }
 
   

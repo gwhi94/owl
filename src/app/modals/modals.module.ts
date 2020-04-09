@@ -7,6 +7,7 @@ import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.com
 import { NewPlanModalComponent } from '../modals/new-plan-modal/new-plan-modal.component';
 import { FocusPlanModalComponent } from '../modals/focus-plan-modal/focus-plan-modal.component';
 import { SetDateModalComponent } from '../modals/set-date-modal/set-date-modal.component';
+import { EndPlanModalComponent } from './end-plan-modal/end-plan-modal.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
@@ -39,6 +40,7 @@ import {
 
 
 
+
 @NgModule({
   declarations: [
     AddCostModalComponent,
@@ -46,7 +48,8 @@ import {
     ConfirmModalComponent,
     NewPlanModalComponent,
     FocusPlanModalComponent,
-    SetDateModalComponent
+    SetDateModalComponent,
+    EndPlanModalComponent
     
 
 
@@ -81,7 +84,8 @@ import {
     FocusPlanModalComponent,
     SetDateModalComponent,
     AddCostModalComponent,
-    NewPaymentModalComponent
+    NewPaymentModalComponent,
+    EndPlanModalComponent
    ],
 })
 export class ModalsModule { }

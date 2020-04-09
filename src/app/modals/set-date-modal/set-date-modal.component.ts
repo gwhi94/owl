@@ -21,6 +21,7 @@ export class SetDateModalComponent implements OnInit {
   payments:Array<any>;
   paymentsWritable:Array<any> = [];
   selectedPaymentTotal:number = 0;
+  minDate = moment().add(1, "days");
 
 
   constructor(private paymentsService:PaymentsService, private fb: FormBuilder, public dialogRef: MatDialogRef<SetDateModalComponent>) {

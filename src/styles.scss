@@ -21,6 +21,12 @@ mat-card {
     
 }
 
+mat-toolbar {
+    position: sticky !important;
+    top:0 !important;
+    z-index:1000 !important;
+}
+
 .plan-card {
     border-radius: 15px !important;
     box-shadow: -5px -5px 15px #353535, 5px 5px 15px #1E1E1E !important;

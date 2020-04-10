@@ -62,8 +62,7 @@ export class NewPlanModalComponent implements OnInit {
       'moneyIn':[null,Validators.compose([Validators.required, Validators.min(1), Validators.max(1000000000)])],
       'expenses':[null,Validators.compose([Validators.min(1), Validators.max(100000000)])],
       'saving':[null, Validators.compose([Validators.min(1), Validators.max(100000000)])],
-    });
-  
+    }); 
   }
 
 
@@ -84,12 +83,15 @@ export class NewPlanModalComponent implements OnInit {
 
     formValue.dateRange = formData.dateRange;
 
-    this.activePlan['activePlan'] = false;
-    this.planService.updatePlan(this.activePlan['id'], this.activePlan)
-      .then(res => {
-        this.savePlan(plan);     
-      })
-
+    if(this.activePlan){
+      this.activePlan['activePlan'] = false;
+      this.planService.updatePlan(this.activePlan['id'], this.activePlan)
+        .then(res => {
+          this.savePlan(plan);     
+        })
+    }else {
+      this.savePlan(plan);
+    }
   }
 
 
@@ -132,8 +134,6 @@ export class NewPlanModalComponent implements OnInit {
       this.activePlan = res[0];
     })
 
-
-
     this.data.days = this.dataPassedFromSet.dataPassedFromSet.days;
     this.data.dateRange = this.dataPassedFromSet.dataPassedFromSet.dateRange;
     this.data.excludeWeekends = this.dataPassedFromSet.dataPassedFromSet.excludeWeekends;
@@ -142,8 +142,6 @@ export class NewPlanModalComponent implements OnInit {
     this.rForm.valueChanges.subscribe(()=> {
       this.crunchNumbers(this.rForm.value);
     });
-
-
 
   }
 
@@ -154,9 +152,6 @@ export class NewPlanModalComponent implements OnInit {
     this.data.dailyLeft = Math.round(this.data.totalLeft / daysLeft) * 100 /100;           
     
   }
-
-
-
   
 }
 

@@ -31,11 +31,6 @@ import { trigger, style, transition, animate, keyframes, query, stagger } from '
 
 export class PaymentsComponent implements OnInit, OnDestroy {
 
-
-
-
-  
-
   private subscription:Subscription;
 
   payments = [];
@@ -73,17 +68,20 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   }
 
   addPayment(){
+    console.log("added");
     let dialogRef = this.dialog.open(NewPaymentModalComponent,{
       data:{}
 
     })
     dialogRef.afterClosed().subscribe(result =>{
       console.log(result);
-      this.paymentsService.newPayment(result)
-        .then(res => {
-          console.log("Payment added");
-          this.getPayments();
-        })
+      if(result.name != undefined){
+        this.paymentsService.newPayment(result)
+          .then(res => {
+            console.log("Payment added");
+            this.getPayments();
+          })
+      }
     })
 
   }

@@ -32,6 +32,8 @@ export class AppComponent {
   title = 'finance-app';
   date;
   displayName: string;
+  activePlan: Object;
+  showNotifications = true;
 
   navLinks = [
     {name:'DASHBOARD', icon:'insert_chart', active:true, link:'/'},
@@ -44,9 +46,16 @@ export class AppComponent {
 
   ngOnInit(){
 
+    this.planService.getActivePlan()
+      .subscribe(res => {
+        this.activePlan = res;
+        if (!this.activePlan['active']){
+          this.showNotifications = false;
+        }
+      })
+
     this.auth.user$.subscribe(res => this.displayName = res.displayName);
       
-
     this.screenWidth$.subscribe(width => {
       this.screenWidth = width;
     });
@@ -62,8 +71,7 @@ export class AppComponent {
     });
     navLink.active = !navLink.active;
   }
-  
-  
+    
 }
 
 

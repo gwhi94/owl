@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ChartsModule } from 'ng2-charts';
 import { DashboardComponent } from '../dashboard/dashboard.component';
-
+import { RouterModule } from '@angular/router';
 import { NotificationsModule } from '../notifications/notifications.module';
 
 import { NotificationsComponent } from '../notifications/notifications.component';
@@ -30,7 +30,7 @@ import {
     
   ],
   imports: [
- 
+    RouterModule,
     CommonModule,
     MatButtonModule,
     MatFormFieldModule,

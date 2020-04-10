@@ -1,4 +1,9 @@
  
+ <div *ngIf="this.activePlan == undefined"  class="no-plan-splash">
+    <button routerLink="/plans" mat-raised-button color="primary" tabindex="1">Go to Plans</button>
+ </div>
+ 
+ 
  
  <mat-card click="this.addCost" *ngIf="this.activePlan" class="plan-card-active plan-card mb-5">
     <div class="container">
@@ -57,8 +62,7 @@
                             [colors]="barChartColors">
                           </canvas>
                         </div>
-                    </div>
-                               
+                    </div>                              
             </div>                     
         </div>
     </div>

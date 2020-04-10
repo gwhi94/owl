@@ -45,7 +45,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   today = moment(moment());  
 
 
-  constructor(private dataService:DataService, private paymentsService:PaymentsService, private snackBar:MatSnackBar, private planService:PlanService, public dialog: MatDialog ) {
+  constructor(private router:Router, private dataService:DataService, private paymentsService:PaymentsService, private snackBar:MatSnackBar, private planService:PlanService, public dialog: MatDialog ) {
     monkeyPatchChartJsTooltip();
     monkeyPatchChartJsLegend(); 
    }
@@ -109,10 +109,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit() {
      
     this.subscription = this.planService.getActivePlan()
-      .subscribe(result => {   
+      .subscribe(result => {
         this.activePlan = result[0];
-        this.inspectPlan(this.activePlan);
-        this.setBreakdown();
+        console.log(this.activePlan);
+        if(this.activePlan) {
+          this.inspectPlan(this.activePlan);
+          this.setBreakdown();
+        }        
         this.subscription.unsubscribe();           
       });
  
@@ -126,17 +129,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       if(moment(moment().format('YYYY-MM-DD')).isSame(moment(plan.dateRange.end))){
         console.log("is same");
-
         this.dialog.open(EndPlanModalComponent);
+        //set this plan to inactive. 
 
-        
+        plan.activePlan = false;
+
+        this.planService.updatePlan(plan.id, plan)
+          .then(res => {
+            console.log("Updated");
+          })
+                        
       }else {
         console.log("not same");
-      }
-
-
-
-      console.log("inspect plan called");    
+        console.log("inspect plan called");    
       if(plan.excludeWeekends){
         if(moment().day() == 0 || moment().day() == 6){
           console.log("locking plan as it is weekend and excluding weekends")
@@ -184,7 +189,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
               this.sendPercentageSpent(plan);
           }
         )  
-      }     
+      }
+      }
+          
     }
 
   

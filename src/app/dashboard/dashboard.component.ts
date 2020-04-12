@@ -29,8 +29,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   activePlan:Object;
   pulledPlan:Object;
-  planProgressPercentage:number;
-  planProgessColor:string;
+  planProgressPercentage:number = 0;
+  planProgressColor:string = 'green';
   currentDate:string; 
   lockPlan = false;
   mostSpent:String = '';
@@ -118,10 +118,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }        
         this.subscription.unsubscribe();           
       });
- 
-      //need to put this in if below certain percentage turn red.
-      this.planProgessColor = 'green';
-      this.planProgressPercentage = 50;
+    
   }
 
 
@@ -184,19 +181,31 @@ export class DashboardComponent implements OnInit, OnDestroy {
          this.planService.updatePlan(plan['id'], plan)
             .then( res => {
               this.activePlan = plan;
+              this.setProgressBar();
               this.sendSpentToday(plan);
               this.sendSpentThisWeek(plan);  
               this.sendPercentageSpent(plan);
           }
         )  
       }
+      }         
+    }
+
+    setProgressBar(){
+      this.planProgressPercentage = this.activePlan['variableDailyLeft'] * (100/this.activePlan['dailyleft']);
+
+      if (this.planProgressPercentage < 50 && this.planProgressPercentage > 25){
+          this.planProgressColor = '#fb8c00';
+      }else if(this.planProgressPercentage < 25){
+          this.planProgressColor = '#d32f2f';
+      }else{
+          this.planProgressColor = '#1eb980';
       }
-          
+
     }
 
   
-    updateAfkPlan(plan){
-    console.log("hit");   
+    updateAfkPlan(plan){ 
       //updating days left      
       let planEnd = moment(plan['dateRange']['end']);
       planEnd.diff(this.today, 'days');
@@ -254,8 +263,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
             
           }
         )  
-        
-             
 
   }
 
@@ -271,7 +278,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if(end.day() == 6) --wlast; // -1 if end with saturday
   
     return (Math.round((wfirst + days + wlast))) -1; // get the total
-
 
   }
 
@@ -303,8 +309,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           console.log("!used surplus");
           this.recalculatePlan(result);
         }
-          
-        
+              
       }
     })
 
@@ -331,21 +336,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
       console.log("Doesnt Exist");
       this.activePlan['costCategories'].push({category:costData.category, count:costData.cost});
     }
-
-
-
     
     this.planService.updatePlan(this.activePlan['id'], this.activePlan)
       .then(
         res => {
           console.log("Plan updated");
           this.setBreakdown();
+          this.setProgressBar();
           this.sendSpentToday(this.activePlan);
           this.sendSpentThisWeek(this.activePlan);
           this.sendPercentageSpent(this.activePlan);
         }
       )
-
 
   }
 

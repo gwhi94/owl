@@ -12,6 +12,9 @@
                     </div>   
                 </div>
                 <div class="col-sm-12  mb-1" align="center">
+                    <mat-checkbox [(ngModel)]="surplusCheck" labelPosition="before">Use Surplus ? <span class="accent-this">£{{this.surplus}}</span> available</mat-checkbox>
+                </div>
+                <div class="col-sm-12  mb-1" align="center">
                     <h4 class="tags">For <span class="accent-this">{{this.selectedCategory}}</span></h4>
                 </div>
                 <div class="col-sm-12 cost-category-icons mb-2">

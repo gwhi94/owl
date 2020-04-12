@@ -277,7 +277,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   addCost(){
     let dialogRef = this.dialog.open(AddCostModalComponent, {  
-      data:{leftToSpend:this.activePlan['variableDailyLeft']}  
+      data:{leftToSpend:this.activePlan['variableDailyLeft'], surplus:this.activePlan['surplus']}  
     })
     dialogRef.afterClosed().subscribe(result => {
       if(result){
@@ -287,8 +287,24 @@ export class DashboardComponent implements OnInit, OnDestroy {
           panelClass: ['success', 'app-alert'],
           verticalPosition: 'top'
         });
+
+        if(result.usedSurplus){
+          //used surplus
+          console.log("used surplus");
+          this.activePlan['surplus'] = this.activePlan['surplus'] - result.cost;
+          this.planService.updatePlan(this.activePlan['id'], this.activePlan)
+            .then(
+              res => {
+                console.log("updated plan");
+              }
+            )
+
+        }else{
+          console.log("!used surplus");
+          this.recalculatePlan(result);
+        }
           
-        this.recalculatePlan(result);
+        
       }
     })
 

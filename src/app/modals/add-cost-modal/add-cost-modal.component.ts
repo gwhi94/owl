@@ -12,7 +12,9 @@ export class AddCostModalComponent implements OnInit {
 
   cost:number;
   leftToSpend:number;
+  surplus:number;
   denySpend = false;
+  surplusCheck = false;
 
 
   costCategories = [
@@ -34,12 +36,19 @@ export class AddCostModalComponent implements OnInit {
   ngOnInit() {
 
     this.leftToSpend = this.data.leftToSpend;
+    this.surplus = this.data.surplus;
+    console.log(this.surplus);
     console.log(this.leftToSpend);
     console.log(this.leftToSpend);
   }
 
   addCost() {
-    this.cost > this.leftToSpend ? this.denySpend = true : this.dialogRef.close({cost:this.cost,category:this.selectedCategory});
+    if(this.surplusCheck){
+      console.log("checked");
+      this.cost > this.surplus ? this.denySpend = true: this.dialogRef.close({cost:this.cost,category:this.selectedCategory, usedSurplus:true});
+    }else{
+      this.cost > this.leftToSpend ? this.denySpend = true : this.dialogRef.close({cost:this.cost,category:this.selectedCategory, usedSurplus:false});
+    }   
   }
 
   activateClass(costCategory, costCategoryButton){

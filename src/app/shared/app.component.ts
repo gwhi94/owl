@@ -48,8 +48,9 @@ export class AppComponent {
 
     this.planService.getActivePlan()
       .subscribe(res => {
-        this.activePlan = res;
-        if (!this.activePlan['active']){
+        this.activePlan = res[0];
+        console.log(this.activePlan);
+        if (!this.activePlan['activePlan']){
           this.showNotifications = false;
         }
       })

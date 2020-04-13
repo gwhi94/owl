@@ -4,7 +4,8 @@
         <p class="tags mb-4 text-center">Select date range for Plan and choose Expenses to be included</p>           
             <div class="set-date-inset plan-breakdown-box ">
                 <div class="row no-gutters h-100">                                       
-                    <div class="col-sm-12">                           
+                    <div class="col-sm-12">  
+                      <mat-checkbox class="mb-4" name="excludeWeekends" [(ngModel)]='excludeWeekends'>Exclude Weekends ? </mat-checkbox>                         
                         <form [formGroup]="rFormSet" (ngSubmit)="onSubmit(rFormSet.value)">
                               <mat-form-field>
                                 <mat-label>End Date</mat-label>
@@ -23,8 +24,7 @@
                                       </div>
                                     </div>
                                   </mat-card>
-                            </div>  
-                            <mat-checkbox class="mb-4" name="excludeWeekends" [(ngModel)]='excludeWeekends'>Exclude Weekends ? </mat-checkbox>                                                            
+                            </div>                                                              
                             <div class="app-modal-footer">                                                   
                                 <button type="submit" [disabled]="!rFormSet.valid" class="modal-button" mat-button color="accent">Continue</button> 
                             </div>   

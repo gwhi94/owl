@@ -121,21 +121,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
     
   }
 
-
     inspectPlan(plan){
 
       if(moment(moment().format('YYYY-MM-DD')).isSame(moment(plan.dateRange.end))){
         console.log("is same");
         this.dialog.open(EndPlanModalComponent);
         //set this plan to inactive. 
-
         plan.activePlan = false;
-
         this.planService.updatePlan(plan.id, plan)
           .then(res => {
             console.log("Updated");
-          })
-                        
+          })                        
       }else {
         console.log("not same");
         console.log("inspect plan called");    
@@ -150,8 +146,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       plan.variableDailyLeft == 0 ? this.lockPlan = true: this.lockPlan = false;
 
-      let testForSameLastUpdated  = moment(moment(plan.lastUpdated).format('YYYY-MM-DD'));
+      let testForSameLastUpdated = moment(moment(plan.lastUpdated).format('YYYY-MM-DD'));
       let testForSameToday = moment(moment().format('YYYY-MM-DD'));
+
 
       if(!moment(testForSameLastUpdated).isSame(testForSameToday)){
         console.log("Not updated today");
@@ -162,6 +159,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         console.log("Plan has been updated today");                  
         if(plan.excludeWeekends){
           if(moment(this.today).diff(plan.weekUpdated, 'days') == 5){
+            console.log("week passed");
             plan.variableWeeklyLeft = plan.weeklyLeft;
             plan.weekUpdated = this.today.format('YYYY-MM-DD'); 
           }else{
@@ -170,6 +168,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }else{       
           //this logic works and so does reset
           if(moment(this.today).diff(plan.weekUpdated, 'days') == 7){
+            console.log("week passed");
             plan.variableWeeklyLeft = plan.weeklyLeft;
             plan.weekUpdated = this.today.format('YYYY-MM-DD'); 
           }else{
@@ -198,7 +197,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.planProgressColor = '#fb8c00';
       }else if(this.planProgressPercentage < 25){
           this.planProgressColor = '#d32f2f';
-      }else{
+      }else if(this.planProgressPercentage > 50){
           this.planProgressColor = '#1eb980';
       }
 
@@ -257,6 +256,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           res => {
             console.log("Plan updated");
             this.activePlan = plan;
+            this.setProgressBar();
             this.sendSpentToday(plan);
             this.sendSpentThisWeek(plan); 
             this.sendPercentageSpent(plan); 

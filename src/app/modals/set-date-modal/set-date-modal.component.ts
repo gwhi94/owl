@@ -71,13 +71,15 @@ export class SetDateModalComponent implements OnInit {
     var end = dateRange.end;
 
     let difference = moment.duration(end.diff(start));
-    var days = difference.asDays() + 1;
+    console.log(difference);
+    var days = difference.asDays() + 2;
+    console.log(days);
     //number of days in range
     //use while loop to start at end day and loop towards start using days as counter
 
     var weekendCount = 0;
     var dateToCompare = end;  
-    this.days = days;
+    this.days = Math.floor(days);
     
     
     while(days > 0) {

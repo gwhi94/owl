@@ -13,7 +13,7 @@ import { PaymentsService } from '../../services/payments-service';
 export class SetDateModalComponent implements OnInit {
 
   rFormSet: FormGroup;
-  dateRange:{};
+  dateRange: Object;
   fieldAlert: string = 'Field is Required';
   excludeWeekends = false;
   days: number;
@@ -25,8 +25,7 @@ export class SetDateModalComponent implements OnInit {
 
 
   constructor(private paymentsService:PaymentsService, private fb: FormBuilder, public dialogRef: MatDialogRef<SetDateModalComponent>) {
-    this.rFormSet = fb.group({
-  
+    this.rFormSet = fb.group({ 
       'endDate':[null,Validators.required]
     });
 
@@ -51,34 +50,40 @@ export class SetDateModalComponent implements OnInit {
 
   }
 
-
   selectPayment(payment){
     payment.active ?  this.selectedPaymentTotal = this.selectedPaymentTotal - payment.amount : this.selectedPaymentTotal = this.selectedPaymentTotal + payment.amount;    
     payment.active ? payment.active = false : payment.active = true; 
   }
 
-  
-  onSubmit(){  
-    this.getRange(moment(), this.rFormSet.get('endDate').value);
+  onSubmit(){ 
 
+    let endString = moment.utc(this.rFormSet.get('endDate').value).format("YYYY-MM-DD");
+
+    console.log(endString);
+
+    let endMoment = moment.utc(endString);
+
+    console.log(endMoment);
+    
+    
+   this.getRange(moment(), endMoment);
   }
 
-  
   public getRange(begin, end){
-
-    var dateRange = {begin:begin, end:end};
-    var start = dateRange.begin;
-    var end = dateRange.end;
+    
+    var dateObject = {begin:begin, end:end};
+    var start = dateObject.begin;
+    var end = dateObject.end;
 
     let difference = moment.duration(end.diff(start));
-    console.log(difference);
+
     var days = difference.asDays() + 2;
-    console.log(days);
     //number of days in range
     //use while loop to start at end day and loop towards start using days as counter
 
     var weekendCount = 0;
-    var dateToCompare = end;  
+    //using clone as it was causing issues as the moment objects are mutable
+    var dateToCompare = end.clone();  
     this.days = Math.floor(days);
     
     
@@ -94,15 +99,16 @@ export class SetDateModalComponent implements OnInit {
     if(this.excludeWeekends){
       this.days = this.days - weekendCount;
     }
-    
-    var formValue = this.rFormSet.value;
-    this.dateRange = {
-      begin:moment(dateRange.begin).format('DD/MM/YYYY'),
-      end:moment(dateRange.end).format('DD/MM/YYYY')
+
+
+  this.dateRange = {
+      begin:dateObject.begin.format('DD/MM/YYYY'),
+      end:dateObject.end.format('DD/MM/YYYY')
     }
 
-    this.dialogRef.close({days:this.days, dateRange:this.dateRange, excludeWeekends:this.excludeWeekends, expenses:this.selectedPaymentTotal});
+    console.log(this.dateRange);
 
+   this.dialogRef.close({days:this.days, dateRange:this.dateRange, excludeWeekends:this.excludeWeekends, expenses:this.selectedPaymentTotal});
     
   }
 

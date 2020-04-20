@@ -41,8 +41,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   payments = [];
   upcomingPayments = [];
   completedPayments = [];
+  
+  testingIncrement:number = 5;
 
-  today = moment(moment());  
+  today = moment(moment().add(this.testingIncrement, 'days'));
+  
+  todayFormatted = this.today.format("DD-MM-YYYY");
+
 
 
   constructor(private router:Router, private dataService:DataService, private paymentsService:PaymentsService, private snackBar:MatSnackBar, private planService:PlanService, public dialog: MatDialog ) {
@@ -107,6 +112,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+    console.log(this.lockPlan);
      
     this.subscription = this.planService.getActivePlan()
       .subscribe(result => {
@@ -136,7 +143,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         console.log("not same");
         console.log("inspect plan called");    
       if(plan.excludeWeekends){
-        if(moment().day() == 0 || moment().day() == 6){
+        if(moment().add(this.testingIncrement, 'days').day() == 0 || moment().add(this.testingIncrement, 'days').day() == 6){
           console.log("locking plan as it is weekend and excluding weekends")
           this.lockPlan = true;
         }else {
@@ -147,7 +154,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       plan.variableDailyLeft == 0 ? this.lockPlan = true: this.lockPlan = false;
 
       let testForSameLastUpdated = moment(moment(plan.lastUpdated).format('YYYY-MM-DD'));
-      let testForSameToday = moment(moment().format('YYYY-MM-DD'));
+      let testForSameToday = moment(moment().add(this.testingIncrement, 'days').format('YYYY-MM-DD'));
 
 
       if(!moment(testForSameLastUpdated).isSame(testForSameToday)){
@@ -205,6 +212,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   
     updateAfkPlan(plan){ 
+      console.log("fired");
       //updating days left      
       let planEnd = moment(plan['dateRange']['end']);
       planEnd.diff(this.today, 'days');
@@ -216,13 +224,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       let lastUpdated = moment(plan['lastUpdated']);
       let afkPeriod  = this.today.diff(lastUpdated, 'days');           
       var dayInTheWeek = moment().day();
-
-
-      //FOR TESTING REMOVE AFTER
-      dayInTheWeek = 1
-      //FOR TESTING REMOVE AFTER
-
-        
+    
       if(afkPeriod > 1){
         if(plan.excludeWeekends){
           //week is 5 days
@@ -282,37 +284,38 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   addCost(){
-    let dialogRef = this.dialog.open(AddCostModalComponent, {  
-      data:{leftToSpend:this.activePlan['variableDailyLeft'], surplus:this.activePlan['surplus']}  
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        console.log(result);
-        this.snackBar.open('Cost added', undefined, {
-          duration: 5000,
-          panelClass: ['success', 'app-alert'],
-          verticalPosition: 'top'
-        });
-
-        if(result.usedSurplus){
-          //used surplus
-          console.log("used surplus");
-          this.activePlan['surplus'] = this.activePlan['surplus'] - result.cost;
-          this.planService.updatePlan(this.activePlan['id'], this.activePlan)
-            .then(
-              res => {
-                console.log("updated plan");
-              }
-            )
-
-        }else{
-          console.log("!used surplus");
-          this.recalculatePlan(result);
+    if(this.activePlan['variableDailyLeft'] > 0){
+      let dialogRef = this.dialog.open(AddCostModalComponent, {  
+        data:{leftToSpend:this.activePlan['variableDailyLeft'], surplus:this.activePlan['surplus']}  
+      })
+      dialogRef.afterClosed().subscribe(result => {
+        if(result){
+          console.log(result);
+          this.snackBar.open('Cost added', undefined, {
+            duration: 5000,
+            panelClass: ['success', 'app-alert'],
+            verticalPosition: 'top'
+          });
+  
+          if(result.usedSurplus){
+            //used surplus
+            console.log("used surplus");
+            this.activePlan['surplus'] = this.activePlan['surplus'] - result.cost;
+            this.planService.updatePlan(this.activePlan['id'], this.activePlan)
+              .then(
+                res => {
+                  console.log("updated plan");
+                }
+              )
+  
+          }else{
+            console.log("!used surplus");
+            this.recalculatePlan(result);
+          }               
         }
-              
-      }
-    })
+      })
 
+    }   
   }
 
   recalculatePlan(costData) {

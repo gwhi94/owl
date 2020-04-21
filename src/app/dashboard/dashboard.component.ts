@@ -42,7 +42,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   upcomingPayments = [];
   completedPayments = [];
   
-  testingIncrement:number = 5;
+  testingIncrement:number = 3;
 
   today = moment(moment().add(this.testingIncrement, 'days'));
   
@@ -215,8 +215,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
       console.log("fired");
       //updating days left      
       let planEnd = moment(plan['dateRange']['end']);
-      planEnd.diff(this.today, 'days');
-      plan.days = planEnd.diff(this.today, 'days');
+
+
+      console.log(this.today);
+
+      //console.log(planEnd.diff(this.today, 'days'));
+      plan.days = planEnd.diff(this.today, 'days') + 1;
+
+
+
 
       //calculating any surplus
       //need to do a check here to only do this if last updated is not today

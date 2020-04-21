@@ -56,20 +56,19 @@ export class SetDateModalComponent implements OnInit {
   }
 
   onSubmit(){ 
+   
 
-    let endString = moment.utc(this.rFormSet.get('endDate').value).format("YYYY-MM-DD");
+    let endString = moment(this.rFormSet.get('endDate').value).format("YYYY-MM-DD");
+    let endMoment = moment(endString);
 
     console.log(endString);
 
-    let endMoment = moment.utc(endString);
-
-    console.log(endMoment);
-    
-    
    this.getRange(moment(), endMoment);
   }
 
   public getRange(begin, end){
+
+    console.log(end);
     
     var dateObject = {begin:begin, end:end};
     var start = dateObject.begin;
@@ -77,13 +76,15 @@ export class SetDateModalComponent implements OnInit {
 
     let difference = moment.duration(end.diff(start));
 
-    var days = difference.asDays() + 2;
+    var days = difference.asDays() + 1;
     //number of days in range
     //use while loop to start at end day and loop towards start using days as counter
 
     var weekendCount = 0;
     //using clone as it was causing issues as the moment objects are mutable
     var dateToCompare = end.clone();  
+    console.log(dateToCompare);
+    console.log(dateObject);
     this.days = Math.floor(days);
     
     

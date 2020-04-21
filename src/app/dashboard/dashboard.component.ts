@@ -42,7 +42,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   upcomingPayments = [];
   completedPayments = [];
   
-  testingIncrement:number = 3;
+  testingIncrement:number = 8;
 
   today = moment(moment().add(this.testingIncrement, 'days'));
   
@@ -158,8 +158,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
       if(!moment(testForSameLastUpdated).isSame(testForSameToday)){
-        console.log("Not updated today");
-        plan.variableDailyLeft = plan['dailyleft'];                     
+                           
         this.updateAfkPlan(plan);
       
       }else{
@@ -229,30 +228,47 @@ export class DashboardComponent implements OnInit, OnDestroy {
       //need to do a check here to only do this if last updated is not today
       //otherwise we get multiplication by zero and it resets the surplus.
       let lastUpdated = moment(plan['lastUpdated']);
-      let afkPeriod  = this.today.diff(lastUpdated, 'days');           
+      let afkPeriod  = this.today.diff(lastUpdated, 'days');   
+      console.log(afkPeriod);        
       var dayInTheWeek = moment().day();
+
+      if(afkPeriod == 1){
+        plan.surplus = plan.surplus + plan.variableDailyLeft;
+        plan.variableDailyLeft = plan['dailyleft']; 
+        //wrong var daily left
+      }
+
+      ///TESTED LINE///
     
       if(afkPeriod > 1){
         if(plan.excludeWeekends){
           //week is 5 days
-         if(afkPeriod > 5){
+          if(afkPeriod > 5){
             console.log("Afk period is greater than 5");
-
-
+            
+            
             let weekDays = this.getWorkDays(moment(plan.lastUpdated), this.today);
             let weekAmountToSet = ((5 - dayInTheWeek) * (plan.dailyleft)) + 1;
             plan.variableWeeklyLeft = weekAmountToSet;
             plan.surplus = plan.surplus + (weekDays * plan['dailyleft']);         
             //Needs testing !!!!                   
+          }else if(afkPeriod <= 5){
+            let weekDays = this.getWorkDays(moment(plan.lastUpdated), this.today);
+            plan.surplus = plan.surplus + (weekDays * plan['dailyleft']);
+
           }        
         }else{
           //week is 7 days
          if (afkPeriod > 7){
-            console.log("User hasnt looged in for more than 7 days, so setting var weekly");
+            console.log("User hasnt logged in for more than 7 days, so setting var weekly");
             let weekAmountToSet = ((7 - dayInTheWeek) * (plan.dailyleft)) + 1;
             plan.variableWeeklyLeft = weekAmountToSet;
             plan.surplus = plan.surplus + (afkPeriod * plan['dailyleft']); 
             plan.variableDailyLeft = plan.dailyleft;
+            //this works
+          }else if(afkPeriod <= 7){
+            plan.surplus = plan.surplus + (afkPeriod * plan['dailyleft']);
+            //this works
           }
         }
       }
@@ -330,8 +346,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.activePlan['currentSpent'] = (this.activePlan['currentSpent'] + costData.cost);
     this.activePlan['currentLeft'] = (this.activePlan['currentLeft'] - costData.cost); 
 
-    this.activePlan['variableDailyLeft'] = Math.round((this.activePlan['variableDailyLeft'] - costData.cost) * 100) /100;
-    this.activePlan['variableWeeklyLeft'] = Math.round((this.activePlan['variableWeeklyLeft'] - costData.cost) * 100 ) /100;
+    this.activePlan['variableDailyLeft'] = (this.activePlan['variableDailyLeft'] - costData.cost).toFixed(2);
+    this.activePlan['variableWeeklyLeft'] = (this.activePlan['variableWeeklyLeft'] - costData.cost).toFixed(2);
 
     if(this.activePlan['costCategories'].some(c => c.category == costData.category)){
       console.log("Exists");

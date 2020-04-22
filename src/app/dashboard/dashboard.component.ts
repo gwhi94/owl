@@ -42,7 +42,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   upcomingPayments = [];
   completedPayments = [];
   
-  testingIncrement:number = 8;
+  testingIncrement:number = 7;
 
   today = moment(moment().add(this.testingIncrement, 'days'));
   
@@ -153,21 +153,39 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       plan.variableDailyLeft == 0 ? this.lockPlan = true: this.lockPlan = false;
 
+
+
       let testForSameLastUpdated = moment(moment(plan.lastUpdated).format('YYYY-MM-DD'));
+      //gets last updated
       let testForSameToday = moment(moment().add(this.testingIncrement, 'days').format('YYYY-MM-DD'));
+      //gets today
 
 
-      if(!moment(testForSameLastUpdated).isSame(testForSameToday)){
+      console.log(testForSameLastUpdated);
+      console.log(testForSameToday);
+      console.log(this.today);
+
+     // console.log(testForSameToday.diff(testForSameLastUpdated));
+
+      
+      if((testForSameToday.diff(testForSameLastUpdated) <= 1)){
                            
-        this.updateAfkPlan(plan);
+          this.updateAfkPlan(plan);
       
       }else{
-        console.log("Plan has been updated today");                  
+
+        
+
+        //not going in here because last updated is a day behind today obviously
+        
+        console.log("User is logging in on regular basis");                  
         if(plan.excludeWeekends){
           if(moment(this.today).diff(plan.weekUpdated, 'days') == 5){
             console.log("week passed");
             plan.variableWeeklyLeft = plan.weeklyLeft;
+            plan.variableDailyLeft = plan.dailyleft;
             plan.weekUpdated = this.today.format('YYYY-MM-DD'); 
+            
           }else{
             console.log("Week hasnt passed yet");
           }
@@ -176,22 +194,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
           if(moment(this.today).diff(plan.weekUpdated, 'days') == 7){
             console.log("week passed");
             plan.variableWeeklyLeft = plan.weeklyLeft;
+            plan.variableDailyLeft = plan.dailyleft;
             plan.weekUpdated = this.today.format('YYYY-MM-DD'); 
           }else{
             console.log("Week hasnt passed yet");
           }
         }
         
-        plan.lastUpdated = this.today.format('YYYY-MM-DDTHH:mm:ss.SSS'); 
-         this.planService.updatePlan(plan['id'], plan)
-            .then( res => {
-              this.activePlan = plan;
-              this.setProgressBar();
-              this.sendSpentToday(plan);
-              this.sendSpentThisWeek(plan);  
-              this.sendPercentageSpent(plan);
-          }
-        )  
+        this.updateAfkPlan(plan);
       }
       }         
     }
@@ -233,7 +243,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       var dayInTheWeek = moment().day();
 
       if(afkPeriod == 1){
-        plan.surplus = plan.surplus + plan.variableDailyLeft;
+        console.log("ye");
+       
+        plan.surplus = (parseFloat(plan.surplus) + parseFloat(plan.variableDailyLeft));
         plan.variableDailyLeft = plan['dailyleft']; 
         //wrong var daily left
       }

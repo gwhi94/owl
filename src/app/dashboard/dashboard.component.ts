@@ -42,7 +42,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   upcomingPayments = [];
   completedPayments = [];
   
-  testingIncrement:number = 7;
+  //DO NOT INCREMENT WITHOUT ADDING COST
+  testingIncrement:number = 30;
+  //DO NOT INCREMENT WITHOUT ADDING COST
+  //this is one behind spredsheet tracking number
 
   today = moment(moment().add(this.testingIncrement, 'days'));
   
@@ -130,7 +133,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     inspectPlan(plan){
 
-      if(moment(moment().format('YYYY-MM-DD')).isSame(moment(plan.dateRange.end))){
+      if(moment(moment().add(this.testingIncrement).format('YYYY-MM-DD')).isSame(moment(plan.dateRange.end))){
         console.log("is same");
         this.dialog.open(EndPlanModalComponent);
         //set this plan to inactive. 
@@ -173,17 +176,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.updateAfkPlan(plan);
       
       }else{
-
-        
-
-        //not going in here because last updated is a day behind today obviously
-        
+        //not going in here because last updated is a day behind today obviously      
         console.log("User is logging in on regular basis");                  
         if(plan.excludeWeekends){
           if(moment(this.today).diff(plan.weekUpdated, 'days') == 5){
             console.log("week passed");
             plan.variableWeeklyLeft = plan.weeklyLeft;
-            plan.variableDailyLeft = plan.dailyleft;
             plan.weekUpdated = this.today.format('YYYY-MM-DD'); 
             
           }else{
@@ -194,7 +192,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
           if(moment(this.today).diff(plan.weekUpdated, 'days') == 7){
             console.log("week passed");
             plan.variableWeeklyLeft = plan.weeklyLeft;
-            plan.variableDailyLeft = plan.dailyleft;
             plan.weekUpdated = this.today.format('YYYY-MM-DD'); 
           }else{
             console.log("Week hasnt passed yet");
@@ -244,7 +241,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       if(afkPeriod == 1){
         console.log("ye");
-       
+        
+        console.log(plan.surplus);
+        console.log(plan.variableDailyLeft);
+        
         plan.surplus = (parseFloat(plan.surplus) + parseFloat(plan.variableDailyLeft));
         plan.variableDailyLeft = plan['dailyleft']; 
         //wrong var daily left
@@ -265,6 +265,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             plan.surplus = plan.surplus + (weekDays * plan['dailyleft']);         
             //Needs testing !!!!                   
           }else if(afkPeriod <= 5){
+           
             let weekDays = this.getWorkDays(moment(plan.lastUpdated), this.today);
             plan.surplus = plan.surplus + (weekDays * plan['dailyleft']);
 
@@ -279,6 +280,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             plan.variableDailyLeft = plan.dailyleft;
             //this works
           }else if(afkPeriod <= 7){
+            console.log("here");
             plan.surplus = plan.surplus + (afkPeriod * plan['dailyleft']);
             //this works
           }

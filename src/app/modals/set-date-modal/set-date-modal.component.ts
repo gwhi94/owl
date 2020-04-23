@@ -97,9 +97,9 @@ export class SetDateModalComponent implements OnInit {
       days --; 
     }
     
-    if(this.excludeWeekends){
+/*     if(this.excludeWeekends){
       this.days = this.days - weekendCount;
-    }
+    } */
 
 
   this.dateRange = {

@@ -147,9 +147,13 @@ export class NewPlanModalComponent implements OnInit {
 
   crunchNumbers(form) {  
     var daysLeft = this.data.days;        
+    
+    let weeks = Math.round(daysLeft / 7);//30 => 4
+    
+    
     this.data.totalLeft = Math.round((form.moneyIn - form.expenses - form.saving) * 100) /100; //80
-    this.data.weeklyLeft = Math.round(((this.data.totalLeft / this.data.days) * 5) * 100) /100; //80
-    this.data.dailyLeft = Math.round(this.data.totalLeft / daysLeft) * 100 /100;           
+    this.data.weeklyLeft = Math.round(this.data.totalLeft / weeks); //80
+    this.data.dailyLeft = Math.floor(this.data.totalLeft / daysLeft);           
     
   }
   

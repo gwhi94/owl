@@ -22,6 +22,7 @@ export class SetDateModalComponent implements OnInit {
   paymentsWritable:Array<any> = [];
   selectedPaymentTotal:number = 0;
   minDate = moment().add(1, "days");
+  weekendCount:Number = 0;
 
 
   constructor(private paymentsService:PaymentsService, private fb: FormBuilder, public dialogRef: MatDialogRef<SetDateModalComponent>) {
@@ -97,9 +98,9 @@ export class SetDateModalComponent implements OnInit {
       days --; 
     }
     
-/*     if(this.excludeWeekends){
-      this.days = this.days - weekendCount;
-    } */
+    if(this.excludeWeekends){
+      this.weekendCount = weekendCount;
+    } 
 
 
   this.dateRange = {
@@ -108,8 +109,9 @@ export class SetDateModalComponent implements OnInit {
     }
 
     console.log(this.dateRange);
+    console.log(this.weekendCount);
 
-   this.dialogRef.close({days:this.days, dateRange:this.dateRange, excludeWeekends:this.excludeWeekends, expenses:this.selectedPaymentTotal});
+   this.dialogRef.close({weekendCount:this.weekendCount, days:this.days, dateRange:this.dateRange, excludeWeekends:this.excludeWeekends, expenses:this.selectedPaymentTotal});
     
   }
 

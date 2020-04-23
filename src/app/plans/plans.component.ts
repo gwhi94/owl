@@ -150,7 +150,7 @@ export class PlansComponent implements OnInit, OnDestroy {
 
      dialogRef.afterClosed().subscribe(result=> {
        if(result) 
-       this.openNewPlanDialog({days:result.days, dateRange:result.dateRange, excludeWeekends:result.excludeWeekends, expenses:result.expenses})      
+       this.openNewPlanDialog({weekendCount:result.weekendCount, days:result.days, dateRange:result.dateRange, excludeWeekends:result.excludeWeekends, expenses:result.expenses})      
      });
     }
 

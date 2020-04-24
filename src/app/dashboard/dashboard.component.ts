@@ -32,7 +32,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   planProgressPercentage:number = 0;
   planProgressColor:string = 'green';
   currentDate:string; 
-  lockPlan = false;
+  lockPlanForWeekend = false;
   mostSpent:String = '';
   spentToday:Number;
   spentThisWeek:Number;
@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   completedPayments = [];
   
   //DO NOT INCREMENT WITHOUT ADDING COST
-  testingIncrement:number = 0;
+  testingIncrement:number = 31
   //DO NOT INCREMENT WITHOUT ADDING COST
   //this is one behind spredsheet tracking number
 
@@ -116,7 +116,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    console.log(this.lockPlan);
+    console.log(this.lockPlanForWeekend);
      
     this.subscription = this.planService.getActivePlan()
       .subscribe(result => {
@@ -133,6 +133,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     inspectPlan(plan){
 
+      console.log(moment(moment().add(this.testingIncrement).format('YYYY-MM-DD')));
+      console.log(moment(plan.dateRange.end));
+
       if(moment(moment().add(this.testingIncrement).format('YYYY-MM-DD')).isSame(moment(plan.dateRange.end))){
         console.log("is same");
         this.dialog.open(EndPlanModalComponent);
@@ -148,13 +151,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
       if(plan.excludeWeekends){
         if(moment().add(this.testingIncrement, 'days').day() == 0 || moment().add(this.testingIncrement, 'days').day() == 6){
           console.log("locking plan as it is weekend and excluding weekends")
-          this.lockPlan = true;
+          this.lockPlanForWeekend = true;
         }else {
-          this.lockPlan = false;
+          this.lockPlanForWeekend = false;
         }        
       }
 
-      plan.variableDailyLeft == 0 ? this.lockPlan = true: this.lockPlan = false;
+      
 
 
 
@@ -245,27 +248,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
         console.log(plan.surplus);
         console.log(plan.variableDailyLeft);
         
-        plan.surplus = (parseFloat(plan.surplus) + parseFloat(plan.variableDailyLeft));
-        plan.variableDailyLeft = plan['dailyleft']; 
-        //wrong var daily left
+        if(!this.lockPlanForWeekend){
+          plan.surplus = (parseFloat(plan.surplus) + parseFloat(plan.variableDailyLeft));
+          plan.variableDailyLeft = plan['dailyleft']; 
+        }
       }
 
-      ///TESTED LINE///
-    
+      ///TESTED LINE///   
       if(afkPeriod > 1){
         if(plan.excludeWeekends){
           //week is 5 days
           if(afkPeriod > 5){
             console.log("Afk period is greater than 5");
-            
-            
+                       
             let weekDays = this.getWorkDays(moment(plan.lastUpdated), this.today);
             let weekAmountToSet = ((5 - dayInTheWeek) * (plan.dailyleft)) + 1;
-            plan.variableWeeklyLeft = weekAmountToSet;
+            plan.variableWeeklyLeft = weekAmountToSet;            
             plan.surplus = plan.surplus + (weekDays * plan['dailyleft']);         
             //Needs testing !!!!                   
-          }else if(afkPeriod <= 5){
-           
+          }else if(afkPeriod <= 5){           
             let weekDays = this.getWorkDays(moment(plan.lastUpdated), this.today);
             plan.surplus = plan.surplus + (weekDays * plan['dailyleft']);
 
@@ -321,38 +322,41 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   addCost(){
-    if(this.activePlan['variableDailyLeft'] > 0){
-      let dialogRef = this.dialog.open(AddCostModalComponent, {  
-        data:{leftToSpend:this.activePlan['variableDailyLeft'], surplus:this.activePlan['surplus']}  
-      })
-      dialogRef.afterClosed().subscribe(result => {
-        if(result){
-          console.log(result);
-          this.snackBar.open('Cost added', undefined, {
-            duration: 5000,
-            panelClass: ['success', 'app-alert'],
-            verticalPosition: 'top'
-          });
-  
-          if(result.usedSurplus){
-            //used surplus
-            console.log("used surplus");
-            this.activePlan['surplus'] = this.activePlan['surplus'] - result.cost;
-            this.planService.updatePlan(this.activePlan['id'], this.activePlan)
-              .then(
-                res => {
-                  console.log("updated plan");
-                }
-              )
-  
-          }else{
-            console.log("!used surplus");
-            this.recalculatePlan(result);
-          }               
-        }
-      })
 
-    }   
+    if(!this.lockPlanForWeekend && this.activePlan['variableDailyLeft'] > 0){
+      if(this.activePlan['variableDailyLeft'] > 0){
+        let dialogRef = this.dialog.open(AddCostModalComponent, {  
+          data:{leftToSpend:this.activePlan['variableDailyLeft'], surplus:this.activePlan['surplus']}  
+        })
+        dialogRef.afterClosed().subscribe(result => {
+          if(result){
+            console.log(result);
+            this.snackBar.open('Cost added', undefined, {
+              duration: 5000,
+              panelClass: ['success', 'app-alert'],
+              verticalPosition: 'top'
+            });
+    
+            if(result.usedSurplus){
+              //used surplus
+              console.log("used surplus");
+              this.activePlan['surplus'] = this.activePlan['surplus'] - result.cost;
+              this.planService.updatePlan(this.activePlan['id'], this.activePlan)
+                .then(
+                  res => {
+                    console.log("updated plan");
+                  }
+                )
+    
+            }else{
+              console.log("!used surplus");
+              this.recalculatePlan(result);
+            }               
+          }
+        })  
+      }   
+    }
+    
   }
 
   recalculatePlan(costData) {

@@ -129,8 +129,6 @@ export class NewPlanModalComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log(this.dataPassedFromSet);
-
     this.planService.getActivePlan()
     .subscribe(res => {
       this.activePlan = res[0];
@@ -154,9 +152,6 @@ export class NewPlanModalComponent implements OnInit {
 
     if(this.dataPassedFromSet.dataPassedFromSet.weekendCount > 0){
       console.log("excl weekends");
-
-
-
 
     }
     var daysLeft = this.data.days;           

@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   completedPayments = [];
   
   //DO NOT INCREMENT WITHOUT ADDING COST
-  testingIncrement:number = 4;
+  testingIncrement:number = 7;
   //DO NOT INCREMENT WITHOUT ADDING COST
   //this is one behind spredsheet tracking number
 
@@ -169,13 +169,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
      console.log(testForSameToday.diff(testForSameLastUpdated, 'days'));
      
-      if((testForSameToday.diff(testForSameLastUpdated) <= 1)){
+      if((testForSameToday.diff(testForSameLastUpdated, 'days') <= 1)){
         console.log("User logged in yesterday");
                            
           this.updateAfkPlan(plan);
       
-      }else{
-        //not going in here because last updated is a day behind today obviously      
+      }else{   
         console.log("User hasnt logged in yesterday");                  
         if(plan.excludeWeekends){
           if(moment(this.today).diff(plan.weekUpdated, 'days') == 5){

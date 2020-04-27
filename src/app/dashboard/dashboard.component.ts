@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   completedPayments = [];
   
   //DO NOT INCREMENT WITHOUT ADDING COST
-  testingIncrement:number = 0;
+  testingIncrement:number = 7;
   //DO NOT INCREMENT WITHOUT ADDING COST
   //this is one behind spredsheet tracking number
 
@@ -167,18 +167,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
      // console.log(testForSameToday.diff(testForSameLastUpdated));
 
-     console.log(testForSameToday.diff(testForSameLastUpdated, 'days'));
-                 
-        if(plan.excludeWeekends){
-          if(moment(this.today).diff(plan.weekUpdated, 'days') == 5){
-            console.log("week passed 5 days");
-            plan.variableWeeklyLeft = plan.weeklyLeft;
-            plan.weekUpdated = this.today.format('YYYY-MM-DD'); 
-            
-          }else{
-            console.log("Week hasnt passed yet 5 days");
-          }
-        }else{       
+     console.log(testForSameToday.diff(testForSameLastUpdated, 'days'));                
           //this logic works and so does reset
           if(moment(this.today).diff(plan.weekUpdated, 'days') == 7){
             console.log("week passed 7 days");
@@ -187,7 +176,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           }else{
             console.log("Week hasnt passed yet 7 days");
           }
-        }       
+               
         this.updateAfkPlan(plan);     
       }         
     }
@@ -237,33 +226,43 @@ export class DashboardComponent implements OnInit, OnDestroy {
       if(afkPeriod > 1){
         if(plan.excludeWeekends){
           //week is 5 days
-          if(afkPeriod > 5){
-            console.log("User hasnt logged on in last week 5 days");
-                       
-            let weekDays = this.getWorkDays(moment(plan.lastUpdated), this.today);
-            let weekAmountToSet = ((5 - dayInTheWeek) * (plan.dailyleft)) + 1;
-            plan.variableWeeklyLeft = weekAmountToSet;            
-            plan.surplus = plan.surplus + (weekDays * plan['dailyleft']);         
-            //Needs testing !!!!                   
-          }else if(afkPeriod <= 5){    
-            console.log("User has logged in within the last week but not yesterday 5 days");       
-            let weekDays = this.getWorkDays(moment(plan.lastUpdated), this.today);
-            plan.surplus = plan.surplus + (weekDays * plan['dailyleft']);
+          if(afkPeriod > 7){                  
+              let weekDays = this.getWorkDays(moment(plan.lastUpdated), this.today);
+              //let weekAmountToSet = ((5 - dayInTheWeek) * (plan.dailyleft)) + 1;
+              plan.variableWeeklyLeft = plan.weeklyLeft;            
+              plan.surplus = plan.surplus + (weekDays * plan['dailyleft']);         
+              //Needs testing !!!!                   
+          } else if(afkPeriod <= 7){    
+              if(this.today.diff(moment(plan.weekUpdated), 'days') > 7){
+                plan.variableWeeklyLeft = plan.weeklyLeft;
+                let newWeekUpdated = (moment(plan.weekUpdated).add(7, 'days'));
+                plan.weekUpdated = newWeekUpdated.format("YYYY-MM-DD");
+              }             
+              
+              //not counting friday's surplus
+              let weekDays = this.getWorkDays(moment(plan.lastUpdated), this.today);
+              console.log(weekDays);
+              plan.surplus = plan.surplus + (weekDays * plan['dailyleft']);
+              
+              
+              plan.variableDailyLeft = plan.dailyleft;
 
-          }        
+            }        
         }else{
+
           //week is 7 days
          if (afkPeriod > 7){
-          console.log("User hasnt logged on in last week 7 days");
-            let weekAmountToSet = ((7 - dayInTheWeek) * (plan.dailyleft)) + 1;
-            plan.variableWeeklyLeft = weekAmountToSet;
-            //MINUS 1 AS 0 AFK WOULD BE YESTERDAY 
+            plan.variableWeeklyLeft = plan.weeklyLeft;
             plan.surplus = (parseFloat(plan.surplus) + parseFloat(plan.variableDailyLeft)) + ((afkPeriod - 1) * plan['dailyleft']); 
             plan.variableDailyLeft = plan.dailyleft;
-            //this works
-          }else if(afkPeriod <= 7){
-            console.log("User has logged in within the last week but not yesterday 7 days"); 
-            console.log(plan.surplus, afkPeriod); 
+          }else if(afkPeriod <= 7){     
+            if(this.today.diff(moment(plan.weekUpdated), 'days') > 7){
+                plan.variableWeeklyLeft = plan.weeklyLeft;
+                let newWeekUpdated = (moment(plan.weekUpdated).add(7, 'days'));
+                plan.weekUpdated = newWeekUpdated.format("YYYY-MM-DD");
+            }
+
+
             plan.surplus = (parseFloat(plan.surplus) + parseFloat(plan.variableDailyLeft)) + ((afkPeriod - 1) * plan['dailyleft']);
             plan.variableDailyLeft = plan.dailyleft;
             //this works

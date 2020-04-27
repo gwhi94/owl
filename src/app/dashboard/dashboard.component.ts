@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   completedPayments = [];
   
   //DO NOT INCREMENT WITHOUT ADDING COST
-  testingIncrement:number = 7;
+  testingIncrement:number = 0;
   //DO NOT INCREMENT WITHOUT ADDING COST
   //this is one behind spredsheet tracking number
 
@@ -168,14 +168,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
      // console.log(testForSameToday.diff(testForSameLastUpdated));
 
      console.log(testForSameToday.diff(testForSameLastUpdated, 'days'));
-     
-      if((testForSameToday.diff(testForSameLastUpdated, 'days') <= 1)){
-        console.log("User logged in yesterday");
-                           
-          this.updateAfkPlan(plan);
-      
-      }else{   
-        console.log("User hasnt logged in yesterday");                  
+                 
         if(plan.excludeWeekends){
           if(moment(this.today).diff(plan.weekUpdated, 'days') == 5){
             console.log("week passed 5 days");
@@ -194,10 +187,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
           }else{
             console.log("Week hasnt passed yet 7 days");
           }
-        }
-        
-        this.updateAfkPlan(plan);
-      }
+        }       
+        this.updateAfkPlan(plan);     
       }         
     }
 

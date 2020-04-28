@@ -111,7 +111,7 @@ export class SetDateModalComponent implements OnInit {
     console.log(this.dateRange);
     console.log(this.weekendCount);
 
-   this.dialogRef.close({weekendCount:this.weekendCount, days:this.days, dateRange:this.dateRange, excludeWeekends:this.excludeWeekends, expenses:this.selectedPaymentTotal});
+   this.dialogRef.close({weekendCount:this.weekendCount, days:this.days,totalDays:this.days, dateRange:this.dateRange, excludeWeekends:this.excludeWeekends, expenses:this.selectedPaymentTotal});
     
   }
 

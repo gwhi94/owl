@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   completedPayments = [];
   
   //DO NOT INCREMENT WITHOUT ADDING COST
-  testingIncrement:number = 7;
+  testingIncrement:number = 3;
   //DO NOT INCREMENT WITHOUT ADDING COST
   //this is one behind spredsheet tracking number
 
@@ -224,7 +224,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       ///TESTED LINE///   
       if(afkPeriod > 1){
+        console.log("1");
         if(plan.excludeWeekends){
+          console.log("2");
           //week is 5 days
           if(afkPeriod > 7){                  
               let weekDays = this.getWorkDays(moment(plan.lastUpdated), this.today);
@@ -233,18 +235,34 @@ export class DashboardComponent implements OnInit, OnDestroy {
               plan.surplus = plan.surplus + (weekDays * plan['dailyleft']);         
               //Needs testing !!!!                   
           } else if(afkPeriod <= 7){    
+            console.log("3");
               if(this.today.diff(moment(plan.weekUpdated), 'days') > 7){
                 plan.variableWeeklyLeft = plan.weeklyLeft;
                 let newWeekUpdated = (moment(plan.weekUpdated).add(7, 'days'));
                 plan.weekUpdated = newWeekUpdated.format("YYYY-MM-DD");
-              }             
+              }    
               
+              
+              //TODO:                       
               //not counting friday's surplus
               let weekDays = this.getWorkDays(moment(plan.lastUpdated), this.today);
               console.log(weekDays);
-              plan.surplus = plan.surplus + (weekDays * plan['dailyleft']);
+              //weekdays minus 2 to exlude today and the day it counted from, leaving the middle range
+              console.log(weekDays-2);
+              if(weekDays == 0){
+                console.log("4");
+                //this must mean we passed over a weekend
+                plan.surplus = (plan.surplus + parseFloat(plan.variableDailyLeft));
               
-              
+              }else{
+                console.log("5");
+                //this means no weekend was passed over
+                plan.surplus = (plan.surplus + parseFloat(plan.variableDailyLeft)) + ((weekDays-2) * plan['dailyleft']);
+
+            }
+   
+         
+                          
               plan.variableDailyLeft = plan.dailyleft;
 
             }        
@@ -290,6 +308,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
   getWorkDays(start, end){
+
+    console.log(start, end);
 
     var first = start.clone().endOf('week'); // end of first week
     var last = end.clone().startOf('week'); // start of last week

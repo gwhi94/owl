@@ -3,6 +3,7 @@ export class Plan {
     dailyLeft:number;
     dateRange:object;
     days:number;
+    totalDays:number;
     expenses:number;
     moneyIn:number;
     name:string;

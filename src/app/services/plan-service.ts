@@ -29,6 +29,10 @@ export class PlanService {
             weeklyLeft:formData.weeklyLeft,
             dailyleft:formData.dailyLeft,
             days:formData.days,
+            totalDays:formData.totalDays,
+            
+            
+            
             currentSpent:formData.currentSpent,
             currentLeft:formData.currentLeft,           
             lastUpdated:formData.lastUpdated,

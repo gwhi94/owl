@@ -42,6 +42,8 @@ export class NewPlanModalComponent implements OnInit {
     weeklyLeft:0, 
     dailyLeft:0,
     days:0,
+    totalDays:0,
+    weekendCount:0,
     dateRange:{},
     currentSpent:0,
     currentLeft:0,
@@ -134,7 +136,22 @@ export class NewPlanModalComponent implements OnInit {
       this.activePlan = res[0];
     })
 
+
+
+
+    console.log(moment(this.dataPassedFromSet.dataPassedFromSet.dateRange.end));
+
+
+
+    if(this.dataPassedFromSet.dataPassedFromSet.excludeWeekends){
+      console.log(this.getWorkDays(moment(this.dataPassedFromSet.dataPassedFromSet.dateRange.begin),moment(this.dataPassedFromSet.dataPassedFromSet.dateRange.end)));
+     // let weekendCount = this.data.days - workDays;
+      //console.log(workDays);
+      //console.log(weekendCount);
+    }
+
     this.data.days = this.dataPassedFromSet.dataPassedFromSet.days;
+    this.data.totalDays = this.dataPassedFromSet.dataPassedFromSet.days;
     this.data.dateRange = this.dataPassedFromSet.dataPassedFromSet.dateRange;
     this.data.excludeWeekends = this.dataPassedFromSet.dataPassedFromSet.excludeWeekends;
     this.rForm.controls.expenses.setValue(this.dataPassedFromSet.dataPassedFromSet.expenses);
@@ -145,10 +162,26 @@ export class NewPlanModalComponent implements OnInit {
 
   }
 
+  getWorkDays(start, end){
+    console.log(start, end)
+    //GETTING NAN
+
+    var first = start.clone().endOf('week'); // end of first week
+    
+    var last = end.clone().startOf('week'); // start of last week
+    var days = last.diff(first,'days') * 5 / 7; // this will always multiply of 7
+    console.log(days);
+    var wfirst = first.day() - start.day(); // check first week
+    if(start.day() == 0) --wfirst; // -1 if start with sunday 
+    var wlast = end.day() - last.day(); // check last week
+    if(end.day() == 6) --wlast; // -1 if end with saturday
+  
+    return (Math.round((wfirst + days + wlast))) -1; // get the total
+
+  }
+
   crunchNumbers(form) {  
 
-    console.log("hit");
-    console.log(this.dataPassedFromSet.dataPassedFromSet.weekendCount);
 
     if(this.dataPassedFromSet.dataPassedFromSet.weekendCount > 0){
       console.log("excl weekends");

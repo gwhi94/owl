@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   completedPayments = [];
   
   //DO NOT INCREMENT WITHOUT ADDING COST
-  testingIncrement:number = 2;
+  testingIncrement:number = 30;
   //DO NOT INCREMENT WITHOUT ADDING COST
   //this is one behind spredsheet tracking number
 
@@ -201,27 +201,31 @@ export class DashboardComponent implements OnInit, OnDestroy {
       plan.days = planEnd.diff(this.today, 'days') + 1;
 
       if(this.activePlan['excludeWeekends']){
-        let weekDays = this.getWorkDays(moment(plan.dateRange.begin), this.today) - 1;
-        console.log(weekDays);
-        this.activePlan['surplus'] = (weekDays * plan.dailyleft) - this.activePlan['currentSpent'];
+        if(!this.lockPlanForWeekend){
+
+          console.log(moment(plan.dateRange.begin));
+          console.log(this.today);
+
+
+
+          let weekDays = (this.getElapsedWorkDays(moment(plan.dateRange.begin), this.today));
+
+
+          console.log(weekDays);
+          this.activePlan['surplus'] = (weekDays * plan.dailyleft) - this.activePlan['currentSpent'];
+        
+        
+        }
+      
+      
       }else{
         let daysGone = this.activePlan['totalDays'] - this.activePlan['days'];
         console.log(daysGone);
-        this.activePlan['surplus'] = (daysGone * plan.dailyleft) - this.activePlan['currentSpent'];
-
-      
+        this.activePlan['surplus'] = (daysGone * plan.dailyleft) - this.activePlan['currentSpent'];     
       }
 
-
-
-
-      //calculating any surplus
-      //need to do a check here to only do this if last updated is not today
-      //otherwise we get multiplication by zero and it resets the surplus.
       let lastUpdated = moment(plan['lastUpdated']);
       let afkPeriod  = this.today.diff(lastUpdated, 'days');   
-      console.log(afkPeriod);        
-      var dayInTheWeek = moment().day();
 
       if(afkPeriod == 1){
         console.log("User logged in yesterday");
@@ -238,8 +242,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
           console.log("2");
           //week is 5 days
           if(afkPeriod > 7){                  
-              let weekDays = this.getWorkDays(moment(plan.lastUpdated), this.today);
-              //let weekAmountToSet = ((5 - dayInTheWeek) * (plan.dailyleft)) + 1;
               plan.variableWeeklyLeft = plan.weeklyLeft;                  
               //Needs testing !!!!                   
           } else if(afkPeriod <= 7){    
@@ -254,8 +256,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
             }        
         }else{
-
-          //week is 7 days
          if (afkPeriod > 7){
             plan.variableWeeklyLeft = plan.weeklyLeft;
             plan.variableDailyLeft = plan.dailyleft;
@@ -265,9 +265,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 let newWeekUpdated = (moment(plan.weekUpdated).add(7, 'days'));
                 plan.weekUpdated = newWeekUpdated.format("YYYY-MM-DD");
             }
- 
             plan.variableDailyLeft = plan.dailyleft;
-            //this works
           }
         }
       }
@@ -290,15 +288,33 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   }
 
+  getElapsedWorkDays(a, b) {
+    var days = b.diff(a, 'days');
+    var start = a.day();
+    var count = 0;
+    for (var i = 0; i < days; i++) {
+      start++;
+      if (start > 6)
+        start = 0;
+      if (start > 0 && start < 6)
+        count++;
+    }
+    return count;
+  }
+
 
   getWorkDays(start, end){
 
     console.log(start, end);
 
     var first = start.clone().endOf('week'); // end of first week
+    console.log(first);
     var last = end.clone().startOf('week'); // start of last week
+    console.log(last);
     var days = last.diff(first,'days') * 5 / 7; // this will always multiply of 7
+    console.log(days);
     var wfirst = first.day() - start.day(); // check first week
+    console.log(wfirst);
     if(start.day() == 0) --wfirst; // -1 if start with sunday 
     var wlast = end.day() - last.day(); // check last week
     if(end.day() == 6) --wlast; // -1 if end with saturday

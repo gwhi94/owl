@@ -36,6 +36,8 @@ export class NewPlanModalComponent implements OnInit {
   excludeWeekends = false;
 
   activePlan:Object;
+
+
   
   data = {
     totalLeft:0,
@@ -136,18 +138,10 @@ export class NewPlanModalComponent implements OnInit {
       this.activePlan = res[0];
     })
 
-
-
-
-    console.log(moment(this.dataPassedFromSet.dataPassedFromSet.dateRange.end));
-
-
-
     if(this.dataPassedFromSet.dataPassedFromSet.excludeWeekends){
-      console.log(this.getWorkDays(moment(this.dataPassedFromSet.dataPassedFromSet.dateRange.begin),moment(this.dataPassedFromSet.dataPassedFromSet.dateRange.end)));
-     // let weekendCount = this.data.days - workDays;
-      //console.log(workDays);
-      //console.log(weekendCount);
+      let workDays = this.getWorkDays(moment(),moment().add(this.dataPassedFromSet.dataPassedFromSet.days, 'days'));
+      let weekendCount = this.dataPassedFromSet.dataPassedFromSet.days - workDays;
+      this.data.weekendCount = weekendCount;
     }
 
     this.data.days = this.dataPassedFromSet.dataPassedFromSet.days;
@@ -159,18 +153,13 @@ export class NewPlanModalComponent implements OnInit {
     this.rForm.valueChanges.subscribe(()=> {
       this.crunchNumbers(this.rForm.value);
     });
-
   }
 
   getWorkDays(start, end){
-    console.log(start, end)
-    //GETTING NAN
-
     var first = start.clone().endOf('week'); // end of first week
     
     var last = end.clone().startOf('week'); // start of last week
     var days = last.diff(first,'days') * 5 / 7; // this will always multiply of 7
-    console.log(days);
     var wfirst = first.day() - start.day(); // check first week
     if(start.day() == 0) --wfirst; // -1 if start with sunday 
     var wlast = end.day() - last.day(); // check last week

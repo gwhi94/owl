@@ -9,6 +9,7 @@ import { Plan } from '../models/plan';
 import { Subscription } from 'rxjs';
 import { trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-plans',
@@ -43,10 +44,11 @@ export class PlansComponent implements OnInit, OnDestroy {
   plan: {};
   activePlans:Array<any>;
 
-  constructor(private router:Router, public dialog: MatDialog, private planService:PlanService) { }
+  constructor(private auth:AuthService, private router:Router, public dialog: MatDialog, private planService:PlanService) { }
 
   ngOnInit() {
-   this.getPlans();
+    this.auth.user$.subscribe(res => this.getPlans(res.uid));
+   
       
   }
 
@@ -54,8 +56,8 @@ export class PlansComponent implements OnInit, OnDestroy {
     
   }
 
-  getPlans(){
-    this.planService.getPlans()
+  getPlans(uid){
+    this.planService.getPlans(uid)
       .subscribe(res =>{
         this.plans = res;
         this.findActive()

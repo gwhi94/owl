@@ -16,6 +16,8 @@ import { SingleDataSet, Label, monkeyPatchChartJsLegend, monkeyPatchChartJsToolt
 import { DataService } from '../services/data-service';
 import { PaymentsService } from '../services/payments-service';
 
+import { AuthService } from '../services/auth.service';
+
 
 
 @Component({
@@ -55,7 +57,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
 
-  constructor(private router:Router, private dataService:DataService, private paymentsService:PaymentsService, private snackBar:MatSnackBar, private planService:PlanService, public dialog: MatDialog ) {
+  constructor(private auth:AuthService, private router:Router, private dataService:DataService, private paymentsService:PaymentsService, private snackBar:MatSnackBar, private planService:PlanService, public dialog: MatDialog ) {
     monkeyPatchChartJsTooltip();
     monkeyPatchChartJsLegend(); 
    }
@@ -117,17 +119,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    
-    this.subscription = this.planService.getActivePlan()
-      .subscribe(result => {
-        this.activePlan = result[0];
-        if(this.activePlan) {
-          this.inspectPlan(this.activePlan);
-          this.setBreakdown();
-        }        
-        this.subscription.unsubscribe();           
-      });
-    
+
+    this.auth.user$.subscribe(res => this.getActivePlan(res.uid));
+
+  
+  }
+
+  getActivePlan(uid){
+    this.subscription = this.planService.getActivePlan(uid)
+    .subscribe(result => {
+      this.activePlan = result[0];
+      if(this.activePlan) {
+        this.inspectPlan(this.activePlan);
+        this.setBreakdown();
+      }        
+      this.subscription.unsubscribe();           
+    });
+
   }
 
     inspectPlan(plan){

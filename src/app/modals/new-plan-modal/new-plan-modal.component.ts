@@ -142,9 +142,13 @@ export class NewPlanModalComponent implements OnInit {
 
   ngOnInit() {
 
-    this.auth.user$.subscribe(res => this.uid = res.uid);
+    this.auth.user$.subscribe(res => this.cleanUp(res.uid));
 
-    this.planService.getActivePlan()
+
+  }
+
+  cleanUp(uid){
+    this.planService.getActivePlan(uid)
     .subscribe(res => {
       this.activePlan = res[0];
     })

@@ -6,6 +6,8 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import * as moment from 'moment';
 import { Plan } from '../models/plan';
 
+import { AuthService } from '../services/auth.service';
+
 
 //get UID on login 
 //pass that to shared data service
@@ -19,9 +21,14 @@ export class PlanService {
     active$:BehaviorSubject<Boolean>;
 
     today = moment(moment());
+
+    uid:string;
     
     
-    constructor(private http: HttpClient, private db:AngularFirestore) { }
+    constructor( private http: HttpClient, private db:AngularFirestore) {
+       
+        
+     }
 
     newPlan(formData,formValue){
         return this.db.collection('plans').add({
@@ -51,22 +58,24 @@ export class PlanService {
         })
     };
 
-    getPlans(){           
-        return this.db.collection('plans').snapshotChanges();            
+    getPlans(uid){   
+        console.log(uid);         
+        return this.db.collection('plans', (ref) => ref.where('uid', '==', uid)).snapshotChanges();            
     };
 
-    getPlan(plan){
-        return this.db.collection('plans').doc(plan.payload.doc.id).valueChanges();
+  /*   getPlan(plan){
+        return this.db.collection('plans', (ref) => ref.where('uid', '==', this.uid)).doc(plan.payload.doc.id).valueChanges();
+    } */
+
+    getActivePlan(uid){
+        console.log(uid);  
+        return this.db.collection('plans', (ref) => ref.where('activePlan', '==', true) && ref.where('uid', '==',uid)).valueChanges({idField:'id'});
+
     }
 
-    getActivePlan(){  
-        return this.db.collection('plans', (ref) => ref.where('activePlan', '==', true) && ref.where('uid', '==', 'U9IaFiXAhCZPr68qP1tpgoNoh1r2')).valueChanges({idField:'id'});
-
-    }
-
+    //Not sure if we need uid for these two
     updatePlan(id, plan){
         return this.db.collection('plans').doc(id).set(plan);
-
 
     }
     

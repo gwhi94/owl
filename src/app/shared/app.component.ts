@@ -48,16 +48,10 @@ export class AppComponent {
 
   ngOnInit(){
 
-    this.planService.getActivePlan()
-      .subscribe(res => {
-        this.activePlan = res[0];
-        if (!this.activePlan['activePlan']){
-          this.showNotifications = false;
-        }
-      })
+ 
 
     this.auth.user$.subscribe(res => this.displayName = res.displayName);
-    this.auth.user$.subscribe(res => this.uid = res.uid);
+    this.auth.user$.subscribe(res => {this.uid = res.uid;this.getActivePlan(res.uid)});
  
     this.screenWidth$.subscribe(width => {
       this.screenWidth = width;
@@ -66,6 +60,16 @@ export class AppComponent {
     this.date = moment(new Date()).format('DD/MM/YYYY');
     //this is where we need to get the active plan
     //so db query logic fired from here. 
+  }
+
+  getActivePlan(uid){
+    this.planService.getActivePlan(uid)
+    .subscribe(res => {
+      this.activePlan = res[0];
+      if (!this.activePlan['activePlan']){
+        this.showNotifications = false;
+      }
+    })
   }
 
   activateClass(navLink){

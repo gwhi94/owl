@@ -7,6 +7,11 @@ import * as moment from 'moment';
 import { Plan } from '../models/plan';
 
 
+//get UID on login 
+//pass that to shared data service
+
+
+
 @Injectable({ providedIn: 'root' })
 export class PlanService {
 
@@ -30,9 +35,6 @@ export class PlanService {
             dailyleft:formData.dailyLeft,
             days:formData.days,
             totalDays:formData.totalDays,
-            
-            
-            
             currentSpent:formData.currentSpent,
             currentLeft:formData.currentLeft,           
             lastUpdated:formData.lastUpdated,
@@ -43,7 +45,9 @@ export class PlanService {
             excludeWeekends:formData.excludeWeekends,
             costCategories:[],
             
-            activePlan:true  
+            activePlan:true,
+
+            uid:formData.uid
         })
     };
 
@@ -56,7 +60,7 @@ export class PlanService {
     }
 
     getActivePlan(){  
-        return this.db.collection('plans', (ref) => ref.where('activePlan', '==', true)).valueChanges({idField:'id'});
+        return this.db.collection('plans', (ref) => ref.where('activePlan', '==', true) && ref.where('uid', '==', 'U9IaFiXAhCZPr68qP1tpgoNoh1r2')).valueChanges({idField:'id'});
 
     }
 

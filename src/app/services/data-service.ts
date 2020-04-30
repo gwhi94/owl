@@ -1,4 +1,4 @@
-//For transfer of discrete data, component to component
+//For transfer of discrete/meta data, component to component
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
@@ -10,10 +10,14 @@ export class DataService {
     private spentThisWeekSource = new BehaviorSubject<Number>(0);
     private percentageSpentSource = new BehaviorSubject<Number>(0);
 
+    private uidSource = new BehaviorSubject<String>('£');
+
     currentMostSpent = this.mostSpentSource.asObservable();
     currentSpentToday = this.spentTodaySource.asObservable();
     currentSpentThisWeek = this.spentThisWeekSource.asObservable();
     currentPercentageSpent = this.percentageSpentSource.asObservable();
+
+    uid = this.uidSource.asObservable();
 
     constructor() { }
 
@@ -31,6 +35,10 @@ export class DataService {
 
     changePercentageSpent(percentageSpent:Number){
         this.percentageSpentSource.next(percentageSpent);
+    }
+
+    changeUid(uid:String){
+        this.uidSource.next(uid);
     }
 
     

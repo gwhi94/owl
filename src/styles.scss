@@ -112,10 +112,6 @@ mat-toolbar {
     }
 }
 
-.add-cost-modal {
-    
-}
-
 .inset-box {
     border-radius:15px !important;
     box-shadow: inset 1px -1px 10px #1F1F1F, inset 1px 1px 10px #1F1F1F;
@@ -183,3 +179,9 @@ input[type=number] {
     padding: 0px !important;
 }
 
+.category-buttons { 
+    .active {
+       box-shadow: inset 1px -1px 10px #1F1F1F, inset 1px 1px 10px #1F1F1F !important;
+       outline:none !important;
+   }
+}

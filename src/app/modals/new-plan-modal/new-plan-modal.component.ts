@@ -9,6 +9,9 @@ import { PlanService } from '../../services/plan-service';
 import { Plan } from '../../models/plan';
 import { analytics } from 'firebase';
 
+import { AuthService } from '../../services/auth.service';
+
+
 @Component({
   selector: 'app-new-plan-modal',
   templateUrl: './new-plan-modal.component.html',
@@ -37,6 +40,8 @@ export class NewPlanModalComponent implements OnInit {
 
   activePlan:Object;
 
+  uid:string;
+
 
   
   data = {
@@ -52,11 +57,12 @@ export class NewPlanModalComponent implements OnInit {
     variableDailyLeft:0,
     variableWeeklyLeft:0,
     lastUpdated:'',
-    excludeWeekends:false
+    excludeWeekends:false,
+    uid:''
 
   }
 
-  constructor(private fb: FormBuilder, private planService:PlanService, public dialogRef: MatDialogRef<NewPlanModalComponent>,
+  constructor(private auth:AuthService, private fb: FormBuilder, private planService:PlanService, public dialogRef: MatDialogRef<NewPlanModalComponent>,
      @Inject(MAT_DIALOG_DATA) public dataPassedFromSet: any) {
       monkeyPatchChartJsTooltip();
       monkeyPatchChartJsLegend(); 
@@ -74,6 +80,9 @@ export class NewPlanModalComponent implements OnInit {
 
     var formData = this.data;
     var formValue = this.rForm.value;
+
+   
+    formData.uid = this.uid;
     formData.currentLeft = formData.totalLeft;
     formData.variableDailyLeft = formData.dailyLeft;
     formData.variableWeeklyLeft = formData.weeklyLeft;
@@ -132,6 +141,8 @@ export class NewPlanModalComponent implements OnInit {
 
 
   ngOnInit() {
+
+    this.auth.user$.subscribe(res => this.uid = res.uid);
 
     this.planService.getActivePlan()
     .subscribe(res => {

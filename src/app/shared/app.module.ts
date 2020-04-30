@@ -11,6 +11,7 @@ import { ModalsModule } from '../modals/modals.module';
 import { PaymentsModule } from '../payments/payments.module';
 import { PlansModule } from '../plans/plans.module';
 import { SharedModule } from '../shared/shared.module';
+import { SettingsModule } from '../settings/settings.module'
 
 //import { PipesModule } from '../pipes/pipes.module';
 
@@ -64,6 +65,7 @@ import {
     PaymentsModule,
     DashboardModule,
     ModalsModule,
+    SettingsModule,
 
     //PipesModule,
     BrowserModule,

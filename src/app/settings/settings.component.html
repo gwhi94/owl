@@ -1,0 +1,19 @@
+<div class="container">
+    <h3 class="accent-this mb-4">Settings</h3>
+    <h4>Currency</h4>
+    <div class="mb-4">        
+        <div class="col-sm-12 cost-category-icons p-0">
+            <div class="category-buttons" align="left">
+                <button *ngFor="let currency of currencies" [disableRipple]="true" [ngClass]="{'active': currency.active}" (click)="activateClass(currency.name,currency)" mat-button color="accent" class="modal-button m-1">{{currency.value}}</button> 
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <h4>Lock Spending</h4>
+        <mat-slide-toggle name="globalLock" [(ngModel)]="globalLock"></mat-slide-toggle>
+    </div>
+
+    <button type="submit" (click)="saveSettings()" class="modal-button" mat-button color="accent">Save</button> 
+      
+</div>

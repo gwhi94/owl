@@ -41,9 +41,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   payments = [];
   upcomingPayments = [];
   completedPayments = [];
+
+  //ADD A NEW PROP = SURPLUS COST TO MINUS FROM SURPLUS CALCS
   
   //DO NOT INCREMENT WITHOUT ADDING COST
-  testingIncrement:number = 30;
+  testingIncrement:number = 15;
   //DO NOT INCREMENT WITHOUT ADDING COST
   //this is one behind spredsheet tracking number
 
@@ -131,7 +133,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     inspectPlan(plan){
 
 
-
       if(moment(moment().add(this.testingIncrement).format('YYYY-MM-DD')).isSame(moment(plan.dateRange.end))){
         console.log("Ending Plan");
         this.dialog.open(EndPlanModalComponent);
@@ -151,24 +152,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.lockPlanForWeekend = false;
         }        
       }
-
-      
-
-
-
-      let testForSameLastUpdated = moment(moment(plan.lastUpdated).format('YYYY-MM-DD'));
-      //gets last updated
-      let testForSameToday = moment(moment().add(this.testingIncrement, 'days').format('YYYY-MM-DD'));
-      //gets today
-
-
-      console.log(testForSameLastUpdated);
-      console.log(testForSameToday);
-      console.log(this.today);
-
-     // console.log(testForSameToday.diff(testForSameLastUpdated));
-
-     console.log(testForSameToday.diff(testForSameLastUpdated, 'days'));                
+             
           //this logic works and so does reset
           if(moment(this.today).diff(plan.weekUpdated, 'days') == 7){
             console.log("week passed 7 days");

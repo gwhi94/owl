@@ -6,13 +6,6 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import * as moment from 'moment';
 import { Plan } from '../models/plan';
 
-import { AuthService } from '../services/auth.service';
-
-
-//get UID on login 
-//pass that to shared data service
-
-
 
 @Injectable({ providedIn: 'root' })
 export class PlanService {
@@ -25,9 +18,8 @@ export class PlanService {
     uid:string;
     
     
-    constructor( private http: HttpClient, private db:AngularFirestore) {
-       
-        
+    constructor(private http: HttpClient, private db:AngularFirestore) {
+               
      }
 
     newPlan(formData,formValue){
@@ -63,9 +55,9 @@ export class PlanService {
         return this.db.collection('plans', (ref) => ref.where('uid', '==', uid)).snapshotChanges();            
     };
 
-  /*   getPlan(plan){
-        return this.db.collection('plans', (ref) => ref.where('uid', '==', this.uid)).doc(plan.payload.doc.id).valueChanges();
-    } */
+    getPlan(plan, uid){
+        return this.db.collection('plans', (ref) => ref.where('uid', '==', uid)).doc(plan.payload.doc.id).valueChanges();
+    } 
 
     getActivePlan(uid){
         console.log(uid);  

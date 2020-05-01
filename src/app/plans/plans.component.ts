@@ -43,11 +43,18 @@ export class PlansComponent implements OnInit, OnDestroy {
   plans: Array<any>;
   plan: {};
   activePlans:Array<any>;
+  uid:string;
 
   constructor(private auth:AuthService, private router:Router, public dialog: MatDialog, private planService:PlanService) { }
 
   ngOnInit() {
-    this.auth.user$.subscribe(res => this.getPlans(res.uid));
+    this.auth.user$.subscribe(res => {
+      this.getPlans(res.uid);
+      this.uid = res.uid;
+
+    }
+      
+      );
    
       
   }
@@ -84,7 +91,7 @@ export class PlansComponent implements OnInit, OnDestroy {
   }
 
   getPlan(plan){
-    this.planService.getPlan(plan)
+    this.planService.getPlan(plan, this.uid)
       .subscribe(res => (this.openFocusPlanDialog(res)));
 
   }

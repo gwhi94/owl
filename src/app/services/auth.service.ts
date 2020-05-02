@@ -46,7 +46,6 @@ export class AuthService {
       email: user.email, 
       displayName: user.displayName, 
       photoURL: user.photoURL,
-      settings:{currency:'GBP Pounds', globalLock:false}
     } 
 
     return userRef.set(data, { merge: true })

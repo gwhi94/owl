@@ -9,9 +9,20 @@ export class SettingsService {
   constructor(private db:AngularFirestore) { }
 
   getSettings(uid){
-    return this.db.collection('settings', (ref) => ref.where('uid', '==', uid)).snapshotChanges(); 
+    return this.db.collection('settings', (ref) => ref.where('uid', '==', uid)).valueChanges({idField:'id'}); 
   }
 
+  saveSettings(settings){
+    return this.db.collection('settings').add(settings);
+
+  }
+
+  updateSettings(id, settings){
+    console.log(id, settings);
+    //return this.db.collection('settings').doc(uid).set(plan);
+    return this.db.collection('settings').doc(id).set(settings);
+
+  }
 
 
 }

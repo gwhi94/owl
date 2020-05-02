@@ -12,13 +12,10 @@ import { catchError, map, tap, switchMap } from 'rxjs/operators';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { ChartType, ChartOptions } from 'chart.js';
 import { SingleDataSet, Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, Color } from 'ng2-charts';
-
 import { DataService } from '../services/data-service';
 import { PaymentsService } from '../services/payments-service';
-
 import { AuthService } from '../services/auth.service';
-
-
+import { SettingsService } from '../services/settings.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -43,6 +40,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   payments = [];
   upcomingPayments = [];
   completedPayments = [];
+  currency:string = '£';
+  globalLock = false;
 
   //ADD A NEW PROP = SURPLUS COST TO MINUS FROM SURPLUS CALCS
   
@@ -57,7 +56,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
 
-  constructor(private auth:AuthService, private router:Router, private dataService:DataService, private paymentsService:PaymentsService, private snackBar:MatSnackBar, private planService:PlanService, public dialog: MatDialog ) {
+  constructor(private settingsService:SettingsService, private auth:AuthService, private router:Router, private dataService:DataService, private paymentsService:PaymentsService, private snackBar:MatSnackBar, private planService:PlanService, public dialog: MatDialog ) {
     monkeyPatchChartJsTooltip();
     monkeyPatchChartJsLegend(); 
    }
@@ -120,9 +119,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.auth.user$.subscribe(res => this.getActivePlan(res.uid));
+    this.auth.user$.subscribe(res => {
+      this.getActivePlan(res.uid);
+      this.getSettings(res.uid);
+      
+    });
 
-  
+  }
+
+  getSettings(uid){
+    this.settingsService.getSettings(uid)
+    .subscribe(res => {
+      this.currency = res[0]['currency'];
+      this.globalLock = res[0]['globalLock'];
+    })
   }
 
   getActivePlan(uid){

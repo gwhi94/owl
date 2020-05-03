@@ -23,6 +23,7 @@ export class PlanService {
      }
 
     newPlan(formData,formValue){
+        console.log(formData.uid);
         return this.db.collection('plans').add({
             name:formValue.name,
             moneyIn:formValue.moneyIn,

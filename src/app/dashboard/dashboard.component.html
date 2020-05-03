@@ -5,9 +5,9 @@
  
  
  
- <mat-card click="this.addCost" *ngIf="this.activePlan" class="plan-card-active plan-card mb-5">
+ <mat-card *ngIf="this.activePlan" class="plan-card-active plan-card mb-5">
     <div class="container">
-        <p>Current plan <span class="accent-this">{{this.activePlan.name | lowercase}} </span> <button (click)="addCost()" class="card-button cost" mat-button [disableRipple]="true"><i *ngIf="!lockPlan" class="material-icons">attach_money</i><i *ngIf="lockPlan" class="material-icons">lock</i> </button></p> 
+        <p>Current plan <span class="accent-this">{{this.activePlan.name | lowercase}} </span> <button (click)="addCost()" class="card-button cost" mat-button [disableRipple]="true"><i *ngIf="(!lockPlanForWeekend) && (!globalLock)" class="material-icons">attach_money</i><i *ngIf="lockPlanForWeekend || globalLock" class="material-icons">lock</i> </button></p> 
         <h2 class="total-left-headers">{{this.currency}} {{this.activePlan.variableDailyLeft}} left <span class="accent-this">today {{this.todayFormatted}}</span></h2>
         <div class="progress-bar">
         <div class="plan-progress" [ngStyle]="{'width': planProgressPercentage + '%' , 'background-color': planProgressColor}"></div>           

@@ -131,7 +131,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.settingsService.getSettings(uid)
     .subscribe(res => {
       this.currency = res[0]['currency'];
-      this.globalLock = res[0]['globalLock'];
+      this.globalLock = res[0]['globalLock'];     
     })
   }
 
@@ -283,11 +283,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.setProgressBar();
             this.sendSpentToday(plan);
             this.sendSpentThisWeek(plan); 
-            this.sendPercentageSpent(plan); 
-            
+            this.sendPercentageSpent(plan);           
           }
         )  
-
   }
 
   getElapsedWorkDays(a, b) {
@@ -326,6 +324,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   addCost(){
+
+if(!this.lockPlanForWeekend && !this.globalLock)
 
     if(!this.lockPlanForWeekend && this.activePlan['variableDailyLeft'] > 0){
       if(this.activePlan['variableDailyLeft'] > 0){

@@ -8,7 +8,7 @@ import { Plan } from '../../app/models/plan';
 import { MatSidenav } from '@angular/material';
 import { AuthService } from '../services/auth.service';
 import { DataService } from '../services/data-service';
-
+import { NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +27,7 @@ export class AppComponent {
   
   @ViewChild ('sidenav', {static: false}) sidenav: MatSidenav;
   
-  constructor(private dataService:DataService, private router: Router, private planService: PlanService, public auth:AuthService ) {
+  constructor(private router: Router, private planService: PlanService, public auth:AuthService ) {
 
   }
   title = 'finance-app';
@@ -48,7 +48,8 @@ export class AppComponent {
 
   ngOnInit(){
 
- 
+
+    this.router.events.subscribe((event) => { event instanceof NavigationEnd ? this.setActiveOninit(event): null })
 
     this.auth.user$.subscribe(res => this.displayName = res.displayName);
     this.auth.user$.subscribe(res => {this.uid = res.uid;this.getActivePlan(res.uid)});
@@ -58,6 +59,7 @@ export class AppComponent {
     });
 
     this.date = moment(new Date()).format('DD/MM/YYYY');
+ 
     //this is where we need to get the active plan
     //so db query logic fired from here. 
   }
@@ -72,7 +74,18 @@ export class AppComponent {
     })
   }
 
+  setActiveOninit(event){
+    console.log(event.url);
+
+    for(let i = 0 ; i < this.navLinks.length; i++){
+      if(this.navLinks[i]['link'] == event.url){
+        this.activateClass(this.navLinks[i]);
+      }
+    }
+  }
+
   activateClass(navLink){
+    console.log(navLink);
     this.navLinks.forEach(function(link){
       link.active = false;
     });

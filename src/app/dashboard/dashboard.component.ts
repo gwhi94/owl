@@ -46,7 +46,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   //ADD A NEW PROP = SURPLUS COST TO MINUS FROM SURPLUS CALCS
   
   //DO NOT INCREMENT WITHOUT ADDING COST
-  testingIncrement:number = 15;
+  testingIncrement:number = 1;
   //DO NOT INCREMENT WITHOUT ADDING COST
   //this is one behind spredsheet tracking number
 
@@ -208,22 +208,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
           console.log(moment(plan.dateRange.begin));
           console.log(this.today);
 
-
+          //Surplus is adding if plan starts on a weekend
 
           let weekDays = (this.getElapsedWorkDays(moment(plan.dateRange.begin), this.today));
-
-
           console.log(weekDays);
-          this.activePlan['surplus'] = (weekDays * plan.dailyleft) - this.activePlan['currentSpent'];
-        
-        
+          this.activePlan['surplus'] = ((weekDays * plan.dailyleft) - this.activePlan['currentSpent']) - this.activePlan['surplusSpent'];
+            
         }
       
       
       }else{
         let daysGone = this.activePlan['totalDays'] - this.activePlan['days'];
         console.log(daysGone);
-        this.activePlan['surplus'] = (daysGone * plan.dailyleft) - this.activePlan['currentSpent'];     
+        this.activePlan['surplus'] = ((daysGone * plan.dailyleft) - this.activePlan['currentSpent']) -  - this.activePlan['surplusSpent'];     
       }
 
       let lastUpdated = moment(plan['lastUpdated']);
@@ -343,7 +340,10 @@ if(!this.lockPlanForWeekend && !this.globalLock)
             if(result.usedSurplus){
               //used surplus
               console.log("used surplus");
+
+              this.activePlan['surplusSpent'] = this.activePlan['surplusSpent'] + result.cost;
               this.activePlan['surplus'] = this.activePlan['surplus'] - result.cost;
+
               this.planService.updatePlan(this.activePlan['id'], this.activePlan)
                 .then(
                   res => {

@@ -23,6 +23,7 @@ export class SetDateModalComponent implements OnInit {
   selectedPaymentTotal:number = 0;
   minDate = moment().add(1, "days");
   weekendCount:Number = 0;
+  ifWeekend:Boolean = false;
 
 
   constructor(private paymentsService:PaymentsService, private fb: FormBuilder, public dialogRef: MatDialogRef<SetDateModalComponent>) {
@@ -33,6 +34,13 @@ export class SetDateModalComponent implements OnInit {
    }
 
   ngOnInit() {
+
+    if(moment().day() == 6 || moment().day() == 0){
+      this.ifWeekend = true;
+    }
+
+
+
     this.paymentsService.getPayments()
       .subscribe(res => {
         this.payments = res;

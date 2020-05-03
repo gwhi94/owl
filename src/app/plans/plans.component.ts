@@ -132,7 +132,7 @@ export class PlansComponent implements OnInit, OnDestroy {
   }
 
    private openConfirmDialog(): void {
-    if(this.plans.length == 0){
+    if(this.activePlans.length == 0){
       this.openSetDateModal();
     }else{
       let dialogRef = this.dialog.open(ConfirmModalComponent,{

@@ -39,6 +39,7 @@ export class PlanService {
             currentLeft:formData.currentLeft,           
             lastUpdated:formData.lastUpdated,
             surplus:0,
+            surplusSpent:0,
             variableDailyLeft:formData.variableDailyLeft,
             variableWeeklyLeft:formData.variableWeeklyLeft,
             weekUpdated:formData.dateRange.begin,

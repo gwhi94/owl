@@ -6,7 +6,8 @@
                 <div class="row no-gutters h-100">                                       
                     <div class="col-sm-12">  
                       <mat-checkbox [disabled]="ifWeekend" class="mb-4" name="excludeWeekends" [(ngModel)]='excludeWeekends'>Exclude Weekends ? </mat-checkbox>                         
-                        <form [formGroup]="rFormSet" (ngSubmit)="onSubmit(rFormSet.value)">
+                        <p *ngIf="ifWeekend" class="accent-this">Today is a weekend</p>
+                      <form [formGroup]="rFormSet" (ngSubmit)="onSubmit(rFormSet.value)">
                               <mat-form-field>
                                 <mat-label>End Date</mat-label>
                                 <input class="mb-4" matInput [min]="minDate" [matDatepicker]="pickerEnd" formControlName="endDate">

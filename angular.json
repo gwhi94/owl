@@ -32,7 +32,6 @@
               "./node_modules/uikit/dist/js/uikit.min.js",
               "./node_modules/uikit/dist/js/uikit-icons.min.js"
             ]
-
           },
           "configurations": {
             "production": {
@@ -96,7 +95,6 @@
             ],
             "styles": [
               "src/styles.scss"
-
             ],
             "scripts": []
           }
@@ -125,6 +123,10 @@
               "devServerTarget": "finance-app:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {}
         }
       }
     }
@@ -136,6 +138,3 @@
     }
   }
 }
-
-
-

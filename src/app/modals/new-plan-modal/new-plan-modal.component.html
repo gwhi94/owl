@@ -23,10 +23,18 @@
                     </div>                                                                              
                     <div class="full-width mb-4">
                         <input class="app-input-field" placeholder="Saving" type="number" formControlName="saving">
-                    </div>      
+                    </div>  
+                     
+                    <div class="alert-container mb-4">
+                        <div class="form-alert" *ngIf="this.minusCaution && rForm.controls['moneyIn'].touched">Increase money in</div> 
+                    </div>    
+                   
                     <div class="app-modal-footer mb-4">
                         <button type="submit" [disabled]="!rForm.valid" class="modal-button" mat-button color="accent">Set Plan</button>                     
-                    </div>                                                
+                    </div>  
+                   
+                
+                
                 </form>                           
             </div>
         </div>  

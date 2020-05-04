@@ -40,7 +40,6 @@ export class SetDateModalComponent implements OnInit {
     }
 
 
-
     this.paymentsService.getPayments()
       .subscribe(res => {
         this.payments = res;

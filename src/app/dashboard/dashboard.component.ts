@@ -46,7 +46,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   //ADD A NEW PROP = SURPLUS COST TO MINUS FROM SURPLUS CALCS
   
   //DO NOT INCREMENT WITHOUT ADDING COST
-  testingIncrement:number = 1;
+  testingIncrement:number = 0;
   //DO NOT INCREMENT WITHOUT ADDING COST
   //this is one behind spredsheet tracking number
 
@@ -149,18 +149,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
     inspectPlan(plan){
+      console.log(moment(plan.dateRange.end));
+      console.log(moment().add(this.testingIncrement, 'days'));
 
-
-      if(moment(moment().add(this.testingIncrement).format('YYYY-MM-DD')).isSame(moment(plan.dateRange.end))){
-        console.log("Ending Plan");
-        this.dialog.open(EndPlanModalComponent);
-        //set this plan to inactive. 
-        plan.activePlan = false;
-        this.planService.updatePlan(plan.id, plan)
-          .then(res => {
-            console.log("Updated");
-          })                        
-      }else {
         console.log("Plan still active");   
       if(plan.excludeWeekends){
         if(moment().add(this.testingIncrement, 'days').day() == 0 || moment().add(this.testingIncrement, 'days').day() == 6){
@@ -181,7 +172,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           }
                
         this.updateAfkPlan(plan);     
-      }         
+            
     }
 
     setProgressBar(){
@@ -241,7 +232,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
           console.log("2");
           //week is 5 days
           if(afkPeriod > 7){                  
-              plan.variableWeeklyLeft = plan.weeklyLeft;                  
+              plan.variableWeeklyLeft = plan.weeklyLeft;
+              plan.variableDailyLeft = plan.dailyleft;                  
               //Needs testing !!!!                   
           } else if(afkPeriod <= 7){    
             console.log("3");
@@ -280,7 +272,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.setProgressBar();
             this.sendSpentToday(plan);
             this.sendSpentThisWeek(plan); 
-            this.sendPercentageSpent(plan);           
+            this.sendPercentageSpent(plan);  
+            
+          if(moment(plan.dateRange.end).isBefore(this.today)){
+            console.log("Ending Plan");
+            this.dialog.open(EndPlanModalComponent);
+            //set this plan to inactive. 
+            plan.activePlan = false;
+            this.planService.updatePlan(plan.id, plan)
+              .then(res => {
+                console.log("Updated");
+                this.activePlan = undefined;
+              })                        
+            }         
           }
         )  
   }

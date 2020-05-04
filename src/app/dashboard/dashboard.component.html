@@ -2,12 +2,10 @@
  <div *ngIf="this.activePlan == undefined"  class="no-plan-splash">
     <button routerLink="/plans" mat-raised-button color="primary" tabindex="1">Go to Plans</button>
  </div>
- 
- 
- 
+
  <mat-card *ngIf="this.activePlan" class="plan-card-active plan-card mb-5">
     <div class="container">
-        <p>Current plan <span class="accent-this">{{this.activePlan.name | lowercase}} </span> <button (click)="addCost()" class="card-button cost" mat-button [disableRipple]="true"><i *ngIf="(!lockPlanForWeekend) && (!globalLock)" class="material-icons">attach_money</i><i *ngIf="lockPlanForWeekend || globalLock" class="material-icons">lock</i> </button></p> 
+        <p>Current plan <span class="accent-this">{{this.activePlan['name'] | lowercase}} </span> <button (click)="addCost()" class="card-button cost" mat-button [disableRipple]="true"><i *ngIf="(!lockPlanForWeekend) && (!globalLock)" class="material-icons">attach_money</i><i *ngIf="lockPlanForWeekend || globalLock" class="material-icons">lock</i> </button></p> 
         <h2 class="total-left-headers">{{this.currency}} {{this.activePlan.variableDailyLeft}} left <span class="accent-this">today {{this.todayFormatted}}</span></h2>
         <div class="progress-bar">
         <div class="plan-progress" [ngStyle]="{'width': planProgressPercentage + '%' , 'background-color': planProgressColor}"></div>           
@@ -57,8 +55,7 @@
                             [labels]="barChartLabels" 
                             [chartType]="barChartType"
                             [options]="barChartOptions"
-                            [plugins]="barChartPlugins"
-                           
+                            [plugins]="barChartPlugins"                           
                             [colors]="barChartColors">
                           </canvas>
                         </div>

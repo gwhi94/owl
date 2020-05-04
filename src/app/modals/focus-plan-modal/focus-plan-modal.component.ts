@@ -68,7 +68,9 @@ export class FocusPlanModalComponent implements OnInit {
 ]
 
   ngOnInit() {
-    console.log(this.data);
+    console.log(this.data.inFocusPlan.payload.doc.data());
+
+    this.data.inFocusPlan = this.data.inFocusPlan.payload.doc.data();
 
     let costObj = {
       Travel:0,

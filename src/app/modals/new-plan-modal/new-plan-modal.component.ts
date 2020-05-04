@@ -42,6 +42,8 @@ export class NewPlanModalComponent implements OnInit {
 
   uid:string;
 
+  minusCaution:Boolean = false;
+
 
   
   data = {
@@ -199,6 +201,11 @@ export class NewPlanModalComponent implements OnInit {
     
     
     this.data.totalLeft = Math.round((form.moneyIn - form.expenses - form.saving) * 100) /100; //80
+    if(this.data.totalLeft < 0){
+      this.minusCaution = true;
+    }else {
+      this.minusCaution = false;
+    }
     this.data.weeklyLeft = Math.round(this.data.totalLeft / weeks); //80
 
 

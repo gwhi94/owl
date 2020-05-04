@@ -55,6 +55,7 @@ mat-toolbar {
     display: inline-block;
     animation: 1s alertAnim forwards;
     margin-left: 12px;
+    font-weight:600;
 }
 
 @keyframes alertAnim {

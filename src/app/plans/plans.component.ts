@@ -123,7 +123,7 @@ export class PlansComponent implements OnInit, OnDestroy {
 
    }
    
-  private openFocusPlanDialog(inFocusPlan): void {
+  public openFocusPlanDialog(inFocusPlan): void {
     //Dies here as this modal needs styling
     let dialogRef = this.dialog.open(FocusPlanModalComponent,{
       data:{inFocusPlan}
@@ -131,7 +131,7 @@ export class PlansComponent implements OnInit, OnDestroy {
     });
   }
 
-   private openConfirmDialog(): void {
+   public openConfirmDialog(): void {
     if(this.activePlans.length == 0){
       this.openSetDateModal();
     }else{
@@ -152,7 +152,7 @@ export class PlansComponent implements OnInit, OnDestroy {
       }    
     }
 
-    private openSetDateModal(): void {
+    public openSetDateModal(): void {
       let dialogRef = this.dialog.open(SetDateModalComponent, {
         disableClose: true
       });
@@ -163,7 +163,7 @@ export class PlansComponent implements OnInit, OnDestroy {
      });
     }
 
-    private openNewPlanDialog(dataPassedFromSet): void {
+    public openNewPlanDialog(dataPassedFromSet): void {
       let dialogRef = this.dialog.open(NewPlanModalComponent,{
         disableClose: true,
         data:{dataPassedFromSet}

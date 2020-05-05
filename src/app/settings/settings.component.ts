@@ -83,7 +83,7 @@ export class SettingsComponent implements OnInit {
       this.settingsService.updateSettings(this.userSettings['id'], this.userSettings)
         .then(res => {
           this.snackBar.open('Settings Saved', undefined, {
-            duration: 5000,
+            duration: 3000,
             panelClass: ['success', 'app-alert'],
             verticalPosition: 'top'
           });
@@ -93,17 +93,13 @@ export class SettingsComponent implements OnInit {
       this.settingsService.saveSettings(this.userSettings)
         .then(res => {
           this.snackBar.open('Settings Saved', undefined, {
-            duration: 5000,
+            duration: 3000,
             panelClass: ['success', 'app-alert'],
             verticalPosition: 'top'
           });
         });
     }
 
-
-
-    console.log(this.userSettings);
-    console.log(this.globalCurrency, this.globalLock);
   }
 
 }

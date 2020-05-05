@@ -4,7 +4,7 @@
     <div class="container">
     <div class="row">
         <div class="col-sm-12 img-row">
-        <img id="owl-logo-splash" src="../assets/icons/owl-logo.svg">  
+          <img id="owl-logo-splash" src="assets/icons/owl-logo.svg">  
         </div>
         <div class="col-sm-12 btn-row">
             <button mat-raised-button color="primary" (click)="auth.googleSignin()">Log in with Google </button>
@@ -14,12 +14,11 @@
   </div>
 </ng-template>
 
-
 <mat-sidenav-container *ngIf="auth.user$ | async as user;else login" class="side-nav" fullscreen>
   <mat-sidenav #sidenav mode="side" [opened]="screenWidth > 945">
     <div class="sidenav-container">
       <div class="image-container">
-        <img id="owl-logo" src="../assets/icons/owl-logo.svg">
+        <img id="owl-logo" src="assets/icons/owl-logo.svg">
       </div>     
       <ul class="nav-links" role="list">       
           <li *ngFor="let navLink of navLinks" (click)="activateClass(navLink)" routerLink="{{navLink.link}}" [ngClass]="{'active': navLink.active}" role="listitem"><i class="material-icons">{{navLink.icon}}</i>
@@ -43,7 +42,7 @@
     </ul>
 
     <div class="image-container" style="margin-left: auto;">
-      <img id="owl-logo-small" src="../assets/icons/owl-logo.svg">
+      <img id="owl-logo-small" src="assets/icons/owl-logo.svg">
     </div>       
     </mat-toolbar>
     <p class="mt-2 ml-2 mb-0">Welcome <span class="accent-this ">{{displayName}}</span></p>

@@ -9,7 +9,7 @@
             <div class="row no-gutters h-100">                                       
                     <div class="col-sm-12">
                         <div class="doughnut-wrapper">
-                            <canvas style="height: 20rem" *ngIf="this.mostSpent != '' " baseChart 
+                            <canvas style="height: 20rem" *ngIf="this['mostSpent'] != '' " baseChart 
                             [data]="barChartData" 
                             [labels]="barChartLabels" 
                             [chartType]="barChartType"

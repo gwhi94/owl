@@ -98,7 +98,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public barChartType: ChartType = 'horizontalBar';
   public barChartLegend = true;
   public barChartPlugins = [];
-  private barChartColors = [
+  public barChartColors = [
     {
       backgroundColor: [
         '#42a5f5',
@@ -200,10 +200,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
           console.log(this.today);
 
           //Surplus is adding if plan starts on a weekend
-
           let weekDays = (this.getElapsedWorkDays(moment(plan.dateRange.begin), this.today));
           console.log(weekDays);
-          this.activePlan['surplus'] = ((weekDays * plan.dailyleft) - this.activePlan['currentSpent']) - this.activePlan['surplusSpent'];
+          if(weekDays > 0){
+            this.activePlan['surplus'] = ((weekDays * plan.dailyleft) - this.activePlan['currentSpent']) - this.activePlan['surplusSpent'];
+          }
             
         }
       
@@ -211,7 +212,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }else{
         let daysGone = this.activePlan['totalDays'] - this.activePlan['days'];
         console.log(daysGone);
-        this.activePlan['surplus'] = ((daysGone * plan.dailyleft) - this.activePlan['currentSpent']) -  - this.activePlan['surplusSpent'];     
+        if(daysGone > 0){
+          this.activePlan['surplus'] = ((daysGone * plan.dailyleft) - this.activePlan['currentSpent']) -  - this.activePlan['surplusSpent'];     
+        }
       }
 
       let lastUpdated = moment(plan['lastUpdated']);
@@ -336,15 +339,12 @@ if(!this.lockPlanForWeekend && !this.globalLock)
         dialogRef.afterClosed().subscribe(result => {
           if(result){
             this.snackBar.open('Cost added', undefined, {
-              duration: 5000,
+              duration: 3000,
               panelClass: ['success', 'app-alert'],
               verticalPosition: 'top'
             });
     
             if(result.usedSurplus){
-              //used surplus
-              console.log("used surplus");
-
               this.activePlan['surplusSpent'] = this.activePlan['surplusSpent'] + result.cost;
               this.activePlan['surplus'] = this.activePlan['surplus'] - result.cost;
 

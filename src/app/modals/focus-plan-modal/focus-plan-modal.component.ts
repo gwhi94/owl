@@ -53,7 +53,7 @@ export class FocusPlanModalComponent implements OnInit {
   public barChartType: ChartType = 'horizontalBar';
   public barChartLegend = true;
   public barChartPlugins = [];
-  private barChartColors = [
+  public barChartColors = [
     {
       backgroundColor: [
         '#42a5f5',

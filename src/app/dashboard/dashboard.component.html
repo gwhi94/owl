@@ -6,7 +6,7 @@
  <mat-card *ngIf="this.activePlan" class="plan-card-active plan-card mb-5">
     <div class="container">
         <p>Current plan <span class="accent-this">{{this.activePlan['name'] | lowercase}} </span> <button (click)="addCost()" class="card-button cost" mat-button [disableRipple]="true"><i *ngIf="(!lockPlanForWeekend) && (!globalLock)" class="material-icons">attach_money</i><i *ngIf="lockPlanForWeekend || globalLock" class="material-icons">lock</i> </button></p> 
-        <h2 class="total-left-headers">{{this.currency}} {{this.activePlan.variableDailyLeft}} left <span class="accent-this">today {{this.todayFormatted}}</span></h2>
+        <h2 class="total-left-headers">{{this.currency}} {{this.activePlan['variableDailyLeft']}} left <span class="accent-this">today <!-- {{this.todayFormatted}} --></span></h2>
         <div class="progress-bar">
         <div class="plan-progress" [ngStyle]="{'width': planProgressPercentage + '%' , 'background-color': planProgressColor}"></div>           
         </div> 
@@ -16,11 +16,11 @@
             <div class="row no-gutters h-100">
                 <div class="col">
                     <p class="tags">Total Left</p>
-                    <h3>{{this.activePlan.currentLeft}}</h3>
+                    <h3>{{this.activePlan['currentLeft']}}</h3>
                 </div>
                 <div class="col">
                     <p class="tags">Left this Week</p>
-                    <h3>{{this.activePlan.variableWeeklyLeft}}</h3>
+                    <h3>{{this.activePlan['variableWeeklyLeft']}}</h3>
                 </div>
                 <div class="w-100"></div>
                 <div class="col">
@@ -38,15 +38,15 @@
 
 <mat-card click="this.addCost" *ngIf="this.activePlan" class="plan-card-active plan-card ">
     <div class="container">
-        <p>Breakdown for plan <span class="accent-this">{{this.activePlan.name | lowercase}} </span></p> 
-        <div class="snapshot-breakdown-line"><h2 class="total-left-headers">£ {{this.activePlan.currentSpent}} <span class="warn-this">spent</span></h2></div>
-        <div><h4 class="accent-this">Surplus:<span class="ml-1 tags"> {{this.activePlan.surplus}}</span></h4> </div>
+        <p>Breakdown for plan <span class="accent-this">{{this.activePlan['name'] | lowercase}} </span></p> 
+        <div class="snapshot-breakdown-line"><h2 class="total-left-headers">£ {{this.activePlan['currentSpent']}} <span class="warn-this">spent</span></h2></div>
+        <div><h4 class="accent-this">Surplus:<span class="ml-1 tags"> {{this.activePlan['surplus']}}</span></h4> </div>
         <div class="mt-2 mb-2">
-            <h5 *ngIf="this.mostSpent != ''" class="tags">You have spent the most on <span [ngClass]="getCatColor(class)">{{this.mostSpent}}</span></h5> 
+            <h5 *ngIf="this.mostSpent != ''" class="tags">You have spent the most on <span [ngClass]="getCatColor()">{{this.mostSpent}}</span></h5> 
             <h5 *ngIf="this.mostSpent == '' " class="tags">You have not spent anything this plan ! </h5>                     
         </div> 
                   
-        <div class="inset-box plan-breakdown-box " (click)="this.test()">
+        <div class="inset-box plan-breakdown-box ">
             <div class="row no-gutters h-100">                                       
                     <div class="col-sm-12">
                         <div class="doughnut-wrapper">

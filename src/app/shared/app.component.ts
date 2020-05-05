@@ -38,6 +38,7 @@ export class AppComponent {
   showNotifications = true;
   today = moment();
   todayFormatted = this.today.format("DD-MM-YYYY");
+  navLink:Object;
 
   navLinks = [
     {name:'DASHBOARD', icon:'insert_chart', active:true, link:'/'},

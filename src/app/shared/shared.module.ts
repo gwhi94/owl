@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 
 @NgModule({
@@ -15,7 +16,9 @@ import { AngularFireAuth } from '@angular/fire/auth';
     
   ],
    providers: [
-    AngularFireAuth
+    AngularFireAuth,
+    AngularFireAuthModule
+    
    ]
  
 })

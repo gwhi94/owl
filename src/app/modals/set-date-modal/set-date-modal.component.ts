@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import * as moment from 'moment';
 import { PaymentsService } from '../../services/payments-service';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
@@ -26,7 +27,7 @@ export class SetDateModalComponent implements OnInit {
   ifWeekend:Boolean = false;
 
 
-  constructor(private paymentsService:PaymentsService, private fb: FormBuilder, public dialogRef: MatDialogRef<SetDateModalComponent>) {
+  constructor(private auth:AuthService, private paymentsService:PaymentsService, private fb: FormBuilder, public dialogRef: MatDialogRef<SetDateModalComponent>) {
     this.rFormSet = fb.group({ 
       'endDate':[null,Validators.required]
     });
@@ -39,12 +40,23 @@ export class SetDateModalComponent implements OnInit {
       this.ifWeekend = true;
     }
 
+    
+    this.auth.user$.subscribe(res => {
+      this.getPayments(res.uid)
+      
+    });
 
-    this.paymentsService.getPayments()
+
+    
+  }
+
+  getPayments(uid){
+    this.paymentsService.getPayments(uid)
       .subscribe(res => {
         this.payments = res;
         this.addActiveProp();
       })
+
   }
 
   addActiveProp(){

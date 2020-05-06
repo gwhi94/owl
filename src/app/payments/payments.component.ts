@@ -4,6 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { PaymentsService } from '../services/payments-service';
 import { Subscription } from 'rxjs';
 import { trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-payments',
@@ -36,20 +37,28 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   payments = [];
   paymentsTotal:number;
   dateString:string;
+  uid:string;
 
 
-  constructor(public dialog: MatDialog, private paymentsService:PaymentsService) { }
+  constructor(private auth:AuthService, public dialog: MatDialog, private paymentsService:PaymentsService) { }
+
+
 
 
   ngOnInit() {
-    this.getPayments();
+    this.auth.user$.subscribe(res => {
+      this.uid = res.uid;
+      this.getPayments(res.uid);
+      
+    });
+    
   }
 
   ngOnDestroy(){
   }
 
-  getPayments(){
-    this.subscription = this.paymentsService.getPayments()
+  getPayments(uid){
+    this.subscription = this.paymentsService.getPayments(uid)
       .subscribe(result => {
         this.payments = result;
         console.log(this.payments);
@@ -79,7 +88,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
         this.paymentsService.newPayment(result)
           .then(res => {
             console.log("Payment added");
-            this.getPayments();
+            this.getPayments(this.uid);
           })
       }
     })
@@ -89,7 +98,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   deletePayment(payment){
     this.paymentsService.deletePayment(payment)
       .then(res => {
-        this.getPayments();
+        this.getPayments(this.uid);
       })
   }
 

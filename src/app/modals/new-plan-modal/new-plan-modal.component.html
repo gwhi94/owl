@@ -30,7 +30,7 @@
                     </div>    
                    
                     <div class="app-modal-footer mb-4">
-                        <button type="submit" [disabled]="!rForm.valid" class="modal-button" mat-button color="accent">Set Plan</button>                     
+                        <button type="submit" [disabled]="(!rForm.valid) && (!this.minusCaution)" class="modal-button" mat-button color="accent">Set Plan</button>                     
                     </div>  
                    
                 

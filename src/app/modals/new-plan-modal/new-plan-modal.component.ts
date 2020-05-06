@@ -72,8 +72,8 @@ export class NewPlanModalComponent implements OnInit {
     this.rForm = fb.group({
       'name':[null,Validators.compose([Validators.required, Validators.maxLength(15), Validators.minLength(3)])],
       'moneyIn':[null,Validators.compose([Validators.required, Validators.min(1), Validators.max(1000000000)])],
-      'expenses':[null,Validators.compose([Validators.min(1), Validators.max(100000000)])],
-      'saving':[null, Validators.compose([Validators.min(1), Validators.max(100000000)])],
+      'expenses':[null,Validators.compose([Validators.min(0), Validators.max(100000000)])],
+      'saving':[null, Validators.compose([Validators.min(0), Validators.max(100000000)])],
     }); 
   }
 
@@ -83,7 +83,6 @@ export class NewPlanModalComponent implements OnInit {
     var formData = this.data;
     var formValue = this.rForm.value;
 
-   
     formData.uid = this.uid;
     formData.currentLeft = formData.totalLeft;
     formData.variableDailyLeft = formData.dailyLeft;

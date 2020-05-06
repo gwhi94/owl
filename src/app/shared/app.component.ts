@@ -30,7 +30,7 @@ export class AppComponent {
   constructor(private router: Router, private planService: PlanService, public auth:AuthService ) {
 
   }
-  title = 'finance-app';
+  title = 'Owl';
   date;
   displayName: string;
   uid:string;

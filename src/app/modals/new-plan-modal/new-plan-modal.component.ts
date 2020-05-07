@@ -87,7 +87,7 @@ export class NewPlanModalComponent implements OnInit {
     formData.currentLeft = formData.totalLeft;
     formData.variableDailyLeft = formData.dailyLeft;
     formData.variableWeeklyLeft = formData.weeklyLeft;
-    formData.lastUpdated = moment(moment()).format('YYYY-MM-DDTHH:mm:ss.SSS');
+    formData.lastUpdated = moment(moment()).format('YYYY-MM-DD');
 
     //satisfying momentJs when plan comes back in for update
     let splitBegin =  formData.dateRange['begin'].split("/");

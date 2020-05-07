@@ -259,7 +259,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
       }
        
-      plan.lastUpdated = this.today.format('YYYY-MM-DDTHH:mm:ss.SSS');
+      plan.lastUpdated = this.today.format('YYYY-MM-DD');
       
       //updating plan before setting as active plan
       this.planService.updatePlan(plan.id, plan)

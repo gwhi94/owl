@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { SettingsService } from '../services/settings.service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { ErrorService } from '../services/error.service';
 
 @Component({
   selector: 'app-settings',
@@ -10,7 +11,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 })
 export class SettingsComponent implements OnInit {
 
-  constructor(private settingsService: SettingsService, private auth:AuthService, private snackBar:MatSnackBar) { }
+  constructor(private settingsService: SettingsService, private errorService:ErrorService, private auth:AuthService, private snackBar:MatSnackBar) { }
 
   currencies = [
     {name:'GBP Pounds', value:'£', active:true},
@@ -29,6 +30,9 @@ export class SettingsComponent implements OnInit {
     this.auth.user$.subscribe(res => {
       this.uid = res.uid
       this.getSettings(res.uid)
+    },
+    error => {
+      this.errorService.showError("Failed to retrieve user details")
     });
 
   }
@@ -55,11 +59,13 @@ export class SettingsComponent implements OnInit {
           console.log("User does not have custom settings");     
           this.userSettings = {uid:uid, currency:'', globalLock:Boolean}
         }
+      },
+      error => {
+        this.errorService.showError("Failed to retrieve settings")
       });
   }
 
   activateClass(currency, currencyButton){
-    console.log(currencyButton);
     this.globalCurrency = currency;
     this.currencies.forEach(function(link){
       link.active = false;
@@ -69,15 +75,12 @@ export class SettingsComponent implements OnInit {
 
   saveSettings(){
     if(this.userSettings['currency'] !== this.globalCurrency){
-      console.log("Currency Changed");
       this.userSettings['currency'] = this.globalCurrency;
     }
 
     if(this.userSettings['globalLock'] !== this.globalLock){
-      console.log("Global Lock Changed");
       this.userSettings['globalLock'] = this.globalLock;
     }
-
 
     if(this.updatingSettings){
       this.settingsService.updateSettings(this.userSettings['id'], this.userSettings)

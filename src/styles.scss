@@ -139,11 +139,13 @@ mat-toolbar {
 snack-bar-container {
     &.error {
       background-color: mat-color($my-theme-warn);
+      color:white;
 
     }
    
     &.success {
       background-color: mat-color($my-theme-accent);
+      color:white;
     }
   }
 

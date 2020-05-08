@@ -5,6 +5,7 @@ import { PaymentsService } from '../services/payments-service';
 import { Subscription } from 'rxjs';
 import { trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
 import { AuthService } from '../services/auth.service';
+import { ErrorService } from '../services/error.service';
 
 @Component({
   selector: 'app-payments',
@@ -40,7 +41,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   uid:string;
 
 
-  constructor(private auth:AuthService, public dialog: MatDialog, private paymentsService:PaymentsService) { }
+  constructor(private auth:AuthService, private errorService:ErrorService, public dialog: MatDialog, private paymentsService:PaymentsService) { }
 
 
 
@@ -48,8 +49,10 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.auth.user$.subscribe(res => {
       this.uid = res.uid;
-      this.getPayments(res.uid);
-      
+      this.getPayments(res.uid);     
+    },
+    error => {
+      this.errorService.showError("Failed to retrieve user details");     
     });
     
   }
@@ -64,7 +67,10 @@ export class PaymentsComponent implements OnInit, OnDestroy {
         console.log(this.payments);
         this.subscription.unsubscribe();
         this.parsePayments();
-
+      },
+      
+      error => {
+        this.errorService.showError("Failed to retrieve payments")
       })
   }
 

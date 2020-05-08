@@ -10,6 +10,7 @@ import { Plan } from '../../models/plan';
 import { analytics } from 'firebase';
 
 import { AuthService } from '../../services/auth.service';
+import { ErrorService } from 'src/app/services/error.service';
 
 
 @Component({
@@ -64,7 +65,7 @@ export class NewPlanModalComponent implements OnInit {
 
   }
 
-  constructor(private auth:AuthService, private fb: FormBuilder, private planService:PlanService, public dialogRef: MatDialogRef<NewPlanModalComponent>,
+  constructor(private auth:AuthService, private errorService:ErrorService, private fb: FormBuilder, private planService:PlanService, public dialogRef: MatDialogRef<NewPlanModalComponent>,
      @Inject(MAT_DIALOG_DATA) public dataPassedFromSet: any) {
       monkeyPatchChartJsTooltip();
       monkeyPatchChartJsLegend(); 
@@ -146,6 +147,9 @@ export class NewPlanModalComponent implements OnInit {
     this.auth.user$.subscribe(res => {
       this.cleanUp(res.uid);
       this.uid = res.uid
+    },
+    error => {
+      this.errorService.showError("Failed top retrieve user details");
     })
 
 
@@ -155,6 +159,9 @@ export class NewPlanModalComponent implements OnInit {
     this.planService.getActivePlan(uid)
     .subscribe(res => {
       this.activePlan = res[0];
+    },
+    error =>{
+      this.errorService.showError("Failed to retrieve active plan")
     })
 
     if(this.dataPassedFromSet.dataPassedFromSet.excludeWeekends){

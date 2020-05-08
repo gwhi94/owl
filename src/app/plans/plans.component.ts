@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { ErrorService } from '../services/error.service';
 
 @Component({
   selector: 'app-plans',
@@ -45,7 +46,7 @@ export class PlansComponent implements OnInit, OnDestroy {
   activePlans:Array<any>;
   uid:string;
 
-  constructor(private auth:AuthService, private router:Router, public dialog: MatDialog, private planService:PlanService) { }
+  constructor(private auth:AuthService, private errorService:ErrorService, private router:Router, public dialog: MatDialog, private planService:PlanService) { }
 
   ngOnInit() {
     this.auth.user$.subscribe(res => {
@@ -55,8 +56,7 @@ export class PlansComponent implements OnInit, OnDestroy {
     }
       
       );
-   
-      
+       
   }
 
   ngOnDestroy(){
@@ -68,6 +68,9 @@ export class PlansComponent implements OnInit, OnDestroy {
       .subscribe(res =>{
         this.plans = res;
         this.findActive()
+      },
+      error => {
+        this.errorService.showError("Failed to retrieve plans")
       })
      
   }
@@ -92,7 +95,12 @@ export class PlansComponent implements OnInit, OnDestroy {
 
   getPlan(plan){
     this.planService.getPlan(plan, this.uid)
-      .subscribe(res => (this.openFocusPlanDialog(res)));
+      .subscribe(res => {
+        (this.openFocusPlanDialog(res))
+      },
+      error=> {
+        this.errorService.showError("Failed to retrieve plan");
+      });
 
   }
 
@@ -111,7 +119,7 @@ export class PlansComponent implements OnInit, OnDestroy {
           console.log("deleted");
         },
         err => {
-          console.log("Could not delete plan");
+          this.errorService.showError("Failed to delete plan")
         }
       )
    

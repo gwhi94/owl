@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import * as moment from 'moment';
 import { PaymentsService } from '../../services/payments-service';
 import { AuthService } from '../../services/auth.service';
+import { ErrorService } from 'src/app/services/error.service';
 
 
 @Component({
@@ -27,7 +28,7 @@ export class SetDateModalComponent implements OnInit {
   ifWeekend:Boolean = false;
 
 
-  constructor(private auth:AuthService, private paymentsService:PaymentsService, private fb: FormBuilder, public dialogRef: MatDialogRef<SetDateModalComponent>) {
+  constructor(private auth:AuthService, private errorService:ErrorService, private paymentsService:PaymentsService, private fb: FormBuilder, public dialogRef: MatDialogRef<SetDateModalComponent>) {
     this.rFormSet = fb.group({ 
       'endDate':[null,Validators.required]
     });
@@ -42,12 +43,12 @@ export class SetDateModalComponent implements OnInit {
 
     
     this.auth.user$.subscribe(res => {
-      this.getPayments(res.uid)
-      
+      this.getPayments(res.uid)    
+    },
+    error => {
+      this.errorService.showError("Failed to retrieve user details");
     });
 
-
-    
   }
 
   getPayments(uid){
@@ -55,6 +56,9 @@ export class SetDateModalComponent implements OnInit {
       .subscribe(res => {
         this.payments = res;
         this.addActiveProp();
+      },
+      error => {
+        this.errorService.showError("Failed to retrieve payments");
       })
 
   }

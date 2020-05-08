@@ -16,6 +16,7 @@ import { DataService } from '../services/data-service';
 import { PaymentsService } from '../services/payments-service';
 import { AuthService } from '../services/auth.service';
 import { SettingsService } from '../services/settings.service';
+import { ErrorService } from '../services/error.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,7 +25,9 @@ import { SettingsService } from '../services/settings.service';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 
-  private subscription: Subscription;
+  private subscription1: Subscription;
+  private subscription2: Subscription;
+  private subscription3: Subscription;
 
   activePlan:Object;
   pulledPlan:Object;
@@ -44,7 +47,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   globalLock = false;
   uid:string;
 
-  //ADD A NEW PROP = SURPLUS COST TO MINUS FROM SURPLUS CALCS
   
   //DO NOT INCREMENT WITHOUT ADDING COST
   testingIncrement:number = 0;
@@ -56,8 +58,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   todayFormatted = this.today.format("DD-MM-YYYY");
 
 
-
-  constructor(private settingsService:SettingsService, private auth:AuthService, private router:Router, private dataService:DataService, private paymentsService:PaymentsService, private snackBar:MatSnackBar, private planService:PlanService, public dialog: MatDialog ) {
+  constructor(private settingsService:SettingsService, private errorService:ErrorService, private auth:AuthService, private router:Router, private dataService:DataService, private paymentsService:PaymentsService, private snackBar:MatSnackBar, private planService:PlanService, public dialog: MatDialog ) {
     monkeyPatchChartJsTooltip();
     monkeyPatchChartJsLegend(); 
    }
@@ -114,50 +115,57 @@ export class DashboardComponent implements OnInit, OnDestroy {
 ]
 
   ngOnDestroy(){
-    this.subscription.unsubscribe();
-    console.log("destroyed");
+    this.subscription1.unsubscribe();
+    this.subscription2.unsubscribe();
+    this.subscription3.unsubscribe();
+    
   }
 
   ngOnInit() {
 
-    this.auth.user$.subscribe(res => {
+    this.subscription2 = this.auth.user$.subscribe(res => {
       this.getActivePlan(res.uid);
       this.getSettings(res.uid);
-      this.uid = res.uid;
+      this.uid = res.uid;     
+    },
+    error =>{
+      this.errorService.showError("Failed to retrieve user details")
+    }
       
-    });
+    );
 
   }
 
   getSettings(uid){
-    this.settingsService.getSettings(uid)
+    this.subscription3 = this.settingsService.getSettings(uid)
     .subscribe(res => {
       this.currency = res[0]['currency'];
       this.globalLock = res[0]['globalLock'];     
+    },
+    error => {
+      this.errorService.showError("Failed to retrieve settings");
     })
   }
 
   getActivePlan(uid){
-    this.subscription = this.planService.getActivePlan(uid)
+    this.subscription1 = this.planService.getActivePlan(uid)
     .subscribe(result => {
       this.activePlan = result[0];
       if(this.activePlan) {
         this.inspectPlan(this.activePlan);
         this.setBreakdown();
       }        
-      this.subscription.unsubscribe();           
+      this.subscription1.unsubscribe();           
+    },
+    error =>{
+      this.errorService.showError("Failed to retreive active plan")
     });
 
   }
 
     inspectPlan(plan){
-      console.log(moment(plan.dateRange.end));
-      console.log(moment().add(this.testingIncrement, 'days'));
-
-        console.log("Plan still active");   
       if(plan.excludeWeekends){
         if(moment().add(this.testingIncrement, 'days').day() == 0 || moment().add(this.testingIncrement, 'days').day() == 6){
-          console.log("WEEKEND -- LOCK PLAN")
           this.lockPlanForWeekend = true;
         }else {
           this.lockPlanForWeekend = false;
@@ -165,7 +173,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }            
       //this logic works and so does reset
       if(moment(this.today).diff(plan.weekUpdated, 'days') == 7){
-        console.log("week passed 7 days");
         plan.variableWeeklyLeft = plan.weeklyLeft;
         plan.weekUpdated = this.today.format('YYYY-MM-DD'); 
       }
@@ -176,7 +183,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     setProgressBar(){
       this.planProgressPercentage = this.activePlan['variableDailyLeft'] * (100/this.activePlan['dailyleft']);
-
       if (this.planProgressPercentage < 50 && this.planProgressPercentage > 25){
           this.planProgressColor = '#fb8c00';
       }else if(this.planProgressPercentage < 25){
@@ -194,13 +200,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       if(this.activePlan['excludeWeekends']){
         if(!this.lockPlanForWeekend){
-
-          console.log(moment(plan.dateRange.begin));
-          console.log(this.today);
-
-          //Surplus is adding if plan starts on a weekend
           let weekDays = (this.getElapsedWorkDays(moment(plan.dateRange.begin), this.today));
-          console.log(weekDays);
           if(weekDays > 0){
             this.activePlan['surplus'] = ((weekDays * plan.dailyleft) - this.activePlan['currentSpent']) - this.activePlan['surplusSpent'];
           }           
@@ -208,7 +208,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
             
       }else{
         let daysGone = this.activePlan['totalDays'] - this.activePlan['days'];
-        console.log(daysGone);
         if(daysGone > 0){
           this.activePlan['surplus'] = ((daysGone * plan.dailyleft) - this.activePlan['currentSpent']) -  - this.activePlan['surplusSpent'];     
         }
@@ -217,25 +216,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
       let lastUpdated = moment(plan['lastUpdated']);
       let afkPeriod  = this.today.diff(lastUpdated, 'days');   
 
-      console.log(afkPeriod);
-      console.log(lastUpdated);
-
-      if(afkPeriod == 1){
-        console.log("User logged in yesterday");       
+      if(afkPeriod == 1){ 
         if(!this.lockPlanForWeekend){
           plan.variableDailyLeft = plan['dailyleft']; 
         }
       }
 
       if(afkPeriod > 1){
-        console.log("1");
         if(plan.excludeWeekends){
-          console.log("2");
           if(afkPeriod > 7){                  
               plan.variableWeeklyLeft = plan.weeklyLeft;
               plan.variableDailyLeft = plan.dailyleft;                                   
           } else if(afkPeriod <= 7){    
-            console.log("3");
               if(this.today.diff(moment(plan.weekUpdated), 'days') > 7){
                 plan.variableWeeklyLeft = plan.weeklyLeft;
                 let newWeekUpdated = (moment(plan.weekUpdated).add(7, 'days'));
@@ -265,7 +257,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.planService.updatePlan(plan.id, plan)
         .then(
           res => {
-            console.log("Plan updated");
             this.activePlan = plan;
             this.setProgressBar();
             this.sendSpentToday(plan);
@@ -273,13 +264,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.sendPercentageSpent(plan);  
             
           if(moment(plan.dateRange.end).isBefore(this.today)){
-            console.log("Ending Plan");
             this.dialog.open(EndPlanModalComponent);
             //set this plan to inactive. 
             plan.activePlan = false;
             this.planService.updatePlan(plan.id, plan)
               .then(res => {
-                console.log("Updated");
                 this.activePlan = undefined;
               })                        
             }         
@@ -304,16 +293,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   getWorkDays(start, end){
 
-    console.log(start, end);
-
     var first = start.clone().endOf('week'); // end of first week
-    console.log(first);
     var last = end.clone().startOf('week'); // start of last week
-    console.log(last);
     var days = last.diff(first,'days') * 5 / 7; // this will always multiply of 7
-    console.log(days);
     var wfirst = first.day() - start.day(); // check first week
-    console.log(wfirst);
     if(start.day() == 0) --wfirst; // -1 if start with sunday 
     var wlast = end.day() - last.day(); // check last week
     if(end.day() == 6) --wlast; // -1 if end with saturday
@@ -351,7 +334,6 @@ if(!this.lockPlanForWeekend && !this.globalLock)
                 )
     
             }else{
-              console.log("!used surplus");
               this.recalculatePlan(result);
             }               
           }
@@ -383,7 +365,6 @@ if(!this.lockPlanForWeekend && !this.globalLock)
     this.planService.updatePlan(this.activePlan['id'], this.activePlan)
       .then(
         res => {
-          console.log("Plan updated");
           this.setBreakdown();
           this.setProgressBar();
           this.sendSpentToday(this.activePlan);
@@ -455,11 +436,11 @@ if(!this.lockPlanForWeekend && !this.globalLock)
     this.mostSpent = Object.keys(costObj).reduce((a, b) => costObj[a] > costObj[b] ? a:b);
     
 
-    this.sendMostSpent(this.mostSpent);
-   
+    
     if(this.mostSpent == 'foodAndDrink')this.mostSpent = 'Food and Drink';   
     if(this.activePlan['costCategories'].length == 0)this.mostSpent = '';
-
+    
+    this.sendMostSpent(this.mostSpent);
 
     this.barChartData = [
         costObj.Travel,
@@ -507,17 +488,12 @@ if(!this.lockPlanForWeekend && !this.globalLock)
     this.dataService.currentSpentToday.subscribe(spentToday => this.spentToday = spentToday)
     this.dataService.changeSpentToday(spentToday);
 
-    //make sure these are called on update
-
-
   }
 
   sendSpentThisWeek(plan){  
     let spentThisWeek = plan.weeklyLeft - plan.variableWeeklyLeft;
     this.dataService.currentSpentThisWeek.subscribe(spentThisWeek => this.spentThisWeek = spentThisWeek)
     this.dataService.changeSpentThisWeek(spentThisWeek);
-
-
   }
 
   sendPercentageSpent(plan){

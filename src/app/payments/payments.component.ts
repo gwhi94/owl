@@ -58,6 +58,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
+    this.subscription.unsubscribe();
   }
 
   getPayments(uid){
@@ -83,13 +84,11 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   }
 
   addPayment(){
-    console.log("added");
     let dialogRef = this.dialog.open(NewPaymentModalComponent,{
       data:{}
 
     })
     dialogRef.afterClosed().subscribe(result =>{
-      console.log(result);
       if(result.name != undefined){
         this.paymentsService.newPayment(result)
           .then(res => {

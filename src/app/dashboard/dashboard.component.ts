@@ -17,6 +17,7 @@ import { PaymentsService } from '../services/payments-service';
 import { AuthService } from '../services/auth.service';
 import { SettingsService } from '../services/settings.service';
 import { ErrorService } from '../services/error.service';
+import { IfStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-dashboard',
@@ -49,7 +50,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   
   //DO NOT INCREMENT WITHOUT ADDING COST
-  testingIncrement:number = 0;
+  testingIncrement:number = 7;
   //DO NOT INCREMENT WITHOUT ADDING COST
   //this is one behind spredsheet tracking number
 
@@ -194,14 +195,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
   
-    updateAfkPlan(plan){        
+    updateAfkPlan(plan){
       let planEnd = moment(plan['dateRange']['end']);
-      plan.days = planEnd.diff(this.today, 'days') + 1;
-
+      plan.days = planEnd.diff(this.today, 'days') + 1 ;
+      //need to add on a daily left at the end of the plan, im not sure.
+    
       if(this.activePlan['excludeWeekends']){
         if(!this.lockPlanForWeekend){
           let weekDays = (this.getElapsedWorkDays(moment(plan.dateRange.begin), this.today));
           if(weekDays > 0){
+            if(this.activePlan['totalDays'] - weekDays == 1){
+              weekDays = weekDays + 1;
+            }
             this.activePlan['surplus'] = ((weekDays * plan.dailyleft) - this.activePlan['currentSpent']) - this.activePlan['surplusSpent'];
           }           
         }
@@ -209,9 +214,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }else{
         let daysGone = this.activePlan['totalDays'] - this.activePlan['days'];
         if(daysGone > 0){
-          this.activePlan['surplus'] = ((daysGone * plan.dailyleft) - this.activePlan['currentSpent']) -  - this.activePlan['surplusSpent'];     
+          if(this.activePlan['totalDays'] - daysGone == 1){
+            daysGone = daysGone + 1;
+          }
+          console.log(daysGone);
+          this.activePlan['surplus'] = ((daysGone * plan.dailyleft) - this.activePlan['currentSpent'])  - this.activePlan['surplusSpent'];     
         }
       }
+      
 
       let lastUpdated = moment(plan['lastUpdated']);
       let afkPeriod  = this.today.diff(lastUpdated, 'days');   
@@ -252,6 +262,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
        
       plan.lastUpdated = this.today.format('YYYY-MM-DD');
+     
       
       //updating plan before setting as active plan
       this.planService.updatePlan(plan.id, plan)
@@ -263,7 +274,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.sendSpentThisWeek(plan); 
             this.sendPercentageSpent(plan);  
             
-          if(moment(plan.dateRange.end).isBefore(this.today)){
+         if(moment(plan.dateRange.end).isBefore(this.today)){
             this.dialog.open(EndPlanModalComponent);
             //set this plan to inactive. 
             plan.activePlan = false;
@@ -271,7 +282,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
               .then(res => {
                 this.activePlan = undefined;
               })                        
-            }         
+            }        
           }
         )  
   }

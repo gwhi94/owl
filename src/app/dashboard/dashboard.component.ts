@@ -50,7 +50,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   
   //DO NOT INCREMENT WITHOUT ADDING COST
-  testingIncrement:number = 7;
+  testingIncrement:number = 0;
   //DO NOT INCREMENT WITHOUT ADDING COST
   //this is one behind spredsheet tracking number
 

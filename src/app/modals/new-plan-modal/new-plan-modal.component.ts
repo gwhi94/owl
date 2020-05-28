@@ -35,17 +35,11 @@ export class NewPlanModalComponent implements OnInit {
   days:number;
   weekendCount:number;
   fieldAlert: string = 'Required';
-
   submitted = false;
   excludeWeekends = false;
-
   activePlan:Object;
-
   uid:string;
-
   minusCaution:Boolean = false;
-
-
   
   data = {
     totalLeft:0,

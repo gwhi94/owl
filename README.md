@@ -4,4 +4,4 @@ Angular and Firebase Web App to allow users to create budget plans and compare t
 
 Head to https://gwhi94.github.io/owl/ and sign in with a Google Account.
 
-This is App is in active development.
+This App is in active development.
